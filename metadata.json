@@ -1,0 +1,6 @@
+{
+  "name": "UXLens",
+  "description": "A platform for comparing UX patterns from leading design systems like Material Design, Fluent, and Atlassian.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
