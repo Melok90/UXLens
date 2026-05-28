@@ -72,7 +72,7 @@ const translations: Translations = {
     "systems.ant.desc": "Корпоративная система проектирования для фоновых приложений, предоставляющая богатый набор компонентов React.",
 
     // Footer
-    "footer.rights": "© 2024 UXLens Open Source Project",
+    "footer.rights": "© 2026 UXLens Open Source Project",
     "footer.changelog": "Список измененений",
     "footer.privacy": "Политика конфедециальности",
     "footer.support": "Поддержка"
@@ -140,7 +140,7 @@ const translations: Translations = {
     "systems.ant.desc": "An enterprise-class design system for web applications, providing a rich set of React components.",
 
     // Footer
-    "footer.rights": "© 2024 UXLens Open Source Project",
+    "footer.rights": "© 2026 UXLens Open Source Project",
     "footer.changelog": "Changelog",
     "footer.privacy": "Privacy Policy",
     "footer.support": "Support"
