@@ -1,6 +1,7 @@
 import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
+import CustomSelect from './CustomSelect';
 
 export default function Filters() {
   const { t } = useLanguage();
@@ -28,6 +29,33 @@ export default function Filters() {
 
   const onStateChange = setActiveState;
   const onVariantChange = setActiveVariant;
+
+  let variantOptions: {value: string; label: string}[] = [];
+  if (activeComponent === 'button') {
+    variantOptions = [
+      { value: 'primary', label: t('filters.button.primary') },
+      { value: 'secondary', label: t('filters.button.secondary') },
+      { value: 'tertiary', label: t('filters.button.tertiary') },
+      { value: 'destructive', label: t('filters.button.destructive') },
+      { value: 'icon', label: t('filters.button.icon') }
+    ];
+  } else if (activeComponent === 'modal') {
+     variantOptions = [
+      { value: 'alert', label: t('filters.modal.alert') },
+      { value: 'transactional', label: t('filters.modal.transactional') },
+      { value: 'acknowledgment', label: t('filters.modal.acknowledgment') }
+    ];
+  }
+
+  const stateOptions = [{ value: 'default', label: t('filters.state.default') }];
+  if (activeComponent !== 'select') stateOptions.push({ value: 'hover', label: t('filters.state.hover') });
+  stateOptions.push({ value: 'focus', label: t('filters.state.focus') });
+  if (activeComponent === 'select') stateOptions.push({ value: 'open', label: t('filters.state.open') });
+  stateOptions.push({ value: 'disabled', label: t('filters.state.disabled') });
+  if (activeComponent === 'button') stateOptions.push({ value: 'loading', label: t('filters.state.loading') });
+  if (activeComponent !== 'switch' && activeComponent !== 'select' && activeComponent !== 'datepicker' && activeComponent !== 'tag') {
+    stateOptions.push({ value: 'error', label: t('filters.state.error') });
+  }
 
   return (
     <section className="flex flex-col gap-6">
@@ -80,28 +108,12 @@ export default function Filters() {
           <span className="text-sm font-medium text-[#4c4546] mr-2">
             {t('filters.type')}
           </span>
-          <select 
-            className="border border-[#cfc4c5] rounded-lg px-3 py-1.5 text-sm outline-none bg-white font-medium cursor-pointer min-w-[140px]"
-            value={activeVariant}
-            onChange={(e) => onVariantChange(e.target.value as ComponentVariant)}
-          >
-            {activeComponent === 'button' && (
-              <>
-                <option value="primary">{t('filters.button.primary')}</option>
-                <option value="secondary">{t('filters.button.secondary')}</option>
-                <option value="tertiary">{t('filters.button.tertiary')}</option>
-                <option value="destructive">{t('filters.button.destructive')}</option>
-                <option value="icon">{t('filters.button.icon')}</option>
-              </>
-            )}
-            {activeComponent === 'modal' && (
-              <>
-                <option value="alert">{t('filters.modal.alert')}</option>
-                <option value="transactional">{t('filters.modal.transactional')}</option>
-                <option value="acknowledgment">{t('filters.modal.acknowledgment')}</option>
-              </>
-            )}
-          </select>
+          <CustomSelect 
+             value={activeVariant}
+             onChange={(val) => onVariantChange(val as any)}
+             options={variantOptions}
+             className="min-w-[150px]"
+           />
         </div>
       )}
 
@@ -110,27 +122,12 @@ export default function Filters() {
           <span className="text-sm font-medium text-[#4c4546] mr-2">
             {t('filters.state')}
           </span>
-          <select
-            className="border border-[#cfc4c5] rounded-lg px-3 py-1.5 text-sm outline-none bg-white font-medium cursor-pointer min-w-[140px]"
-            value={activeState}
-            onChange={(e) => onStateChange(e.target.value as ComponentState)}
-          >
-            <option value="default">{t('filters.state.default')}</option>
-            {activeComponent !== 'select' && (
-              <option value="hover">{t('filters.state.hover')}</option>
-            )}
-            <option value="focus">{t('filters.state.focus')}</option>
-            {activeComponent === 'select' && (
-              <option value="open">{t('filters.state.open')}</option>
-            )}
-            <option value="disabled">{t('filters.state.disabled')}</option>
-            {activeComponent === 'button' && (
-              <option value="loading">{t('filters.state.loading')}</option>
-            )}
-            {activeComponent !== 'switch' && activeComponent !== 'select' && activeComponent !== 'datepicker' && activeComponent !== 'tag' && (
-              <option value="error">{t('filters.state.error')}</option>
-            )}
-          </select>
+          <CustomSelect 
+             value={activeState}
+             onChange={(val) => onStateChange(val as any)}
+             options={stateOptions}
+             className="min-w-[150px]"
+           />
         </div>
       )}
     </section>
