@@ -56,8 +56,39 @@ const translations: Translations = {
     // CompGrid
     "grid.logic": "Логика работы",
     "grid.a11y": "Доступность",
-    "grid.bestpractices": "Best Practices",
+    "grid.bestpractices": "Лучшие практики",
     "grid.notfound": "Ничего не найдено по запросу",
+    "grid.showComponent": "Показать компонент",
+    "grid.resetSearch": "Сбросить поиск",
+    "grid.copyJson": "Копировать JSON",
+    "grid.unlock": "Разблокировать Pro-паттерны",
+    "grid.details": "Подробнее",
+    "grid.hideDetails": "Скрыть",
+    "grid.showAllDetails": "Показать детали всех систем",
+    "grid.hideAllDetails": "Скрыть детали",
+
+    // Hero stats
+    "hero.stat": "8 компонентов × 6 систем — 48 разборов",
+
+    // Context bar
+    "context.view.showcase": "Витрина",
+    "context.view.table": "Таблица",
+    "context.systemsCount": "систем",
+    "context.copied": "Ссылка скопирована",
+    "context.copyLink": "Скопировать ссылку",
+
+    // Compare table
+    "table.property": "Свойство",
+    "table.onlyDiffering": "Только различия",
+    "table.identical": "Все системы совпадают",
+
+    // Pro banner
+    "pro.title": "Больше паттернов и Best Practices",
+    "pro.description": "В Pro-версии — расширенные code-примеры, чек-листы доступности и экспорт токенов в Figma.",
+    "pro.cta": "Разблокировать Pro",
+
+    // Sidebar
+    "sidebar.filters": "Фильтры",
 
     // Systems Page
     "systems.title": "Библиотека систем",
@@ -126,6 +157,37 @@ const translations: Translations = {
     "grid.a11y": "Accessibility",
     "grid.bestpractices": "Best Practices",
     "grid.notfound": "Nothing found for",
+    "grid.showComponent": "Show component",
+    "grid.resetSearch": "Reset search",
+    "grid.copyJson": "Copy JSON",
+    "grid.unlock": "Unlock Pro patterns",
+    "grid.details": "Details",
+    "grid.hideDetails": "Hide",
+    "grid.showAllDetails": "Show details for all systems",
+    "grid.hideAllDetails": "Hide details",
+
+    // Hero stats
+    "hero.stat": "8 components × 6 systems — 48 breakdowns",
+
+    // Context bar
+    "context.view.showcase": "Showcase",
+    "context.view.table": "Table",
+    "context.systemsCount": "systems",
+    "context.copied": "Link copied",
+    "context.copyLink": "Copy link",
+
+    // Compare table
+    "table.property": "Property",
+    "table.onlyDiffering": "Differences only",
+    "table.identical": "All systems match",
+
+    // Pro banner
+    "pro.title": "More patterns and best practices",
+    "pro.description": "Pro unlocks extended code samples, accessibility checklists, and token export to Figma.",
+    "pro.cta": "Unlock Pro",
+
+    // Sidebar
+    "sidebar.filters": "Filters",
 
     // Systems Page
     "systems.title": "Systems Library",
@@ -155,8 +217,21 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'uxlens.language';
+
+function readStoredLanguage(): Language {
+  if (typeof window === 'undefined') return 'ru';
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  return stored === 'en' || stored === 'ru' ? stored : 'ru';
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('ru');
+  const [language, setLanguageState] = useState<Language>(readStoredLanguage);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    window.localStorage.setItem(STORAGE_KEY, lang);
+  };
 
   const t = (key: string) => {
     return translations[language][key] || translations['en'][key] || key;

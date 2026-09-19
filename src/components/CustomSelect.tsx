@@ -33,7 +33,11 @@ export default function CustomSelect({ value, onChange, options, className = '' 
   }, []);
 
   return (
-    <div className={`relative min-w-[160px] ${className}`} ref={containerRef}>
+    // Открытый список должен перекрывать соседние строки фильтра, а не
+    // прятаться за ними — z-index на самом дропдауне недостаточно, если
+    // соседний элемент идёт позже в потоке и не позиционирован сам по себе,
+    // поэтому весь компонент поднимается на время открытия.
+    <div className={`relative min-w-[160px] ${isOpen ? 'z-30' : ''} ${className}`} ref={containerRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}

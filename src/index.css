@@ -15,8 +15,11 @@
 }
 
 @layer base {
+  html {
+    @apply overflow-x-hidden;
+  }
   body {
-    @apply bg-surface text-[#1b1b1b] font-sans antialiased;
+    @apply bg-surface text-[#1b1b1b] font-sans antialiased overflow-x-hidden;
   }
 }
 

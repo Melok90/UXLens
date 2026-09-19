@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Search, ChevronDown, Check, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import ComparisonCard from './ComparisonCard';
 import { ComponentState, ComponentType, ComponentVariant } from '../App';
 
@@ -71,7 +71,7 @@ const translations = {
   "Обеспечивает четкие состояния фокуса для пользователей, использующих только клавиатуру.": "Provides distinct focus states for keyboard-only users.",
   "Избегайте избыточного использования основных кнопок.": "Avoid overusing primary buttons.",
   "Называйте кнопки четкими глаголами действия.": "Label buttons with clear action verbs.",
-  "Используйте критические кнопки with осторожностью.": "Use critical buttons with caution.",
+  "Используйте критические кнопки с осторожностью.": "Use critical buttons with caution.",
   "Оптимизировано для корпоративных приложений с радиусом 6px. Фокус на ясности и визуальном отклике.": "Optimized for enterprise applications with a 6px radius. Focus on clarity and visual feedback.",
   "Динамические эффекты наведения и активации улучшают обратную связь для пользователя.": "Dynamic hover and active effects improve user feedback.",
   "Используйте единый корпоративный стиль.": "Use a unified corporate style.",
@@ -112,7 +112,7 @@ const translations = {
   "Визуальный отклик через смену теней и границ.": "Visual feedback through changing shadows and borders.",
   "Используйте префиксы для контекста.": "Use prefixes for context.",
   "Выделяйте фокус цветом.": "Highlight focus with color.",
-  "Высокий трек (32px) with заметным ползунком. В активном состоянии ползунок может содержать иконку галочки.": "Tall track (32px) with a prominent thumb. Active state may contain a check icon.",
+  "Высокий трек (32px) с заметным ползунком. В активном состоянии ползунок может содержать иконку галочки.": "Tall track (32px) with a prominent thumb. Active state may contain a check icon.",
   "Минимальный размер 48x48dp для области нажатия.": "Minimum 48x48dp touch target.",
   "Используйте для мгновенных настроек.": "Use for instant settings.",
   "Всегда сопровождайте меткой.": "Always accompany with a label.",
@@ -323,6 +323,11 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
   let active = "";
   let focus = "";
   let disabled = "";
+  // Ошибка выглядит по-разному у залитых и контурных кнопок, поэтому классы
+  // задаются парой. Строки литеральные — Tailwind сканирует исходник и не
+  // увидел бы класс, собранный из переменной.
+  let errorFilled = "";
+  let errorOutlined = "";
 
   if (system === "Material Design 3") {
     // defaults
@@ -330,6 +335,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-10 h-10 p-0 shadow-none  " : "px-6 py-3  ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-black/10 !text-black/40 !shadow-none";
     focus = "!ring-2 !ring-accent-blue !ring-offset-2";
+    errorFilled = "!bg-[#B3261E] !text-white !ring-2 !ring-[#B3261E] !ring-offset-2";
+    errorOutlined = "!text-[#B3261E] !border-[#B3261E] !ring-2 !ring-[#B3261E]/30";
     
     if (variant === 'primary' || variant === 'default' || variant === 'icon') {
       base += "bg-accent-blue text-white shadow-md ";
@@ -354,6 +361,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-8 h-8 p-0 " : "px-4 py-2 ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-gray-400 !border-none !text-white !shadow-none";
     focus = "!outline !outline-2 !outline-[#0078D4] !outline-offset-1";
+    errorFilled = "!bg-[#A4262C] !text-white !outline !outline-2 !outline-[#A4262C] !outline-offset-1";
+    errorOutlined = "!text-[#A4262C] !border-[#A4262C] !outline !outline-1 !outline-[#A4262C]";
 
     if (variant === 'primary' || variant === 'default') {
       base += "bg-[#0078D4] text-white ";
@@ -383,6 +392,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-8 h-8 p-0 object-center " : "px-5 py-2 ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-[#ebecf0] !text-[#a5adba] !border-none !shadow-none";
     focus = "!ring-2 !ring-[#4C90FF]";
+    errorFilled = "!bg-[#DE350B] !text-white !ring-2 !ring-[#DE350B] !ring-offset-2";
+    errorOutlined = "!text-[#DE350B] !border-[#DE350B] !ring-2 !ring-[#DE350B]/30";
 
     if (variant === 'primary' || variant === 'default') {
       base += "bg-[#0052CC] text-white ";
@@ -410,6 +421,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-12 h-12 p-0 " : "px-6 py-3 ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-[#c6c6c6] !text-white !shadow-none";
     focus = "!outline !outline-2 !outline-[#0f62fe] !outline-offset-2";
+    errorFilled = "!bg-[#da1e28] !text-white !outline !outline-2 !outline-[#da1e28] !outline-offset-2";
+    errorOutlined = "!text-[#da1e28] !border-[#da1e28] !outline !outline-1 !outline-[#da1e28]";
 
     if (variant === 'primary' || variant === 'default') {
       base += "bg-[#0f62fe] text-white ";
@@ -437,6 +450,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-9 h-9 p-0 " : "px-6 py-2 ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-gray-100 !border-gray-200 !text-gray-500 !shadow-none";
     focus = "!ring-2 !ring-[#008060] !ring-offset-2";
+    errorFilled = "!bg-[#E32929] !text-white !border-transparent !ring-2 !ring-[#E32929] !ring-offset-2";
+    errorOutlined = "!text-[#E32929] !border-[#E32929] !ring-2 !ring-[#E32929]/30";
 
     if (variant === 'primary' || variant === 'default') {
       base += "bg-[#008060] border-transparent text-white ";
@@ -464,6 +479,8 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     base += variant === 'icon' ? "w-8 h-8 p-0 " : "px-6 py-2 ";
     disabled = "!opacity-50 !cursor-not-allowed !bg-gray-200 !text-[#00000040] !border-gray-300 !shadow-none";
     focus = "!ring-4 !ring-[#1677ff]/30";
+    errorFilled = "!bg-[#ff4d4f] !text-white !border-transparent !ring-4 !ring-[#ff4d4f]/30";
+    errorOutlined = "!text-[#ff4d4f] !border-[#ff4d4f] !ring-4 !ring-[#ff4d4f]/20";
 
     if (variant === 'primary' || variant === 'default') {
       base += "bg-[#1677ff] border border-transparent text-white ";
@@ -489,8 +506,11 @@ function renderButton(system: string, variant: ComponentVariant, state: Componen
     }
   }
 
+  const isOutlined = variant === 'secondary' || variant === 'tertiary';
+  const error = isOutlined ? errorOutlined : errorFilled;
+
   return (
-    <button className={getInputStateClasses(state, base, hover, active, focus, disabled, "")} disabled={isDisabled}>
+    <button className={getInputStateClasses(state, base, hover, active, focus, disabled, error)} disabled={isDisabled}>
       {content}
     </button>
   );
@@ -645,12 +665,18 @@ function renderTag(system: string, state: ComponentState, tText: (key: string) =
 }
 
 import { useStore } from '../store/useStore';
+import { COMPONENT_LABEL_KEYS, COMPONENT_MATRIX, COMPONENT_TYPES } from '../utils/stateMatrix';
+import { SYSTEM_LOGOS } from '../utils/systemIcons';
 
 export default function ComparisonGrid() {
   const activeComponent = useStore(state => state.activeComponent);
   const activeState = useStore(state => state.activeState);
   const activeVariant = useStore(state => state.activeVariant);
   const searchQuery = useStore(state => state.searchQuery);
+  const setActiveComponent = useStore(state => state.setActiveComponent);
+  const setActiveState = useStore(state => state.setActiveState);
+  const setActiveVariant = useStore(state => state.setActiveVariant);
+  const setSearchQuery = useStore(state => state.setSearchQuery);
   const { t, language } = useLanguage();
   const tText = (ruText: string) => language === 'en' ? (translations[ruText as keyof typeof translations] || ruText) : ruText;
   const [selectedDay, setSelectedDay] = useState<number>(18);
@@ -658,6 +684,10 @@ export default function ComparisonGrid() {
   const [rangeStart, setRangeStart] = useState<number>(17);
   const [rangeEnd, setRangeEnd] = useState<number>(24);
   const [openSystem, setOpenSystem] = useState<string | null>(null);
+  // Один переключатель на все карточки: раньше «Подробнее» разворачивал
+  // текст независимо в каждой карточке, и сетка визуально разъезжалась —
+  // строки становились разной высоты, сравнивать шесть систем было неудобно.
+  const [detailsOpen, setDetailsOpen] = useState(false);
 
   useEffect(() => {
     const handleClick = () => setOpenSystem(null);
@@ -671,47 +701,9 @@ export default function ComparisonGrid() {
     setOpenSystem(openSystem === title ? null : title);
   };
 
-  // SVG Logos for Design Systems
+  // Логотипы систем — общий модуль, используется также в CompareTable и SystemsPage.
   const logos = {
-    material: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5">
-        <path d="M12 2L2 19.74h20L12 2z" fill="#4285F4" />
-        <circle cx="12" cy="14" r="4" fill="#EA4335" />
-        <rect x="9" y="10" width="6" height="6" fill="#FBBC05" />
-      </svg>
-    ),
-    fluent: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5">
-        <rect x="2" y="2" width="9" height="9" fill="#F25022" />
-        <rect x="13" y="2" width="9" height="9" fill="#7FBA00" />
-        <rect x="2" y="13" width="9" height="9" fill="#00A4EF" />
-        <rect x="13" y="13" width="9" height="9" fill="#FFB900" />
-      </svg>
-    ),
-    atlassian: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#0052CC">
-        <path d="M22.5 12c0-5.8-4.7-10.5-10.5-10.5S1.5 6.2 1.5 12 6.2 22.5 12 22.5 22.5 17.8 22.5 12zm-12.7 5.2l-2.1-4.2 2.1-4.2h4.2l2.1 4.2-2.1 4.2h-4.2z" />
-      </svg>
-    ),
-    carbon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#0F62FE">
-        <path d="M20 12c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-14 0c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" />
-        <rect x="10" y="8" width="4" height="2" />
-        <rect x="10" y="11" width="4" height="2" />
-        <rect x="10" y="14" width="4" height="2" />
-      </svg>
-    ),
-    polaris: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5" fill="#008060">
-        <path d="M19 6h-2c0-2.8-2.2-5-5-5S7 3.2 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.7 0 3 1.3 3 3H9c0-1.7 1.3-3 3-3zm7 17H5V8h2v2c0 .6.4 1 1 1s1-.4 1-1V8h6v2c0 .6.4 1 1 1s1-.4 1-1V8h2v12z" />
-      </svg>
-    ),
-    ant: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5">
-        <path d="M12 2l10 5.8v11.5L12 22 2 19.3V7.8L12 2zm0 3.5L5.5 8.7v6.6l6.5 3.3 6.5-3.3V8.7L12 5.5z" fill="#1677FF" />
-        <path d="M12 8l4 2.3v4.6L12 17l-4-2.3v-4.6L12 8z" fill="#FF4D4F" />
-      </svg>
-    )
+    ...SYSTEM_LOGOS
   };
 
   const buttonCards: CardData[] = [
@@ -787,7 +779,7 @@ export default function ComparisonGrid() {
       bestPractices: [
         "Избегайте избыточного использования основных кнопок.",
         "Называйте кнопки четкими глаголами действия.",
-        "Используйте критические кнопки with осторожностью."
+        "Используйте критические кнопки с осторожностью."
       ]
     },
     {
@@ -815,8 +807,8 @@ export default function ComparisonGrid() {
       previewContent: (
         <div className="w-full max-w-[240px] flex flex-col gap-1 text-left group">
           <div className={getInputStateClasses(activeState, "px-4 py-3 rounded-t-[4px] transition-all border-b border-[#49454F] bg-[#E7E0EC]", "bg-[#EBE4EF] border-[#1D1B20]", "", "bg-[#E7E0EC] border-[#6750A4] border-b-2", "opacity-50 border-[#1D1B20]/12 bg-[#E7E0EC] cursor-not-allowed", "border-[#B3261E] bg-[var(--md-sys-color-error-container)]")}>
-            <span className="text-[12px] block transition-colors text-[#49454F] group-focus-within:text-[#6750A4]">Метка</span>
-            <input className="bg-transparent border-none outline-none w-full text-[#1D1B20] placeholder:text-[#49454F]" defaultValue="Введите текст" disabled={activeState === "disabled"} />
+            <span className="text-[12px] block transition-colors text-[#49454F] group-focus-within:text-[#6750A4]">{tText('Метка')}</span>
+            <input className="bg-transparent border-none outline-none w-full text-[#1D1B20] placeholder:text-[#49454F]" defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"} />
           </div>
         </div>
       ),
@@ -836,13 +828,23 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="relative w-full max-w-[240px] text-left">
-          <input 
-            className="w-full px-3 py-1.5 rounded-[2px] outline-none transition-all border border-[#605E5C] hover:border-[#323130] focus:border-[#0078D4] focus:ring-1 focus:ring-[#0078D4]"
-            defaultValue="Введите текст"
+          <input
+            className={getInputStateClasses(
+              activeState,
+              "w-full px-3 py-1.5 rounded-[2px] outline-none transition-all border border-[#605E5C] hover:border-[#323130] focus:border-[#0078D4] focus:ring-1 focus:ring-[#0078D4]",
+              "border-[#323130]",
+              "",
+              "border-[#0078D4] ring-1 ring-[#0078D4]",
+              "opacity-50 cursor-not-allowed bg-[#f3f2f1] text-[#a19f9d]",
+              "border-[#A4262C] ring-1 ring-[#A4262C]"
+            )}
+            defaultValue={tText('Введите текст')}
+            key={language}
+            disabled={activeState === "disabled"}
           />
         </div>
       ),
-      codeContent: `<Input placeholder={tText('Введите текст')} />`,
+      codeContent: `<Input placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Outline-стиль",
       logicDescription: "Тонкая рамка 1px с небольшим скруглением. В состоянии фокуса рамка становится толще.",
       accessibilityText: "Индикатор фокуса должен соответствовать системным настройкам контрастности.",
@@ -858,10 +860,10 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[3px] transition-all outline-none bg-[#F4F5F7] border-2 border-transparent", "bg-[#EBECF0]", "", "bg-white border-[#4C90FF]", "opacity-50 cursor-not-allowed bg-[#F4F5F7]", "border-[#DE350B] bg-white")} defaultValue="Введите текст" disabled={activeState === "disabled"}/>
+          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[3px] transition-all outline-none bg-[#F4F5F7] border-2 border-transparent", "bg-[#EBECF0]", "", "bg-white border-[#4C90FF]", "opacity-50 cursor-not-allowed bg-[#F4F5F7]", "border-[#DE350B] bg-white")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
         </div>
       ),
-      codeContent: `<Textfield placeholder={tText('Введите текст')} />`,
+      codeContent: `<Textfield placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Грей-фон",
       logicDescription: "По умолчанию фон серый без границ. При фокусе фон меняется на белый и появляется обводка.",
       accessibilityText: "Свяжите метку с полем через ID для корректной работы скринридеров.",
@@ -877,7 +879,7 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-4 py-3 rounded-none transition-all outline-none bg-[#f4f4f4] border-b border-[#8D8D8D]", "bg-[#E5E5E5]", "", "outline outline-2 outline-[#0F62FE] outline-offset-[-2px] border-b-[#0F62FE]", "opacity-50 cursor-not-allowed border-transparent text-[#c6c6c6]", "outline outline-2 outline-[#da1e28] outline-offset-[-2px] border-b-[#da1e28]")} defaultValue="Введите текст" disabled={activeState === "disabled"}/>
+          <input className={getInputStateClasses(activeState, "w-full px-4 py-3 rounded-none transition-all outline-none bg-[#f4f4f4] border-b border-[#8D8D8D]", "bg-[#E5E5E5]", "", "outline outline-2 outline-[#0F62FE] outline-offset-[-2px] border-b-[#0F62FE]", "opacity-50 cursor-not-allowed border-transparent text-[#c6c6c6]", "outline outline-2 outline-[#da1e28] outline-offset-[-2px] border-b-[#da1e28]")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
         </div>
       ),
       codeContent: `<TextInput labelText="Метка" />`,
@@ -896,7 +898,7 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[8px] shadow-sm transition-all outline-none border border-[#8C9196]", "border-[#5C5F62]", "", "border-[#008060] ring-2 ring-[#008060]/[0.2]", "opacity-50 cursor-not-allowed bg-[#f4f6f8]", "border-[#d82c0d] ring-2 ring-[#d82c0d]/20 bg-[#fff4f4]")} defaultValue="Введите текст" disabled={activeState === "disabled"}/>
+          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[8px] shadow-sm transition-all outline-none border border-[#8C9196]", "border-[#5C5F62]", "", "border-[#008060] ring-2 ring-[#008060]/[0.2]", "opacity-50 cursor-not-allowed bg-[#f4f6f8]", "border-[#d82c0d] ring-2 ring-[#d82c0d]/20 bg-[#fff4f4]")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
         </div>
       ),
       codeContent: `<TextField label="Метка" />`,
@@ -915,10 +917,10 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[6px] transition-all outline-none border border-[#D9D9D9]", "border-[#4096FF]", "", "border-[#1677FF] ring-4 ring-[#1677FF]/[0.1]", "opacity-50 cursor-not-allowed bg-[#f5f5f5] text-[#00000040]", "border-[#ff4d4f] ring-4 ring-[#ff4d4f]/10")} defaultValue="Введите текст" disabled={activeState === "disabled"}/>
+          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[6px] transition-all outline-none border border-[#D9D9D9]", "border-[#4096FF]", "", "border-[#1677FF] ring-4 ring-[#1677FF]/[0.1]", "opacity-50 cursor-not-allowed bg-[#f5f5f5] text-[#00000040]", "border-[#ff4d4f] ring-4 ring-[#ff4d4f]/10")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
         </div>
       ),
-      codeContent: `<Input placeholder={tText('Введите текст')} />`,
+      codeContent: `<Input placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Корпоративный баланс",
       logicDescription: "Классический сбалансированный дизайн с радиусом 6px.",
       accessibilityText: "Визуальный отклик через смену теней и границ.",
@@ -942,7 +944,7 @@ export default function ComparisonGrid() {
       ),
       codeContent: `<Switch\n  selected\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "M3 Switch",
-      logicDescription: "Высокий трек (32px) with заметным ползунком. В активном состоянии ползунок может содержать иконку галочки.",
+      logicDescription: "Высокий трек (32px) с заметным ползунком. В активном состоянии ползунок может содержать иконку галочки.",
       accessibilityText: "Минимальный размер 48x48dp для области нажатия.",
       bestPractices: [
         "Используйте для мгновенных настроек.",
@@ -1379,7 +1381,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">{selectedDay} мая 2026</span>
             <Calendar className="w-4 h-4 text-[#49454F]" />
           </div>
-          {(openSystem === "Material Design 3 DP" || activeState === 'focus') && (
+          {(openSystem === "Material Design 3 DP" || activeState === 'focus' || activeState === 'open') && (
             <div className="absolute z-10 w-[280px] mt-2 bg-[#F7F2FA] shadow-xl rounded-2xl p-4 border border-[#cfc4c5]" onClick={e => e.stopPropagation()}>
                <div className="flex justify-between items-center mb-4">
                   <span className="font-semibold text-sm">Май 2026</span>
@@ -1444,7 +1446,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">{rangeStart}.05 - {rangeEnd}.05.2026</span>
             <Calendar className="w-4 h-4" />
           </div>
-          {(openSystem === "Fluent UI DP" || activeState === 'focus') && (
+          {(openSystem === "Fluent UI DP" || activeState === 'focus' || activeState === 'open') && (
              <div className="absolute z-10 w-[300px] mt-1 bg-white border border-[#cfc4c5] shadow-lg p-3" onClick={e => e.stopPropagation()}>
                 <div className="flex gap-4">
                    <div className="flex-1">
@@ -1520,7 +1522,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">May {selectedDay}, 2026</span>
             <Calendar className="w-4 h-4 text-gray-500" />
           </div>
-          {(openSystem === "Atlassian DP" || activeState === 'focus') && (
+          {(openSystem === "Atlassian DP" || activeState === 'focus' || activeState === 'open') && (
              <div className="absolute z-10 w-[280px] mt-1 bg-white shadow-2xl border border-[#cfc4c5] rounded-sm overflow-hidden" onClick={e => e.stopPropagation()}>
                 <div className="p-4">
                    <div className="grid grid-cols-7 gap-1 text-[11px] text-center">
@@ -1571,7 +1573,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">{selectedDay}/05/2026</span>
             <Calendar className="w-4 h-4" />
           </div>
-          {(openSystem === "IBM Carbon DP" || activeState === 'focus') && (
+          {(openSystem === "IBM Carbon DP" || activeState === 'focus' || activeState === 'open') && (
              <div className="absolute z-10 w-[240px] mt-px bg-[#f4f4f4] shadow-md border-t border-gray-200" onClick={e => e.stopPropagation()}>
                 <div className="grid grid-cols-7 gap-0 text-center">
                    {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d} className="p-2 text-[10px] font-bold border-b border-gray-200">{d}</div>)}
@@ -1620,7 +1622,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">May {selectedDay}, 2026</span>
             <Calendar className="w-4 h-4 text-gray-400" />
           </div>
-          {(openSystem === "Shopify Polaris DP" || activeState === 'focus') && (
+          {(openSystem === "Shopify Polaris DP" || activeState === 'focus' || activeState === 'open') && (
              <div className="absolute z-10 w-[260px] mt-2 bg-white shadow-2xl border border-gray-200 rounded-xl overflow-hidden p-4" onClick={e => e.stopPropagation()}>
                 <div className="flex flex-col gap-4">
                    <div className="flex justify-between items-center">
@@ -1678,7 +1680,7 @@ export default function ComparisonGrid() {
             <span className="text-sm">2026-05-{selectedDay.toString().padStart(2, '0')}</span>
             <Calendar className="w-4 h-4 text-gray-300" />
           </div>
-          {(openSystem === "Ant Design DP" || activeState === 'focus') && (
+          {(openSystem === "Ant Design DP" || activeState === 'focus' || activeState === 'open') && (
              <div className="absolute z-10 min-w-[280px] mt-1 bg-white border border-[#D9D9D9] shadow-xl rounded-md overflow-hidden p-2" onClick={e => e.stopPropagation()}>
                 <div className="flex border-b border-gray-100 pb-2 mb-2 justify-between items-center px-2">
                    <ChevronLeft className="w-4 h-4 text-gray-400 cursor-pointer hover:text-blue-500" />
@@ -1863,7 +1865,7 @@ export default function ComparisonGrid() {
       icon: logos.carbon,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white border-t-4 ${activeVariant === 'alert' || activeState === 'default' ? 'border-[#da1e28]' : 'border-[#0f62fe]'} w-full max-w-[280px] shadow-lg flex flex-col transform transition-all `}>
+        <div className={`bg-white border-t-4 ${activeVariant === 'alert' ? 'border-[#da1e28]' : 'border-[#0f62fe]'} w-full max-w-[280px] shadow-lg flex flex-col transform transition-all `}>
           {activeVariant === 'transactional' ? (
             <>
                <div className="p-4 flex-1">
@@ -1902,7 +1904,7 @@ export default function ComparisonGrid() {
           )}
         </div>
       ),
-      codeContent: `<Modal ${activeVariant === 'alert' || activeState === 'default' ? 'danger' : ''}>\n  <p>${activeVariant === 'transactional' ? 'Новый ресурс' : activeVariant === 'acknowledgment' ? 'Сервис добавлен' : 'Удаление сервиса'}</p>\n</Modal>`,
+      codeContent: `<Modal ${activeVariant === 'alert' ? 'danger' : ''}>\n  <p>${activeVariant === 'transactional' ? 'Новый ресурс' : activeVariant === 'acknowledgment' ? 'Сервис добавлен' : 'Удаление сервиса'}</p>\n</Modal>`,
       logicTitle: "Четкая сетка и 50% Actions",
       logicDescription: "Использует полную ширину для кнопок в нижней части окна. В Carbon кнопки действий занимают по 50% ширины, Primary всегда справа. Деструктивный модал имеет красную рамку или цвет.",
       accessibilityText: "Автоматически ловит фокус (Focus trap active).",
@@ -2012,7 +2014,7 @@ export default function ComparisonGrid() {
           )}
         </div>
       ),
-      codeContent: `Modal.${activeVariant === 'alert' || activeState === 'default' ? 'confirm' : activeVariant === 'acknowledgment' ? 'success' : 'info'}({\n  title: '${activeVariant === 'transactional' ? 'Отправить приглашение' : activeVariant === 'acknowledgment' ? 'Операция успешна' : 'Удалить эту задачу?'}'\n});`,
+      codeContent: `Modal.${activeVariant === 'alert' ? 'confirm' : activeVariant === 'acknowledgment' ? 'success' : 'info'}({\n  title: '${activeVariant === 'transactional' ? 'Отправить приглашение' : activeVariant === 'acknowledgment' ? 'Операция успешна' : 'Удалить эту задачу?'}'\n});`,
       logicTitle: "Быстрые диалоги Modal.confirm",
       logicDescription: "Часто используется функция подтверждения с иконкой вопроса или предупреждения. Кнопки находятся справа, OK (или Удалить) — primary aктивная.",
       accessibilityText: "Анти-scrolling на body. Backdrop click можно конфигурировать (маскировка). В destructive - часто maskClosable: false.",
@@ -2220,33 +2222,89 @@ export default function ComparisonGrid() {
     activeComponent === 'datepicker' ? datepickerCards : 
     activeComponent === 'modal' ? modalCards : [];
 
-  const filteredCards = allCards.filter(card => 
-    card.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const query = searchQuery.trim().toLowerCase();
+
+  const componentMatchesQuery = (type: ComponentType) =>
+    type.includes(query) || t(COMPONENT_LABEL_KEYS[type]).toLowerCase().includes(query);
+
+  // Запрос вида «button» описывает не систему, а компонент: показываем все
+  // карточки, а не пустой экран.
+  const queryTargetsActiveComponent = query.length > 0 && componentMatchesQuery(activeComponent);
+
+  const filteredCards = queryTargetsActiveComponent
+    ? allCards
+    : allCards.filter(card => card.title.toLowerCase().includes(query));
+
+  // Запрос описывает другой компонент — предлагаем переключиться вместо тупика.
+  const suggestedComponent =
+    query.length > 0 && filteredCards.length === 0
+      ? COMPONENT_TYPES.find(componentMatchesQuery)
+      : undefined;
+
+  const tokensFor = (systemTitle: string) =>
+    getDesignTokens(systemTitle, activeComponent, activeVariant, activeState);
 
   return (
-    <section className="flex flex-col gap-8">
+    <section className="flex flex-col gap-8 min-w-0">
       {filteredCards.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredCards.map((card, index) => (
-            <ComparisonCard 
-              key={index}
-              title={card.title}
-              icon={card.icon}
-              previewType={card.previewType}
-              previewContent={card.previewContent}
-              codeContent={card.codeContent}
-              logicTitle={card.logicTitle}
-              logicDescription={card.logicDescription}
-              accessibilityText={card.accessibilityText}
-              bestPractices={card.bestPractices}
-              designTokens={getDesignTokens(card.title, activeComponent as ComponentType, activeVariant as ComponentVariant, activeState as ComponentState)}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex justify-end">
+            <button
+              onClick={() => setDetailsOpen(o => !o)}
+              className="flex items-center gap-1 text-sm font-medium text-accent-blue hover:underline"
+            >
+              {detailsOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              {detailsOpen ? t('grid.hideAllDetails') : t('grid.showAllDetails')}
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredCards.map((card) => (
+              <ComparisonCard
+                key={card.title}
+                title={card.title}
+                icon={card.icon}
+                previewType={card.previewType}
+                previewContent={card.previewContent}
+                codeContent={card.codeContent}
+                logicTitle={tText(card.logicTitle)}
+                logicDescription={tText(card.logicDescription)}
+                accessibilityText={tText(card.accessibilityText)}
+                bestPractices={card.bestPractices.map(tText)}
+                designTokens={tokensFor(card.title)}
+                detailsOpen={detailsOpen}
+                onToggleDetails={() => setDetailsOpen(o => !o)}
+              />
+            ))}
+          </div>
+        </>
       ) : (
-        <div className="py-20 text-center text-gray-500 border-2 border-dashed border-gray-200 rounded-xl">
-          Дизайн-система "{searchQuery}" не найдена
+        <div className="py-16 px-6 text-center border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center gap-4">
+          <p className="text-gray-500">
+            {t('grid.notfound')} «{searchQuery}»
+          </p>
+
+          {suggestedComponent && (
+            <button
+              onClick={() => {
+                const spec = COMPONENT_MATRIX[suggestedComponent];
+                setActiveComponent(suggestedComponent);
+                setActiveVariant(spec.defaultVariant);
+                setActiveState(spec.defaultState);
+                setSearchQuery('');
+              }}
+              className="px-4 py-2 rounded-full bg-black text-white text-sm font-medium hover:bg-interactive-charcoal transition-colors"
+            >
+              {t('grid.showComponent')} {t(COMPONENT_LABEL_KEYS[suggestedComponent])}
+            </button>
+          )}
+
+          <button
+            onClick={() => setSearchQuery('')}
+            className="text-sm font-medium text-accent-blue hover:underline"
+          >
+            {t('grid.resetSearch')}
+          </button>
         </div>
       )}
     </section>

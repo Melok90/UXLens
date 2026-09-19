@@ -1,11 +1,21 @@
+import React, { ReactNode } from 'react';
 import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
 import CustomSelect from './CustomSelect';
+import {
+  COMPONENT_LABEL_KEYS,
+  COMPONENT_MATRIX,
+  COMPONENT_TYPES,
+  STATE_LABEL_KEYS,
+  VARIANT_LABEL_KEYS,
+  statesFor,
+  variantsFor,
+} from '../utils/stateMatrix';
 
 export default function Filters() {
   const { t } = useLanguage();
-  
+
   const activeComponent = useStore(state => state.activeComponent);
   const activeState = useStore(state => state.activeState);
   const activeVariant = useStore(state => state.activeVariant);
@@ -14,170 +24,94 @@ export default function Filters() {
   const setActiveVariant = useStore(state => state.setActiveVariant);
 
   const onComponentChange = (type: ComponentType) => {
+    const spec = COMPONENT_MATRIX[type];
     setActiveComponent(type);
-    if (type === 'modal') {
-      setActiveVariant('alert');
-      setActiveState('open');
-    } else if (type === 'button') {
-      setActiveVariant('primary');
-      setActiveState('default');
-    } else {
-      setActiveVariant('default');
-      setActiveState('default');
-    }
+    setActiveVariant(spec.defaultVariant);
+    setActiveState(spec.defaultState);
   };
 
-  const onStateChange = setActiveState;
-  const onVariantChange = setActiveVariant;
+  const variantOptions = variantsFor(activeComponent).map(variant => ({
+    value: variant,
+    label: t(VARIANT_LABEL_KEYS[variant]),
+  }));
 
-  let variantOptions: {value: string; label: string}[] = [];
-  if (activeComponent === 'button') {
-    variantOptions = [
-      { value: 'primary', label: t('filters.button.primary') },
-      { value: 'secondary', label: t('filters.button.secondary') },
-      { value: 'tertiary', label: t('filters.button.tertiary') },
-      { value: 'destructive', label: t('filters.button.destructive') },
-      { value: 'icon', label: t('filters.button.icon') }
-    ];
-  } else if (activeComponent === 'modal') {
-     variantOptions = [
-      { value: 'alert', label: t('filters.modal.alert') },
-      { value: 'transactional', label: t('filters.modal.transactional') },
-      { value: 'acknowledgment', label: t('filters.modal.acknowledgment') }
-    ];
-  }
-
-  const stateOptions = [{ value: 'default', label: t('filters.state.default') }];
-  if (activeComponent !== 'select') stateOptions.push({ value: 'hover', label: t('filters.state.hover') });
-  stateOptions.push({ value: 'focus', label: t('filters.state.focus') });
-  if (activeComponent === 'select') stateOptions.push({ value: 'open', label: t('filters.state.open') });
-  stateOptions.push({ value: 'disabled', label: t('filters.state.disabled') });
-  if (activeComponent === 'button') stateOptions.push({ value: 'loading', label: t('filters.state.loading') });
-  if (activeComponent !== 'switch' && activeComponent !== 'select' && activeComponent !== 'datepicker' && activeComponent !== 'tag') {
-    stateOptions.push({ value: 'error', label: t('filters.state.error') });
-  }
+  const stateOptions = statesFor(activeComponent).map(state => ({
+    value: state,
+    label: t(STATE_LABEL_KEYS[state]),
+  }));
 
   return (
-    <section className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium text-[#4c4546] mr-2">{t('filters.component')}</span>
-        <FilterButton 
-          label={t('filters.button')} 
-          active={activeComponent === 'button'} 
-          onClick={() => onComponentChange('button')}
-        />
-        <FilterButton 
-          label={t('filters.input')} 
-          active={activeComponent === 'input'} 
-          onClick={() => onComponentChange('input')}
-        />
-        <FilterButton 
-          label={t('filters.switch')} 
-          active={activeComponent === 'switch'} 
-          onClick={() => onComponentChange('switch')}
-        />
-        <FilterButton 
-          label={t('filters.select')} 
-          active={activeComponent === 'select'} 
-          onClick={() => onComponentChange('select')}
-        />
-        <FilterButton 
-          label={t('filters.datepicker')} 
-          active={activeComponent === 'datepicker'} 
-          onClick={() => onComponentChange('datepicker')}
-        />
-        <FilterButton 
-          label={t('filters.modal')} 
-          active={activeComponent === 'modal'} 
-          onClick={() => onComponentChange('modal')}
-        />
-        <FilterButton 
-          label={t('filters.radio')} 
-          active={activeComponent === 'radio'} 
-          onClick={() => onComponentChange('radio')}
-        />
-        <FilterButton 
-          label={t('filters.tag')} 
-          active={activeComponent === 'tag'} 
-          onClick={() => onComponentChange('tag')}
-        />
+    <section className="flex flex-col bg-white border border-[#cfc4c5] rounded-2xl overflow-visible">
+      {/* Компонент — чипы: сразу видно все 8 вариантов, один клик вместо
+          «открыть список → найти → выбрать». Тип/Состояние остаются
+          дропдаунами — там варианты меняются от компонента к компоненту, и
+          читать длинный список каждый раз было бы избыточно. */}
+      <div className="flex flex-col gap-2 px-4 py-3 border-b border-[#eeeeee]">
+        <span className="text-sm text-[#5d5f5f]">{t('filters.component').replace(/:$/, '')}</span>
+        <div className="flex flex-wrap gap-1.5">
+          {COMPONENT_TYPES.map(type => (
+            <ComponentChip
+              key={type}
+              label={t(COMPONENT_LABEL_KEYS[type])}
+              active={activeComponent === type}
+              onClick={() => onComponentChange(type)}
+            />
+          ))}
+        </div>
       </div>
 
-      {(activeComponent === 'button' || activeComponent === 'modal') && (
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-[#4c4546] mr-2">
-            {t('filters.type')}
-          </span>
-          <CustomSelect 
-             value={activeVariant}
-             onChange={(val) => onVariantChange(val as any)}
-             options={variantOptions}
-             className="min-w-[150px]"
-           />
-        </div>
+      {variantOptions.length > 0 && (
+        <FilterRow label={t('filters.type')}>
+          <CustomSelect
+            value={activeVariant}
+            onChange={(val) => setActiveVariant(val as ComponentVariant)}
+            options={variantOptions}
+          />
+        </FilterRow>
       )}
 
-      {activeComponent !== 'modal' && (
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-[#4c4546] mr-2">
-            {t('filters.state')}
-          </span>
-          <CustomSelect 
-             value={activeState}
-             onChange={(val) => onStateChange(val as any)}
-             options={stateOptions}
-             className="min-w-[150px]"
-           />
-        </div>
+      {stateOptions.length > 0 && (
+        <FilterRow label={t('filters.state')} last>
+          <CustomSelect
+            value={activeState}
+            onChange={(val) => setActiveState(val as ComponentState)}
+            options={stateOptions}
+          />
+        </FilterRow>
       )}
     </section>
   );
 }
 
-interface FilterButtonProps {
-  label: string;
-  active?: boolean;
-  variant?: 'default' | 'ghost' | 'error';
-  onClick?: () => void;
-}
-
-function FilterButton({ label, active = false, variant = 'default', onClick }: FilterButtonProps) {
-  if (variant === 'error') {
-    return (
-      <button 
-        onClick={onClick}
-        className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer text-sm font-medium ${
-          active 
-            ? 'border-[#ba1a1a] bg-[#ba1a1a] text-white' 
-            : 'border-transparent text-[#ba1a1a] hover:bg-red-50'
-        }`}
-      >
-        {label}
-      </button>
-    );
-  }
-
-  if (active) {
-    return (
-      <button 
-        onClick={onClick}
-        className="px-4 py-1.5 rounded-full border border-black bg-black text-white font-medium text-sm transition-all"
-      >
-        {label}
-      </button>
-    );
-  }
-
+const ComponentChip: React.FC<{ label: string; active: boolean; onClick: () => void }> = ({ label, active, onClick }) => {
   return (
-    <button 
+    <button
       onClick={onClick}
-      className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer font-medium text-sm ${
-        variant === 'ghost' 
-          ? 'border-transparent text-[#5d5f5f] hover:text-black hover:bg-surface-container-low' 
+      className={`px-2.5 py-1 rounded-full border text-xs font-medium transition-colors cursor-pointer ${
+        active
+          ? 'border-black bg-black text-white'
           : 'border-[#cfc4c5] bg-white text-black hover:bg-surface-container-low'
       }`}
     >
       {label}
     </button>
+  );
+};
+
+// items-start в колоночном (мобильном) режиме — иначе flex растягивает
+// дропдаун на всю ширину строки по умолчанию (align-items: stretch).
+// На sm+ строка становится горизонтальной, а дропдаун остаётся компактным
+// по содержимому — не флекс-элемент с grow, просто justify-between
+// разводит подпись и селект по краям.
+function FilterRow({ label, children, last = false }: { label: string; children: ReactNode; last?: boolean }) {
+  return (
+    <div
+      className={`flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 px-4 py-3 ${
+        last ? '' : 'border-b border-[#eeeeee]'
+      }`}
+    >
+      <span className="text-sm text-[#5d5f5f] shrink-0">{label.replace(/:$/, '')}</span>
+      {children}
+    </div>
   );
 }
