@@ -4,9 +4,9 @@ export default function Footer() {
   const { t } = useLanguage();
 
   return (
-    <footer className="bg-surface border-t border-[#cfc4c5] mt-auto">
+    <footer className="bg-surface dark:bg-[#0e0e10] border-t border-[#cfc4c5] dark:border-neutral-800 mt-auto transition-colors">
       <div className="flex flex-col md:flex-row justify-between items-center w-full px-4 md:px-10 py-10 max-w-[1280px] mx-auto">
-        <p className="text-sm text-black mb-4 md:mb-0">
+        <p className="text-sm text-black dark:text-white mb-4 md:mb-0">
           {t('footer.rights')}
         </p>
         <nav className="flex items-center gap-6">
@@ -21,7 +21,7 @@ export default function Footer() {
 
 function FooterLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className="text-sm text-[#A1A1A1] hover:text-black hover:underline transition-all">
+    <a href={href} className="text-sm text-[#A1A1A1] dark:text-neutral-400 hover:text-black dark:hover:text-white hover:underline transition-all">
       {label}
     </a>
   );

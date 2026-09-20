@@ -134,8 +134,8 @@ export default function SystemsPage() {
       className="flex flex-col gap-8 max-w-[1280px] mx-auto w-full"
     >
       <div className="flex flex-col gap-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-black tracking-tight">{t('systems.title')}</h1>
-        <p className="text-base md:text-lg text-[#5d5f5f] max-w-2xl leading-relaxed">
+        <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white tracking-tight">{t('systems.title')}</h1>
+        <p className="text-base md:text-lg text-[#5d5f5f] dark:text-neutral-400 max-w-2xl leading-relaxed">
           {t('systems.description')}
         </p>
       </div>
@@ -146,17 +146,17 @@ export default function SystemsPage() {
             key={system.name}
             whileHover={{ y: -4 }}
             transition={{ duration: 0.2 }}
-            className="bg-white border border-[#cfc4c5] p-6 rounded-xl hover:shadow-lg transition-all flex flex-col gap-5 group"
+            className="bg-white dark:bg-[#18181c] border border-[#cfc4c5] dark:border-neutral-800 p-6 rounded-xl hover:shadow-lg transition-all flex flex-col gap-5 group"
           >
             <div className="flex items-center justify-between">
-              <div className="p-2.5 bg-surface-container-low rounded-lg group-hover:scale-105 transition-transform">
+              <div className="p-2.5 bg-surface-container-low dark:bg-neutral-800 rounded-lg group-hover:scale-105 transition-transform">
                 {system.logo}
               </div>
               <a 
                 href={system.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-2 hover:bg-surface-container-low rounded-full transition-colors text-[#5d5f5f] hover:text-black"
+                className="p-2 hover:bg-surface-container-low dark:hover:bg-neutral-800 rounded-full transition-colors text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white"
                 title={t('systems.gotodocs')}
               >
                 <ExternalLink className="w-4 h-4" />
@@ -165,12 +165,12 @@ export default function SystemsPage() {
 
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-lg font-bold text-black">{system.name}</h3>
-                <span className="text-xs font-medium px-2 py-0.5 bg-surface-container-low border border-[#cfc4c5] rounded-full text-[#5d5f5f]">
+                <h3 className="text-lg font-bold text-black dark:text-white">{system.name}</h3>
+                <span className="text-xs font-medium px-2 py-0.5 bg-surface-container-low dark:bg-neutral-800 border border-[#cfc4c5] dark:border-neutral-700 rounded-full text-[#5d5f5f] dark:text-neutral-300">
                   {system.creator}
                 </span>
               </div>
-              <p className="text-sm text-[#5d5f5f] leading-relaxed line-clamp-3">
+              <p className="text-sm text-[#5d5f5f] dark:text-neutral-400 leading-relaxed line-clamp-3">
                 {t(`systems.${system.id}.desc`)}
               </p>
             </div>
@@ -180,14 +180,14 @@ export default function SystemsPage() {
               {system.platforms.map((plat) => (
                 <span
                   key={plat}
-                  className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-[#f3f4f4] text-[#4c4546]"
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-[#f3f4f4] dark:bg-neutral-800 text-[#4c4546] dark:text-neutral-300"
                 >
                   {plat}
                 </span>
               ))}
             </div>
 
-            <div className="mt-auto pt-4 border-t border-[#eeeeee] flex items-center justify-between">
+            <div className="mt-auto pt-4 border-t border-[#eeeeee] dark:border-neutral-800 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <a 
                   href={system.link}
@@ -203,7 +203,7 @@ export default function SystemsPage() {
                     href={system.figmaLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-medium text-[#5d5f5f] hover:text-black hover:underline flex items-center gap-1"
+                    className="text-xs font-medium text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white hover:underline flex items-center gap-1"
                   >
                     <Figma className="w-3 h-3" /> {t('systems.figma')}
                   </a>
@@ -215,7 +215,7 @@ export default function SystemsPage() {
                   className="w-2 h-2 rounded-full" 
                   style={{ backgroundColor: system.color }} 
                 />
-                <span className="text-[9px] uppercase tracking-wider font-bold text-[#5d5f5f]">
+                <span className="text-[9px] uppercase tracking-wider font-bold text-[#5d5f5f] dark:text-neutral-400">
                   Design System
                 </span>
               </div>

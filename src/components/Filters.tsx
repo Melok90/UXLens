@@ -42,7 +42,9 @@ export default function Filters() {
   return (
     <section className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-medium text-[#4c4546] mr-2">{t('filters.component')}</span>
+        <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
+          {t('filters.component')}
+        </span>
         {COMPONENT_TYPES.map(type => (
           <FilterButton 
             key={type}
@@ -55,7 +57,7 @@ export default function Filters() {
 
       {variantOptions.length > 0 && (
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-[#4c4546] mr-2">
+          <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
             {t('filters.type')}
           </span>
           <CustomSelect 
@@ -69,7 +71,7 @@ export default function Filters() {
 
       {stateOptions.length > 0 && (
         <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-medium text-[#4c4546] mr-2">
+          <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
             {t('filters.state')}
           </span>
           <CustomSelect 
@@ -100,7 +102,7 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
         className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer text-sm font-medium ${
           active 
             ? 'border-[#ba1a1a] bg-[#ba1a1a] text-white' 
-            : 'border-transparent text-[#ba1a1a] hover:bg-red-50'
+            : 'border-transparent text-[#ba1a1a] hover:bg-red-50 dark:hover:bg-red-950/40'
         }`}
       >
         {label}
@@ -112,7 +114,7 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
     return (
       <button 
         onClick={onClick}
-        className="px-4 py-1.5 rounded-full border border-black bg-black text-white font-medium text-sm transition-all cursor-pointer"
+        className="px-4 py-1.5 rounded-full border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-semibold text-sm transition-all cursor-pointer shadow-xs"
       >
         {label}
       </button>
@@ -124,8 +126,8 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
       onClick={onClick}
       className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer font-medium text-sm ${
         variant === 'ghost' 
-          ? 'border-transparent text-[#5d5f5f] hover:text-black hover:bg-surface-container-low' 
-          : 'border-[#cfc4c5] bg-white text-black hover:bg-surface-container-low'
+          ? 'border-transparent text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-surface-container-low dark:hover:bg-neutral-800' 
+          : 'border-[#cfc4c5] dark:border-neutral-700 bg-white dark:bg-neutral-800 text-black dark:text-white hover:bg-surface-container-low dark:hover:bg-neutral-700'
       }`}
     >
       {label}

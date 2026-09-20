@@ -70,7 +70,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   };
 
   return (
-    <div className="bg-surface-container-lowest border border-[#cfc4c5] rounded-xl overflow-hidden flex flex-col shadow-sm relative">
+    <div className="bg-surface-container-lowest dark:bg-[#18181c] border border-[#cfc4c5] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col shadow-sm relative transition-colors">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -78,32 +78,32 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-black text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none"
+            className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-black dark:bg-white text-white dark:text-black text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none"
           >
-            <Check className="w-3.5 h-3.5 text-green-400" />
+            <Check className="w-3.5 h-3.5 text-green-400 dark:text-green-600" />
             <span>{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header */}
-      <div className="p-3 border-b border-[#cfc4c5] flex justify-between items-center bg-[#f9f9f9]">
+      <div className="p-3 border-b border-[#cfc4c5] dark:border-neutral-800 flex justify-between items-center bg-[#f9f9f9] dark:bg-[#141416]">
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-5 h-5 flex items-center justify-center shrink-0">
             {icon}
           </div>
-          <h3 className="text-sm font-bold text-black truncate">{title}</h3>
+          <h3 className="text-sm font-bold text-black dark:text-white truncate">{title}</h3>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0 ml-2">
           {/* View Switcher: UI / Code / Tokens */}
-          <div className="flex bg-surface-container-low p-0.5 rounded-md border border-[#cfc4c5]">
+          <div className="flex bg-surface-container-low dark:bg-neutral-800 p-0.5 rounded-md border border-[#cfc4c5] dark:border-neutral-700">
             <button
               onClick={() => setView('preview')}
               className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
                 view === 'preview'
-                  ? 'bg-white shadow-xs text-black font-semibold'
-                  : 'text-[#5d5f5f] hover:text-black'
+                  ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
+                  : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
               }`}
             >
               {t('grid.tabUi')}
@@ -114,8 +114,8 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
                 onClick={() => setView('code')}
                 className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
                   view === 'code'
-                    ? 'bg-white shadow-xs text-black font-semibold'
-                    : 'text-[#5d5f5f] hover:text-black'
+                    ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
+                    : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabCode')}
@@ -127,8 +127,8 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
                 onClick={() => setView('tokens')}
                 className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
                   view === 'tokens'
-                    ? 'bg-white shadow-xs text-black font-semibold'
-                    : 'text-[#5d5f5f] hover:text-black'
+                    ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
+                    : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabTokens')}
@@ -140,7 +140,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           {onInspect && (
             <button
               onClick={onInspect}
-              className="px-2 py-1 bg-surface-container-low hover:bg-surface-container border border-[#cfc4c5] rounded-md text-[#5d5f5f] hover:text-black transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
+              className="px-2 py-1 bg-surface-container-low dark:bg-neutral-800 hover:bg-surface-container dark:hover:bg-neutral-700 border border-[#cfc4c5] dark:border-neutral-700 rounded-md text-[#5d5f5f] dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
               title={t('grid.inspect')}
             >
               <Maximize2 className="w-3 h-3 text-accent-blue" />
@@ -184,7 +184,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       )}
 
       {/* Content Area */}
-      <div className="border-b border-[#cfc4c5] h-[200px] flex items-center justify-center bg-surface-container relative">
+      <div className="border-b border-[#cfc4c5] dark:border-neutral-800 h-[200px] flex items-center justify-center bg-surface-container dark:bg-neutral-900/60 relative">
         {view === 'preview' ? (
           <div className="p-6 w-full h-full flex justify-center items-center overflow-auto">
             {previewContent}
@@ -193,7 +193,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           <div className="p-4 w-full h-full bg-[#1e1e1e] text-[#d4d4d4] font-mono text-[12px] sm:text-[13px] overflow-auto relative">
             <button
               onClick={handleCopyCode}
-              className="absolute top-3 right-3 p-1.5 bg-black/40 hover:bg-black/60 text-white rounded transition-colors flex items-center gap-1.5 z-10"
+              className="absolute top-3 right-3 p-1.5 bg-black/40 hover:bg-black/60 text-white rounded transition-colors flex items-center gap-1.5 z-10 cursor-pointer"
               title={t('grid.copyCode')}
             >
               {copied ? (
@@ -219,18 +219,18 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       {/* Details */}
       <div className="p-4 flex flex-col gap-4">
         <div>
-          <h4 className="text-sm font-semibold text-black mb-1">{logicTitle}</h4>
-          <p className="text-[15px] text-[#5d5f5f] leading-relaxed">{logicDescription}</p>
+          <h4 className="text-sm font-semibold text-black dark:text-white mb-1">{logicTitle}</h4>
+          <p className="text-[15px] text-[#5d5f5f] dark:text-neutral-400 leading-relaxed">{logicDescription}</p>
         </div>
 
-        <div className="bg-[#f3f4f4] p-3 rounded-lg flex items-start gap-2">
-          <Eye className="text-black w-[18px] h-[18px] mt-[2px] shrink-0" />
-          <p className="text-[13px] text-black">{accessibilityText}</p>
+        <div className="bg-[#f3f4f4] dark:bg-neutral-800/80 p-3 rounded-lg flex items-start gap-2">
+          <Eye className="text-black dark:text-white w-[18px] h-[18px] mt-[2px] shrink-0" />
+          <p className="text-[13px] text-black dark:text-neutral-200">{accessibilityText}</p>
         </div>
 
         <div className="relative">
-          <h4 className="text-sm font-semibold text-black mb-1">{t('grid.bestpractices')}</h4>
-          <ul className="list-disc pl-5 text-[15px] text-[#5d5f5f] space-y-1 opacity-40 blur-[2px]">
+          <h4 className="text-sm font-semibold text-black dark:text-white mb-1">{t('grid.bestpractices')}</h4>
+          <ul className="list-disc pl-5 text-[15px] text-[#5d5f5f] dark:text-neutral-400 space-y-1 opacity-40 blur-[2px]">
             {bestPractices.map((practice, index) => (
               <li key={index}>{practice}</li>
             ))}
@@ -239,7 +239,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-black text-white text-sm font-medium px-4 py-2 rounded flex items-center gap-2 hover:bg-interactive-charcoal transition-colors shadow-lg cursor-pointer"
+              className="bg-black dark:bg-white text-white dark:text-black text-sm font-semibold px-4 py-2 rounded flex items-center gap-2 hover:bg-interactive-charcoal dark:hover:bg-neutral-200 transition-colors shadow-lg cursor-pointer"
             >
               <LockKeyhole className="w-4 h-4" /> {t('pro.cta')}
             </motion.button>
