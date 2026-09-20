@@ -513,3 +513,33 @@ export function flattenTokens(tokens: ReturnType<typeof getDesignTokens>): Recor
 
   return flat;
 }
+
+/** Генерация CSS переменных из токенов */
+export function tokensToCssVariables(system: string, tokens: Record<string, any>): string {
+  const flat = flattenTokens(tokens as any);
+  const prefix = system.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const lines = Object.entries(flat)
+    .filter(([_, val]) => val && val !== 'none' && val !== 'transparent')
+    .map(([key, val]) => `  --${prefix}-${key.replace(/\./g, '-')}: ${val};`);
+  return `:root {\n${lines.join('\n')}\n}`;
+}
+
+/** Генерация фрагмента конфига Tailwind из токенов */
+export function tokensToTailwind(system: string, tokens: Record<string, any>): string {
+  const flat = flattenTokens(tokens as any);
+  const cleanKey = (k: string) => k.replace(/[^a-zA-Z0-9]/g, '-');
+  const colors: Record<string, string> = {};
+  const borderRadius: Record<string, string> = {};
+
+  Object.entries(flat).forEach(([k, v]) => {
+    if (!v || v === 'none' || v === 'transparent') return;
+    if (k.includes('color') || k.includes('background') || k.includes('foreground') || k.includes('border') || k.includes('surface')) {
+      colors[cleanKey(k)] = String(v);
+    } else if (k.includes('radius')) {
+      borderRadius[cleanKey(k)] = String(v);
+    }
+  });
+
+  return `// tailwind.config.js\nmodule.exports = {\n  theme: {\n    extend: {\n      colors: ${JSON.stringify(colors, null, 6)},\n      borderRadius: ${JSON.stringify(borderRadius, null, 6)}\n    }\n  }\n};`;
+}
+
