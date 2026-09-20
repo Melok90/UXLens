@@ -1,6 +1,6 @@
 import React, { useState, ReactNode } from 'react';
-import { Eye, Copy, Check, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { Eye, LockKeyhole, Copy, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface ComparisonCardProps {
@@ -14,12 +14,6 @@ interface ComparisonCardProps {
   accessibilityText: string;
   bestPractices: string[];
   designTokens?: Record<string, any>;
-  /** Управляется извне (ComparisonGrid) одним переключателем на все карточки —
-   * раньше каждая карточка разворачивалась независимо, и сетка «разъезжалась»:
-   * при сравнении шести систем нужно, чтобы они либо все были свёрнуты, либо
-   * все развёрнуты, иначе высоты строк скачут и сравнивать неудобно. */
-  detailsOpen: boolean;
-  onToggleDetails: () => void;
 }
 
 const ComparisonCard: React.FC<ComparisonCardProps> = ({
@@ -33,8 +27,6 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   accessibilityText,
   bestPractices,
   designTokens,
-  detailsOpen,
-  onToggleDetails,
 }) => {
   const { t } = useLanguage();
   const [view, setView] = useState<'preview' | 'tokens'>('preview');
@@ -97,46 +89,34 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       </div>
 
       {/* Details */}
-      <div className="flex flex-col">
-        <button
-          onClick={onToggleDetails}
-          className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-black hover:bg-surface-container-low transition-colors"
-        >
-          {logicTitle}
-          <motion.span animate={{ rotate: detailsOpen ? 180 : 0 }} transition={{ duration: 0.15 }}>
-            <ChevronDown className="w-4 h-4 text-[#5d5f5f]" />
-          </motion.span>
-        </button>
+      <div className="p-4 flex flex-col gap-4">
+        <div>
+          <h4 className="text-sm font-semibold text-black mb-1">{logicTitle}</h4>
+          <p className="text-[15px] text-[#5d5f5f] leading-relaxed">{logicDescription}</p>
+        </div>
 
-        <AnimatePresence initial={false}>
-          {detailsOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
+        <div className="bg-[#f3f4f4] p-3 rounded-lg flex items-start gap-2">
+          <Eye className="text-black w-[18px] h-[18px] mt-[2px] shrink-0" />
+          <p className="text-[13px] text-black">{accessibilityText}</p>
+        </div>
+
+        <div className="relative">
+          <h4 className="text-sm font-semibold text-black mb-1">{t('grid.bestpractices')}</h4>
+          <ul className="list-disc pl-5 text-[15px] text-[#5d5f5f] space-y-1 opacity-40 blur-[2px]">
+            {bestPractices.map((practice, index) => (
+              <li key={index}>{practice}</li>
+            ))}
+          </ul>
+          <div className="absolute inset-0 flex justify-center items-center z-10">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-black text-white text-sm font-medium px-4 py-2 rounded flex items-center gap-2 hover:bg-interactive-charcoal transition-colors shadow-lg cursor-pointer"
             >
-              <div className="px-4 pb-4 flex flex-col gap-4">
-                <p className="text-[15px] text-[#5d5f5f] leading-relaxed">{logicDescription}</p>
-
-                <div className="bg-[#f3f4f4] p-3 rounded-lg flex items-start gap-2">
-                  <Eye className="text-black w-[18px] h-[18px] mt-[2px] shrink-0" />
-                  <p className="text-[13px] text-black">{accessibilityText}</p>
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-semibold text-black mb-1">{t('grid.bestpractices')}</h4>
-                  <ul className="list-disc pl-5 text-[15px] text-[#5d5f5f] space-y-1">
-                    {bestPractices.map((practice, index) => (
-                      <li key={index}>{practice}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <LockKeyhole className="w-4 h-4" /> {t('pro.cta')}
+            </motion.button>
+          </div>
+        </div>
       </div>
     </div>
   );

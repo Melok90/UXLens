@@ -685,9 +685,7 @@ export default function ComparisonGrid() {
   const [rangeEnd, setRangeEnd] = useState<number>(24);
   const [openSystem, setOpenSystem] = useState<string | null>(null);
   // Один переключатель на все карточки: раньше «Подробнее» разворачивал
-  // текст независимо в каждой карточке, и сетка визуально разъезжалась —
-  // строки становились разной высоты, сравнивать шесть систем было неудобно.
-  const [detailsOpen, setDetailsOpen] = useState(false);
+
 
   useEffect(() => {
     const handleClick = () => setOpenSystem(null);
@@ -2247,37 +2245,23 @@ export default function ComparisonGrid() {
   return (
     <section className="flex flex-col gap-8 min-w-0">
       {filteredCards.length > 0 ? (
-        <>
-          <div className="flex justify-end">
-            <button
-              onClick={() => setDetailsOpen(o => !o)}
-              className="flex items-center gap-1 text-sm font-medium text-accent-blue hover:underline"
-            >
-              {detailsOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              {detailsOpen ? t('grid.hideAllDetails') : t('grid.showAllDetails')}
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredCards.map((card) => (
-              <ComparisonCard
-                key={card.title}
-                title={card.title}
-                icon={card.icon}
-                previewType={card.previewType}
-                previewContent={card.previewContent}
-                codeContent={card.codeContent}
-                logicTitle={tText(card.logicTitle)}
-                logicDescription={tText(card.logicDescription)}
-                accessibilityText={tText(card.accessibilityText)}
-                bestPractices={card.bestPractices.map(tText)}
-                designTokens={tokensFor(card.title)}
-                detailsOpen={detailsOpen}
-                onToggleDetails={() => setDetailsOpen(o => !o)}
-              />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {filteredCards.map((card) => (
+            <ComparisonCard
+              key={card.title}
+              title={card.title}
+              icon={card.icon}
+              previewType={card.previewType}
+              previewContent={card.previewContent}
+              codeContent={card.codeContent}
+              logicTitle={tText(card.logicTitle)}
+              logicDescription={tText(card.logicDescription)}
+              accessibilityText={tText(card.accessibilityText)}
+              bestPractices={card.bestPractices.map(tText)}
+              designTokens={tokensFor(card.title)}
+            />
+          ))}
+        </div>
       ) : (
         <div className="py-16 px-6 text-center border-2 border-dashed border-gray-200 rounded-xl flex flex-col items-center gap-4">
           <p className="text-gray-500">

@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react';
 import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
@@ -15,7 +14,7 @@ import {
 
 export default function Filters() {
   const { t } = useLanguage();
-
+  
   const activeComponent = useStore(state => state.activeComponent);
   const activeState = useStore(state => state.activeState);
   const activeVariant = useStore(state => state.activeVariant);
@@ -41,77 +40,95 @@ export default function Filters() {
   }));
 
   return (
-    <section className="flex flex-col bg-white border border-[#cfc4c5] rounded-2xl overflow-visible">
-      {/* Компонент — чипы: сразу видно все 8 вариантов, один клик вместо
-          «открыть список → найти → выбрать». Тип/Состояние остаются
-          дропдаунами — там варианты меняются от компонента к компоненту, и
-          читать длинный список каждый раз было бы избыточно. */}
-      <div className="flex flex-col gap-2 px-4 py-3 border-b border-[#eeeeee]">
-        <span className="text-sm text-[#5d5f5f]">{t('filters.component').replace(/:$/, '')}</span>
-        <div className="flex flex-wrap gap-1.5">
-          {COMPONENT_TYPES.map(type => (
-            <ComponentChip
-              key={type}
-              label={t(COMPONENT_LABEL_KEYS[type])}
-              active={activeComponent === type}
-              onClick={() => onComponentChange(type)}
-            />
-          ))}
-        </div>
+    <section className="flex flex-col gap-6">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-sm font-medium text-[#4c4546] mr-2">{t('filters.component')}</span>
+        {COMPONENT_TYPES.map(type => (
+          <FilterButton 
+            key={type}
+            label={t(COMPONENT_LABEL_KEYS[type])} 
+            active={activeComponent === type} 
+            onClick={() => onComponentChange(type)}
+          />
+        ))}
       </div>
 
       {variantOptions.length > 0 && (
-        <FilterRow label={t('filters.type')}>
-          <CustomSelect
-            value={activeVariant}
-            onChange={(val) => setActiveVariant(val as ComponentVariant)}
-            options={variantOptions}
-          />
-        </FilterRow>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm font-medium text-[#4c4546] mr-2">
+            {t('filters.type')}
+          </span>
+          <CustomSelect 
+             value={activeVariant}
+             onChange={(val) => setActiveVariant(val as ComponentVariant)}
+             options={variantOptions}
+             className="min-w-[150px]"
+           />
+        </div>
       )}
 
       {stateOptions.length > 0 && (
-        <FilterRow label={t('filters.state')} last>
-          <CustomSelect
-            value={activeState}
-            onChange={(val) => setActiveState(val as ComponentState)}
-            options={stateOptions}
-          />
-        </FilterRow>
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-sm font-medium text-[#4c4546] mr-2">
+            {t('filters.state')}
+          </span>
+          <CustomSelect 
+             value={activeState}
+             onChange={(val) => setActiveState(val as ComponentState)}
+             options={stateOptions}
+             className="min-w-[150px]"
+           />
+        </div>
       )}
     </section>
   );
 }
 
-const ComponentChip: React.FC<{ label: string; active: boolean; onClick: () => void }> = ({ label, active, onClick }) => {
+interface FilterButtonProps {
+  key?: string | number;
+  label: string;
+  active?: boolean;
+  variant?: 'default' | 'ghost' | 'error';
+  onClick?: () => void;
+}
+
+function FilterButton({ label, active = false, variant = 'default', onClick }: FilterButtonProps) {
+  if (variant === 'error') {
+    return (
+      <button 
+        onClick={onClick}
+        className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer text-sm font-medium ${
+          active 
+            ? 'border-[#ba1a1a] bg-[#ba1a1a] text-white' 
+            : 'border-transparent text-[#ba1a1a] hover:bg-red-50'
+        }`}
+      >
+        {label}
+      </button>
+    );
+  }
+
+  if (active) {
+    return (
+      <button 
+        onClick={onClick}
+        className="px-4 py-1.5 rounded-full border border-black bg-black text-white font-medium text-sm transition-all cursor-pointer"
+      >
+        {label}
+      </button>
+    );
+  }
+
   return (
-    <button
+    <button 
       onClick={onClick}
-      className={`px-2.5 py-1 rounded-full border text-xs font-medium transition-colors cursor-pointer ${
-        active
-          ? 'border-black bg-black text-white'
+      className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer font-medium text-sm ${
+        variant === 'ghost' 
+          ? 'border-transparent text-[#5d5f5f] hover:text-black hover:bg-surface-container-low' 
           : 'border-[#cfc4c5] bg-white text-black hover:bg-surface-container-low'
       }`}
     >
       {label}
     </button>
-  );
-};
-
-// items-start в колоночном (мобильном) режиме — иначе flex растягивает
-// дропдаун на всю ширину строки по умолчанию (align-items: stretch).
-// На sm+ строка становится горизонтальной, а дропдаун остаётся компактным
-// по содержимому — не флекс-элемент с grow, просто justify-between
-// разводит подпись и селект по краям.
-function FilterRow({ label, children, last = false }: { label: string; children: ReactNode; last?: boolean }) {
-  return (
-    <div
-      className={`flex flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3 px-4 py-3 ${
-        last ? '' : 'border-b border-[#eeeeee]'
-      }`}
-    >
-      <span className="text-sm text-[#5d5f5f] shrink-0">{label.replace(/:$/, '')}</span>
-      {children}
-    </div>
   );
 }
