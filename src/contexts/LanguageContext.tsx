@@ -23,6 +23,10 @@ const translations: Translations = {
     "hero.searchPlaceholder": "Поиск дизайн-системы",
 
     // Filters
+    "filters.platform": "Платформа:",
+    "filters.platform.all": "Все",
+    "filters.platform.web": "Web",
+    "filters.platform.mobile": "Mobile",
     "filters.component": "Компонент:",
     "filters.type": "Тип:",
     "filters.state": "Состояние:",
@@ -81,7 +85,7 @@ const translations: Translations = {
     "grid.hideAllDetails": "Скрыть детали",
 
     // Hero stats
-    "hero.stat": "8 компонентов × 6 систем — 48 разборов",
+    "hero.stat": "8 компонентов × 8 дизайн-систем (Web & Mobile) — 64 разбора",
 
     // Context bar
     "context.view.showcase": "Витрина",
@@ -115,8 +119,12 @@ const translations: Translations = {
     "systems.polaris.desc": "Помогает создавать отличный опыт для миллионов продавцов, использующих Shopify каждый день.",
     "systems.ant.desc": "Корпоративная система проектирования для фоновых приложений, предоставляющая богатый набор компонентов React.",
     "systems.apple.desc": "Стандарты интерфейсов Apple, основанные на ясности, уважении к контенту и глубине взаимодействия на всех платформах Apple.",
+    "systems.samsung.desc": "Дизайн-система Samsung для смартфонов Galaxy с фокусом на управление одной рукой и доступность ключевых зон экрана.",
     "systems.figma": "Figma Kit",
     "systems.platforms": "Платформы",
+    "systems.platform.all": "Все платформы",
+    "systems.platform.web": "Web",
+    "systems.platform.mobile": "Mobile",
 
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",
@@ -138,6 +146,10 @@ const translations: Translations = {
     "hero.searchPlaceholder": "Search design system",
 
     // Filters
+    "filters.platform": "Platform:",
+    "filters.platform.all": "All",
+    "filters.platform.web": "Web",
+    "filters.platform.mobile": "Mobile",
     "filters.component": "Component:",
     "filters.type": "Type:",
     "filters.state": "State:",
@@ -196,7 +208,7 @@ const translations: Translations = {
     "grid.hideAllDetails": "Hide details",
 
     // Hero stats
-    "hero.stat": "8 components × 6 systems — 48 breakdowns",
+    "hero.stat": "8 components × 8 design systems (Web & Mobile) — 64 breakdowns",
 
     // Context bar
     "context.view.showcase": "Showcase",
@@ -230,8 +242,12 @@ const translations: Translations = {
     "systems.polaris.desc": "Helps create great experiences for millions of merchants who use Shopify every day.",
     "systems.ant.desc": "An enterprise-class design system for web applications, providing a rich set of React components.",
     "systems.apple.desc": "Apple's interface standards built on clarity, deference, and depth. Providing an intuitive and cohesive experience across all Apple platforms.",
+    "systems.samsung.desc": "Samsung's interface system for Galaxy devices designed for seamless one-handed reachability and smooth visual hierarchy.",
     "systems.figma": "Figma Kit",
     "systems.platforms": "Platforms",
+    "systems.platform.all": "All platforms",
+    "systems.platform.web": "Web",
+    "systems.platform.mobile": "Mobile",
 
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",

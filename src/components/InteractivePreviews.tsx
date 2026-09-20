@@ -206,6 +206,64 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
       hover = 'hover:text-[#4096ff] hover:border-[#4096ff] ';
       active = 'active:text-[#0958d9] active:border-[#0958d9] ';
     }
+  } else if (system === 'Apple iOS HIG') {
+    base += 'rounded-[12px] font-semibold text-sm tracking-tight ';
+    base += variant === 'icon' ? 'w-10 h-10 p-0 rounded-full ' : 'px-5 py-2.5 min-h-[44px] ';
+    disabled += '!bg-[#7676801f] !text-[#7676805c] ';
+    focus = '!ring-3 !ring-[#007AFF]/40 !ring-offset-2 ';
+    errorFilled = '!bg-[#FF3B30] !text-white !ring-2 !ring-[#FF3B30] ';
+    errorOutlined = '!text-[#FF3B30] !border-[#FF3B30] !ring-2 !ring-[#FF3B30]/30 ';
+
+    if (variant === 'primary' || variant === 'default') {
+      base += 'bg-[#007AFF] text-white shadow-xs ';
+      hover = 'hover:bg-[#0066d6] ';
+      active = 'active:scale-95 active:brightness-90 ';
+    } else if (variant === 'secondary') {
+      base += 'bg-[#007AFF]/12 text-[#007AFF] ';
+      hover = 'hover:bg-[#007AFF]/20 ';
+      active = 'active:scale-95 active:bg-[#007AFF]/28 ';
+    } else if (variant === 'tertiary') {
+      base += 'text-[#007AFF] bg-transparent ';
+      hover = 'hover:bg-[#007AFF]/10 ';
+      active = 'active:scale-95 active:bg-[#007AFF]/18 ';
+    } else if (variant === 'destructive') {
+      base += 'bg-[#FF3B30] text-white ';
+      hover = 'hover:bg-[#d93128] ';
+      active = 'active:scale-95 ';
+    } else if (variant === 'icon') {
+      base += 'text-[#007AFF] bg-[#007AFF]/12 ';
+      hover = 'hover:bg-[#007AFF]/20 ';
+      active = 'active:scale-95 ';
+    }
+  } else if (system === 'Samsung One UI') {
+    base += 'rounded-[20px] font-bold text-sm ';
+    base += variant === 'icon' ? 'w-11 h-11 p-0 rounded-2xl ' : 'px-6 py-2.5 min-h-[48px] ';
+    disabled += '!bg-[#DFE2E6] !text-[#8D9299] ';
+    focus = '!ring-2 !ring-[#034EA2] !ring-offset-2 ';
+    errorFilled = '!bg-[#E53935] !text-white !ring-2 !ring-[#E53935] ';
+    errorOutlined = '!text-[#E53935] !border-[#E53935] !ring-2 !ring-[#E53935]/30 ';
+
+    if (variant === 'primary' || variant === 'default') {
+      base += 'bg-[#034EA2] text-white shadow-sm ';
+      hover = 'hover:bg-[#023e82] ';
+      active = 'active:scale-[0.96] ';
+    } else if (variant === 'secondary') {
+      base += 'bg-[#f0f4fa] text-[#034EA2] border border-[#034EA2]/30 ';
+      hover = 'hover:bg-[#e4ebf7] ';
+      active = 'active:scale-[0.96] active:bg-[#d5e2f5] ';
+    } else if (variant === 'tertiary') {
+      base += 'text-[#034EA2] bg-transparent ';
+      hover = 'hover:bg-[#034EA2]/10 ';
+      active = 'active:scale-[0.96] active:bg-[#034EA2]/20 ';
+    } else if (variant === 'destructive') {
+      base += 'bg-[#E53935] text-white ';
+      hover = 'hover:bg-[#c62828] ';
+      active = 'active:scale-[0.96] ';
+    } else if (variant === 'icon') {
+      base += 'text-[#034EA2] bg-[#034EA2]/10 ';
+      hover = 'hover:bg-[#034EA2]/20 ';
+      active = 'active:scale-[0.96] ';
+    }
   }
 
   const isOutlined = variant === 'secondary' || variant === 'tertiary';
@@ -325,6 +383,30 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           translateX: checked ? 21 : 2,
           activeBg: '#008060',
           inactiveBg: '#c9cccf',
+          border: 'border-none',
+          thumbColor: '#ffffff',
+          rounded: 'rounded-full',
+        };
+      case 'Apple iOS HIG':
+        return {
+          trackW: 51,
+          trackH: 31,
+          thumbSize: 27,
+          translateX: checked ? 22 : 2,
+          activeBg: '#34C759',
+          inactiveBg: '#E9E9EB',
+          border: 'border-none',
+          thumbColor: '#ffffff',
+          rounded: 'rounded-full',
+        };
+      case 'Samsung One UI':
+        return {
+          trackW: 50,
+          trackH: 28,
+          thumbSize: 24,
+          translateX: checked ? 24 : 2,
+          activeBg: '#034EA2',
+          inactiveBg: '#DFE2E6',
           border: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
@@ -484,8 +566,18 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
     );
   }
 
-  // Generic fallback for Ant Design, Carbon, Polaris, Atlassian
+  // Generic fallback for Ant Design, Carbon, Polaris, Atlassian, Apple, Samsung
   const getBorderClasses = () => {
+    if (system === 'Apple iOS HIG') {
+      if (isError) return 'border-[#FF3B30] ring-2 ring-[#FF3B30]/30';
+      if (isFocused || state === 'focus') return 'border-[#007AFF] ring-2 ring-[#007AFF]/30';
+      return 'border-[#d1d1d6] hover:border-[#8e8e93] bg-[#767680]/10';
+    }
+    if (system === 'Samsung One UI') {
+      if (isError) return 'border-[#E53935] ring-2 ring-[#E53935]/30';
+      if (isFocused || state === 'focus') return 'border-[#034EA2] ring-2 ring-[#034EA2]/30';
+      return 'border-[#DFE2E6] hover:border-[#034EA2]/50 bg-[#F2F4F7]';
+    }
     if (isError) return 'border-red-500 ring-1 ring-red-500';
     if (isFocused || state === 'focus') {
       if (system === 'Shopify Polaris') return 'border-[#008060] ring-2 ring-[#008060]/20';
@@ -497,6 +589,8 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   };
 
   const getRadius = () => {
+    if (system === 'Apple iOS HIG') return 'rounded-xl';
+    if (system === 'Samsung One UI') return 'rounded-2xl';
     if (system === 'IBM Carbon') return 'rounded-none';
     if (system === 'Shopify Polaris') return 'rounded-lg';
     if (system === 'Atlassian') return 'rounded-[3px]';
@@ -542,6 +636,10 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
 
   const getColor = () => {
     switch (system) {
+      case 'Apple iOS HIG':
+        return '#007AFF';
+      case 'Samsung One UI':
+        return '#034EA2';
       case 'Material Design 3':
         return '#6750a4';
       case 'Fluent UI':
@@ -606,6 +704,10 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
 
   const getSystemClasses = () => {
     switch (system) {
+      case 'Apple iOS HIG':
+        return 'rounded-full bg-[#007AFF]/12 text-[#007AFF] border border-[#007AFF]/25 px-3 py-1 text-xs font-semibold';
+      case 'Samsung One UI':
+        return 'rounded-xl bg-[#034EA2]/10 text-[#034EA2] border border-[#034EA2]/25 px-3 py-1 text-xs font-bold';
       case 'Material Design 3':
         return 'rounded-lg bg-[#E8DEF8] text-[#1D192B] border border-[#79747E]/20 px-3 py-1 text-xs font-medium';
       case 'Fluent UI':

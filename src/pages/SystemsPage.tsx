@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { ExternalLink, Figma, Layers } from 'lucide-react';
+import { useState, ReactNode } from 'react';
+import { ExternalLink, Figma, Layers, Globe, Smartphone } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -16,16 +16,17 @@ interface DesignSystemItem {
 
 export default function SystemsPage() {
   const { t } = useLanguage();
+  const [selectedPlatform, setSelectedPlatform] = useState<'all' | 'web' | 'mobile'>('all');
 
   const systems: DesignSystemItem[] = [
     {
       id: "apple",
-      name: "Apple HIG",
+      name: "Apple iOS HIG",
       creator: "Apple",
       link: "https://developer.apple.com/design/human-interface-guidelines/",
       figmaLink: "https://www.figma.com/@apple",
       color: "#0071E3",
-      platforms: ["iOS", "macOS", "visionOS"],
+      platforms: ["iOS", "iPadOS", "macOS", "visionOS"],
       logo: (
         <svg viewBox="0 0 24 24" className="w-10 h-10" fill="currentColor">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.35-.58.66-1.08 1.73-.95 2.76 1 .08 2.05-.51 2.68-1.26z" />
@@ -45,6 +46,22 @@ export default function SystemsPage() {
           <path d="M12 2L2 19.74h20L12 2z" fill="#4285F4" />
           <circle cx="12" cy="14" r="4" fill="#EA4335" />
           <rect x="9" y="10" width="6" height="6" fill="#FBBC05" />
+        </svg>
+      )
+    },
+    {
+      id: "samsung",
+      name: "Samsung One UI",
+      creator: "Samsung",
+      link: "https://developer.samsung.com/one-ui",
+      figmaLink: "https://www.figma.com/@samsung",
+      color: "#034EA2",
+      platforms: ["Android", "One UI", "Galaxy"],
+      logo: (
+        <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#034EA2">
+          <rect x="2" y="2" width="20" height="20" rx="6" fill="#034EA2" />
+          <circle cx="12" cy="12" r="5" fill="#FFFFFF" />
+          <circle cx="12" cy="12" r="2.5" fill="#034EA2" />
         </svg>
       )
     },
@@ -127,6 +144,13 @@ export default function SystemsPage() {
     }
   ];
 
+  const filteredSystems = systems.filter(sys => {
+    if (selectedPlatform === 'all') return true;
+    if (selectedPlatform === 'mobile') return ['apple', 'samsung', 'material'].includes(sys.id);
+    if (selectedPlatform === 'web') return ['material', 'fluent', 'atlassian', 'carbon', 'polaris', 'ant'].includes(sys.id);
+    return true;
+  });
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 15 }}
@@ -140,8 +164,53 @@ export default function SystemsPage() {
         </p>
       </div>
 
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="inline-flex p-1 bg-surface-container-low dark:bg-neutral-800 rounded-xl border border-[#e5dedf] dark:border-neutral-700 shadow-xs">
+          <button
+            type="button"
+            onClick={() => setSelectedPlatform('all')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              selectedPlatform === 'all'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            {t('systems.platform.all')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedPlatform('web')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              selectedPlatform === 'web'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            {t('systems.platform.web')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelectedPlatform('mobile')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              selectedPlatform === 'mobile'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            {t('systems.platform.mobile')}
+          </button>
+        </div>
+
+        <span className="text-xs text-[#757777] dark:text-neutral-400 font-semibold">
+          {filteredSystems.length} {t('context.systemsCount')}
+        </span>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {systems.map((system) => (
+        {filteredSystems.map((system) => (
           <motion.div 
             key={system.name}
             whileHover={{ y: -4 }}

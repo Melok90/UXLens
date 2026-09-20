@@ -54,7 +54,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
   const [activeTab, setActiveTab] = useState<ModalTab>('anatomy');
   const [selectedSystem, setSelectedSystem] = useState<string>(initialSystem);
   const [compareSystemA, setCompareSystemA] = useState<string>(initialSystem);
-  const [compareSystemB, setCompareSystemB] = useState<string>('Apple HIG');
+  const [compareSystemB, setCompareSystemB] = useState<string>('Apple iOS HIG');
   const [showGuides, setShowGuides] = useState(true);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
@@ -63,7 +63,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
     if (isOpen) {
       setSelectedSystem(initialSystem);
       setCompareSystemA(initialSystem);
-      const other = initialSystem === 'Apple HIG' ? 'Material Design 3' : 'Apple HIG';
+      const other = initialSystem === 'Apple iOS HIG' ? 'Material Design 3' : 'Apple iOS HIG';
       setCompareSystemB(other);
     }
   }, [isOpen, initialSystem]);
@@ -108,7 +108,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
     };
 
   const specA = anatomyMap[compareSystemA] || activeSpec;
-  const specB = anatomyMap[compareSystemB] || anatomyMap['Apple HIG'] || activeSpec;
+  const specB = anatomyMap[compareSystemB] || anatomyMap['Apple iOS HIG'] || activeSpec;
 
   // Find preview contents from cards
   const getCardPreview = (sysName: string) => {

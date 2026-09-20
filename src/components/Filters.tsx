@@ -2,6 +2,7 @@ import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
 import CustomSelect from './CustomSelect';
+import { Globe, Smartphone, Layers } from 'lucide-react';
 import {
   COMPONENT_LABEL_KEYS,
   COMPONENT_MATRIX,
@@ -18,9 +19,11 @@ export default function Filters() {
   const activeComponent = useStore(state => state.activeComponent);
   const activeState = useStore(state => state.activeState);
   const activeVariant = useStore(state => state.activeVariant);
+  const platformFilter = useStore(state => state.platformFilter);
   const setActiveComponent = useStore(state => state.setActiveComponent);
   const setActiveState = useStore(state => state.setActiveState);
   const setActiveVariant = useStore(state => state.setActiveVariant);
+  const setPlatformFilter = useStore(state => state.setPlatformFilter);
 
   const onComponentChange = (type: ComponentType) => {
     const spec = COMPONENT_MATRIX[type];
@@ -41,6 +44,51 @@ export default function Filters() {
 
   return (
     <section className="flex flex-col gap-6">
+      {/* Platform Switcher */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#757777] dark:text-neutral-400 mr-2">
+          {t('filters.platform')}
+        </span>
+        <div className="inline-flex p-1 bg-surface-container-low dark:bg-neutral-800 rounded-xl border border-[#e5dedf] dark:border-neutral-700 shadow-xs">
+          <button
+            type="button"
+            onClick={() => setPlatformFilter('all')}
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              platformFilter === 'all'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            {t('filters.platform.all')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPlatformFilter('web')}
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              platformFilter === 'web'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            {t('filters.platform.web')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPlatformFilter('mobile')}
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+              platformFilter === 'mobile'
+                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
+                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+            }`}
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            {t('filters.platform.mobile')}
+          </button>
+        </div>
+      </div>
+
       <div className="flex flex-wrap items-center gap-3">
         <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
           {t('filters.component')}

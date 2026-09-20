@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
 import { flattenTokens, getDesignTokens } from '../utils/tokens';
-import { SYSTEM_LIST } from '../utils/systemIcons';
+import { SYSTEM_LIST, SYSTEM_LOGOS } from '../utils/systemIcons';
 
 const COLOR_KEY_HINTS = ['background', 'foreground', 'border', 'surface', 'error'];
 
@@ -28,18 +28,26 @@ export default function CompareTable() {
   const activeVariant = useStore(state => state.activeVariant);
   const activeState = useStore(state => state.activeState);
   const searchQuery = useStore(state => state.searchQuery);
+  const platformFilter = useStore(state => state.platformFilter);
   const [onlyDiffering, setOnlyDiffering] = useState(false);
 
   const query = searchQuery.trim().toLowerCase();
   const visibleSystems = useMemo(() => {
-    const matched = SYSTEM_LIST.filter(s => s.title.toLowerCase().includes(query));
-    return query.length > 0 && matched.length > 0 ? matched : SYSTEM_LIST;
-  }, [query]);
+    let list = SYSTEM_LIST;
+    if (platformFilter === 'web') {
+      list = list.filter(s => s.platform === 'web' || s.platform === 'both');
+    } else if (platformFilter === 'mobile') {
+      list = list.filter(s => s.platform === 'mobile' || s.platform === 'both');
+    }
+    const matched = list.filter(s => s.title.toLowerCase().includes(query));
+    return query.length > 0 && matched.length > 0 ? matched : list;
+  }, [query, platformFilter]);
 
   const columns = useMemo(
     () =>
       visibleSystems.map(system => ({
         ...system,
+        icon: SYSTEM_LOGOS[system.key],
         flat: flattenTokens(getDesignTokens(system.title, activeComponent, activeVariant, activeState)),
       })),
     [visibleSystems, activeComponent, activeVariant, activeState]
@@ -74,15 +82,15 @@ export default function CompareTable() {
         </label>
       </div>
 
-      <div className="overflow-x-auto border border-[#cfc4c5] rounded-xl bg-white">
+      <div className="overflow-x-auto border border-[#cfc4c5] dark:border-neutral-800 rounded-xl bg-white dark:bg-[#18181c]">
         <table className="w-full text-sm border-collapse">
           <thead>
-            <tr className="bg-[#f9f9f9] border-b border-[#cfc4c5]">
-              <th className="text-left font-semibold text-black px-4 py-3 sticky left-0 bg-[#f9f9f9] min-w-[160px]">
+            <tr className="bg-[#f9f9f9] dark:bg-neutral-900 border-b border-[#cfc4c5] dark:border-neutral-800">
+              <th className="text-left font-semibold text-black dark:text-white px-4 py-3 sticky left-0 bg-[#f9f9f9] dark:bg-neutral-900 min-w-[160px]">
                 {t('table.property')}
               </th>
               {columns.map(col => (
-                <th key={col.key} className="text-left font-semibold text-black px-4 py-3 min-w-[140px]">
+                <th key={col.key} className="text-left font-semibold text-black dark:text-white px-4 py-3 min-w-[140px]">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 shrink-0">{col.icon}</div>
                     <span className="truncate">{col.title}</span>
@@ -93,15 +101,15 @@ export default function CompareTable() {
           </thead>
           <tbody>
             {visibleRows.map(row => (
-              <tr key={row.key} className={`border-b border-[#eeeeee] last:border-0 ${row.differs ? '' : 'opacity-50'}`}>
-                <td className="px-4 py-2.5 font-medium text-[#4c4546] sticky left-0 bg-white">
+              <tr key={row.key} className={`border-b border-[#eeeeee] dark:border-neutral-800 last:border-0 ${row.differs ? '' : 'opacity-50'}`}>
+                <td className="px-4 py-2.5 font-medium text-[#4c4546] dark:text-neutral-300 sticky left-0 bg-white dark:bg-[#18181c]">
                   {labelFor(row.key)}
                 </td>
                 {row.values.map((value, i) => {
                   const keyLower = row.key.toLowerCase();
                   const showSwatch = COLOR_KEY_HINTS.some(hint => keyLower.includes(hint)) && isColorValue(value);
                   return (
-                    <td key={i} className={`px-4 py-2.5 font-mono text-xs ${row.differs ? 'text-black font-medium' : 'text-[#5d5f5f]'}`}>
+                    <td key={i} className={`px-4 py-2.5 font-mono text-xs ${row.differs ? 'text-black dark:text-white font-medium' : 'text-[#5d5f5f] dark:text-neutral-400'}`}>
                       <span className="flex items-center gap-2">
                         {showSwatch && (
                           <span

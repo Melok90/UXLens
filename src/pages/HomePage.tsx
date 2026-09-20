@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Filters from '../components/Filters';
@@ -14,10 +14,12 @@ export default function HomePage() {
   const activeVariant = useStore(state => state.activeVariant);
   const activeState = useStore(state => state.activeState);
   const searchQuery = useStore(state => state.searchQuery);
+  const platformFilter = useStore(state => state.platformFilter);
   const setActiveComponent = useStore(state => state.setActiveComponent);
   const setActiveVariant = useStore(state => state.setActiveVariant);
   const setActiveState = useStore(state => state.setActiveState);
   const setSearchQuery = useStore(state => state.setSearchQuery);
+  const setPlatformFilter = useStore(state => state.setPlatformFilter);
 
   const hydrated = useRef(false);
 
@@ -27,6 +29,7 @@ export default function HomePage() {
     if (parsed.component) setActiveComponent(parsed.component);
     if (parsed.variant) setActiveVariant(parsed.variant as ComponentVariant);
     if (parsed.state) setActiveState(parsed.state as ComponentState);
+    if (parsed.platform) setPlatformFilter(parsed.platform);
     if (parsed.q) setSearchQuery(parsed.q);
     hydrated.current = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,12 +44,13 @@ export default function HomePage() {
         variant: activeVariant,
         state: activeState,
         view: 'showcase',
+        platform: platformFilter,
         q: searchQuery,
       }),
       { replace: true }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeComponent, activeVariant, activeState, searchQuery]);
+  }, [activeComponent, activeVariant, activeState, platformFilter, searchQuery]);
 
   return (
     <>

@@ -1,20 +1,13 @@
 import { ComponentType } from '../App';
 import { COMPONENT_TYPES, coerceSelection } from './stateMatrix';
-import { ViewMode } from '../store/useStore';
-
-/**
- * Читает/пишет текущий срез (компонент, тип, состояние, режим показа, поиск)
- * в query-параметры. До этого фильтры жили только в оперативной памяти
- * вкладки — кнопка «Поделиться» копировала URL без единого параметра,
- * получатель видел дефолтный Button/Primary/Default, а не то, что показывал
- * отправитель.
- */
+import { ViewMode, PlatformFilter } from '../store/useStore';
 
 export interface UrlFilters {
   component: ComponentType;
   variant: string;
   state: string;
   view: ViewMode;
+  platform: PlatformFilter;
   q: string;
 }
 
@@ -23,6 +16,7 @@ const PARAM_KEYS = {
   variant: 'v',
   state: 's',
   view: 'view',
+  platform: 'p',
   q: 'q',
 } as const;
 
@@ -35,10 +29,6 @@ export function readFiltersFromParams(params: URLSearchParams): Partial<UrlFilte
     : undefined;
   if (component) result.component = component;
 
-  // Коэрсим variant/state всегда, как только известен компонент — не только
-  // когда они явно есть в URL. Ссылка вида ?c=modal (без v/s) иначе оставляла
-  // variant равным дефолту предыдущего компонента ('primary'), и хлебные
-  // крошки показывали несуществующий для модалки тип.
   if (component) {
     const rawVariant = params.get(PARAM_KEYS.variant);
     const rawState = params.get(PARAM_KEYS.state);
@@ -49,6 +39,11 @@ export function readFiltersFromParams(params: URLSearchParams): Partial<UrlFilte
 
   const rawView = params.get(PARAM_KEYS.view);
   if (rawView === 'showcase' || rawView === 'table') result.view = rawView;
+
+  const rawPlatform = params.get(PARAM_KEYS.platform);
+  if (rawPlatform === 'all' || rawPlatform === 'web' || rawPlatform === 'mobile') {
+    result.platform = rawPlatform;
+  }
 
   const q = params.get(PARAM_KEYS.q);
   if (q) result.q = q;
@@ -62,6 +57,7 @@ export function writeFiltersToParams(filters: UrlFilters): URLSearchParams {
   params.set(PARAM_KEYS.variant, filters.variant);
   params.set(PARAM_KEYS.state, filters.state);
   if (filters.view !== 'showcase') params.set(PARAM_KEYS.view, filters.view);
+  if (filters.platform && filters.platform !== 'all') params.set(PARAM_KEYS.platform, filters.platform);
   if (filters.q) params.set(PARAM_KEYS.q, filters.q);
   return params;
 }

@@ -293,6 +293,90 @@ const SYSTEMS: Record<string, SystemSpec> = {
       },
     },
   },
+
+  'Apple iOS HIG': {
+    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro", sans-serif',
+    surface: '#F2F2F7',
+    error: '#FF3B30',
+    focusRing: 'rgba(0, 122, 255, 0.40)',
+    disabled: {
+      background: 'rgba(118, 118, 128, 0.12)',
+      foreground: 'rgba(118, 118, 128, 0.36)',
+      border: NONE,
+      shadow: NONE,
+    },
+    variants: {
+      primary: {
+        base: { background: '#007AFF', foreground: '#FFFFFF', border: NONE, shadow: '0 1px 2px rgba(0,0,0,0.06)' },
+        hover: { background: '#0066D6' },
+        active: { transform: 'scale(0.95)', filter: 'brightness(0.9)' },
+        focus: { outline: '3px solid rgba(0, 122, 255, 0.40)', outlineOffset: '2px' },
+      },
+      secondary: {
+        base: { background: 'rgba(0, 122, 255, 0.12)', foreground: '#007AFF', border: NONE },
+        hover: { background: 'rgba(0, 122, 255, 0.20)' },
+        active: { transform: 'scale(0.95)', background: 'rgba(0, 122, 255, 0.28)' },
+      },
+      tertiary: {
+        base: { background: TRANSPARENT, foreground: '#007AFF', border: NONE, shadow: NONE },
+        hover: { background: 'rgba(0, 122, 255, 0.10)' },
+        active: { transform: 'scale(0.95)', background: 'rgba(0, 122, 255, 0.18)' },
+      },
+      destructive: {
+        base: { background: '#FF3B30', foreground: '#FFFFFF', border: NONE },
+        hover: { background: '#D93128' },
+        active: { transform: 'scale(0.95)' },
+        focus: { outline: '3px solid rgba(255, 59, 48, 0.40)', outlineOffset: '2px' },
+      },
+      icon: {
+        base: { background: 'rgba(0, 122, 255, 0.12)', foreground: '#007AFF', border: NONE },
+        hover: { background: 'rgba(0, 122, 255, 0.20)' },
+        active: { transform: 'scale(0.95)' },
+      },
+    },
+  },
+
+  'Samsung One UI': {
+    fontFamily: 'Samsung Sans, Roboto, sans-serif',
+    surface: '#F7F9FC',
+    error: '#E53935',
+    focusRing: 'rgba(3, 78, 162, 0.35)',
+    disabled: {
+      background: '#DFE2E6',
+      foreground: '#8D9299',
+      border: NONE,
+      shadow: NONE,
+    },
+    variants: {
+      primary: {
+        base: { background: '#034EA2', foreground: '#FFFFFF', border: NONE, shadow: '0 2px 4px rgba(3,78,162,0.20)' },
+        hover: { background: '#023E82' },
+        active: { transform: 'scale(0.96)' },
+        focus: { outline: '2px solid #034EA2', outlineOffset: '2px' },
+      },
+      secondary: {
+        base: { background: '#F0F4FA', foreground: '#034EA2', border: '1px solid rgba(3, 78, 162, 0.30)' },
+        hover: { background: '#E4EBF7' },
+        active: { transform: 'scale(0.96)', background: '#D5E2F5' },
+      },
+      tertiary: {
+        base: { background: TRANSPARENT, foreground: '#034EA2', border: NONE, shadow: NONE },
+        hover: { background: 'rgba(3, 78, 162, 0.10)' },
+        active: { transform: 'scale(0.96)', background: 'rgba(3, 78, 162, 0.20)' },
+      },
+      destructive: {
+        base: { background: '#E53935', foreground: '#FFFFFF', border: NONE },
+        hover: { background: '#C62828' },
+        active: { transform: 'scale(0.96)' },
+        focus: { outline: '2px solid #E53935', outlineOffset: '2px' },
+      },
+      icon: {
+        base: { background: 'rgba(3, 78, 162, 0.10)', foreground: '#034EA2', border: NONE },
+        hover: { background: 'rgba(3, 78, 162, 0.20)' },
+        active: { transform: 'scale(0.96)' },
+      },
+    },
+  },
 };
 
 interface Geometry {
@@ -363,6 +447,26 @@ const GEOMETRY: Record<string, Partial<Record<ComponentType, Geometry>>> = {
     modal: { height: 'auto', padding: '1rem 1.5rem', borderRadius: '8px', fontSize: '14px' },
     radio: { height: '16px', padding: '0', borderRadius: '9999px', fontSize: '14px' },
     tag: { height: '22px', padding: '0 0.5rem', borderRadius: '2px', fontSize: '12px' },
+  },
+  'Apple iOS HIG': {
+    button: { height: '44px', padding: '0.625rem 1.25rem', borderRadius: '12px', fontSize: '15px' },
+    input: { height: '44px', padding: '0.625rem 0.875rem', borderRadius: '12px', fontSize: '15px' },
+    switch: { height: '31px', padding: '2px', borderRadius: '9999px', fontSize: '0' },
+    select: { height: '44px', padding: '0.625rem 0.875rem', borderRadius: '12px', fontSize: '15px' },
+    datepicker: { height: '44px', padding: '0.625rem 0.875rem', borderRadius: '12px', fontSize: '15px' },
+    modal: { height: 'auto', padding: '1.25rem', borderRadius: '20px', fontSize: '15px' },
+    radio: { height: '22px', padding: '0', borderRadius: '9999px', fontSize: '15px' },
+    tag: { height: '28px', padding: '0.25rem 0.75rem', borderRadius: '9999px', fontSize: '13px' },
+  },
+  'Samsung One UI': {
+    button: { height: '48px', padding: '0.625rem 1.5rem', borderRadius: '20px', fontSize: '15px' },
+    input: { height: '48px', padding: '0.75rem 1rem', borderRadius: '16px', fontSize: '15px' },
+    switch: { height: '28px', padding: '2px', borderRadius: '9999px', fontSize: '0' },
+    select: { height: '48px', padding: '0.75rem 1rem', borderRadius: '16px', fontSize: '15px' },
+    datepicker: { height: '48px', padding: '0.75rem 1rem', borderRadius: '16px', fontSize: '15px' },
+    modal: { height: 'auto', padding: '1.25rem', borderRadius: '26px', fontSize: '15px' },
+    radio: { height: '24px', padding: '0', borderRadius: '9999px', fontSize: '15px' },
+    tag: { height: '36px', padding: '0.375rem 1rem', borderRadius: '18px', fontSize: '14px' },
   },
 };
 

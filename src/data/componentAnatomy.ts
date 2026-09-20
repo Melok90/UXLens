@@ -36,6 +36,51 @@ export interface SystemAnatomySpec {
 
 export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnatomySpec>> = {
   button: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG',
+      creator: 'Apple',
+      platform: 'iOS, iPadOS, visionOS',
+      height: '44px (iOS standard)',
+      padding: '12px 20px',
+      borderRadius: '12px (Continuous squircle)',
+      typography: {
+        font: 'SF Pro, -apple-system, sans-serif',
+        size: '17px (Body) / 15px (Subhead)',
+        weight: '600 (Semibold)',
+        lineHeight: '22px',
+      },
+      elevation: 'None (Subtle depth via vibrancy and blur)',
+      touchTarget: '44×44pt (iOS Human Interface Guidelines)',
+      wcag: {
+        ratio: '5.2:1',
+        level: 'AAA',
+        notesRu: 'Четкие акцентные системные цвета (System Tint) с поддержкой увеличенного контраста.',
+        notesEn: 'Distinct system tint colors with built-in high-contrast accessibility mode.',
+      },
+      motion: {
+        easing: 'spring(stiffness: 500, damping: 30)',
+        duration: '150ms',
+        physics: 'Fluid spring physics',
+      },
+      philosophyRu: 'Apple отдает предпочтение контенту. Кнопки используют плавные скругления суперэллипса (squircle) и мягкую физику отскока.',
+      philosophyEn: 'Apple prioritizes content over ornamentation. Buttons employ continuous super-ellipse squircles with fluid spring physics.',
+      highlightsRu: [
+        { label: 'Форма', value: 'Сквиркл (Squircle 12px)' },
+        { label: 'Отклик', value: 'Плавное масштабирование scale(0.96)' },
+        { label: 'Стекломорфизм', value: 'Фоновое размытие (Vibrancy)' },
+      ],
+      highlightsEn: [
+        { label: 'Shape', value: 'Continuous squircle (12px)' },
+        { label: 'Feedback', value: 'Smooth scale(0.96) press state' },
+        { label: 'Materials', value: 'Background vibrancy & blur' },
+      ],
+      tokens: [
+        { name: 'systemBlue', value: '#0071E3', role: 'Основной цвет действия' },
+        { name: 'labelPrimary', value: '#FFFFFF', role: 'Цвет надписи' },
+        { name: 'buttonCornerRadius', value: '12px', role: 'Непрерывное скругление' },
+        { name: 'touchTargetSize', value: '44pt', role: 'Минимальная область касания' },
+      ],
+    },
     'Material Design 3': {
       system: 'Material Design 3',
       creator: 'Google',
@@ -82,49 +127,47 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
         { name: 'md.sys.elevation.level1', value: '0 1px 3px rgba(0,0,0,0.15)', role: 'Уровень тени' },
       ],
     },
-    'Apple HIG': {
-      system: 'Apple HIG',
-      creator: 'Apple',
-      platform: 'iOS, macOS, visionOS',
-      height: '44px (iOS standard)',
-      padding: '12px 20px',
-      borderRadius: '12px (Continuous squircle)',
+    'Samsung One UI': {
+      system: 'Samsung One UI',
+      creator: 'Samsung',
+      platform: 'Android, One UI 6, Galaxy',
+      height: '44px / 48px',
+      padding: '10px 22px',
+      borderRadius: '16px (Ergonomic squircle)',
       typography: {
-        font: 'SF Pro, -apple-system, sans-serif',
-        size: '17px (Body) / 15px (Subhead)',
+        font: 'Samsung Sans, Roboto, sans-serif',
+        size: '15px',
         weight: '600 (Semibold)',
-        lineHeight: '22px',
+        lineHeight: '20px',
       },
-      elevation: 'None (Subtle depth via vibrancy and blur)',
-      touchTarget: '44×44pt (iOS Human Interface Guidelines)',
+      elevation: 'None (Clean flat surface with active ripple)',
+      touchTarget: '48×48dp (One-handed reach)',
       wcag: {
-        ratio: '5.2:1',
-        level: 'AAA',
-        notesRu: 'Четкие акцентные системные цвета (System Tint) с поддержкой увеличенного контраста.',
-        notesEn: 'Distinct system tint colors with built-in high-contrast accessibility mode.',
+        ratio: '4.9:1',
+        level: 'AA',
+        notesRu: 'Крупная сенсорная цель 48dp, удобная для нажатия большим пальцем в нижней половине экрана.',
+        notesEn: 'Generous 48dp touch target optimized for one-handed thumb interaction.',
       },
       motion: {
-        easing: 'spring(stiffness: 500, damping: 30)',
-        duration: '150ms',
-        physics: 'Fluid spring physics',
+        easing: 'cubic-bezier(0.33, 1, 0.68, 1)',
+        duration: '220ms',
+        physics: 'Samsung Smooth Curve',
       },
-      philosophyRu: 'Apple отдает предпочтение контенту. Кнопки используют плавные скругления суперэллипса (squircle) и мягкую физику отскока.',
-      philosophyEn: 'Apple prioritizes content over ornamentation. Buttons employ continuous super-ellipse squircles with fluid spring physics.',
+      philosophyRu: 'Концепция One UI ориентирована на комфорт: элементы управления сосредоточены в нижней зоне взаимодействия, а углы имеют мягкий эргономичный радиус 16px.',
+      philosophyEn: 'One UI focuses on reachability: actionable controls reside in the lower interaction zone with friendly 16px squircle curves.',
       highlightsRu: [
-        { label: 'Форма', value: 'Сквиркл (Squircle 12px)' },
-        { label: 'Отклик', value: 'Плавное масштабирование scale(0.96)' },
-        { label: 'Стекломорфизм', value: 'Фоновое размытие (Vibrancy)' },
+        { label: 'Форма', value: 'Сквиркл 16px' },
+        { label: 'Зона', value: 'One-handed reach' },
+        { label: 'Цвет', value: 'Samsung Cobalt #034EA2' },
       ],
       highlightsEn: [
-        { label: 'Shape', value: 'Continuous squircle (12px)' },
-        { label: 'Feedback', value: 'Smooth scale(0.96) press state' },
-        { label: 'Materials', value: 'Background vibrancy & blur' },
+        { label: 'Shape', value: '16px squircle' },
+        { label: 'Ergonomics', value: 'One-handed thumb reach' },
+        { label: 'Color', value: 'Samsung Cobalt #034EA2' },
       ],
       tokens: [
-        { name: 'systemBlue', value: '#0071E3', role: 'Основной цвет действия' },
-        { name: 'labelPrimary', value: '#FFFFFF', role: 'Цвет надписи' },
-        { name: 'buttonCornerRadius', value: '12px', role: 'Непрерывное скругление' },
-        { name: 'touchTargetSize', value: '44pt', role: 'Минимальная область касания' },
+        { name: 'sesl_btn_primary_background', value: '#034EA2', role: 'Основной цвет кнопки' },
+        { name: 'sesl_btn_corner_radius', value: '16px', role: 'Радиус скругления' },
       ],
     },
     'Fluent UI': {
@@ -349,6 +392,18 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   input: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '44px', padding: '10px 14px', borderRadius: '10px',
+      typography: { font: 'SF Pro', size: '17px', weight: '400', lineHeight: '22px' },
+      elevation: 'None', touchTarget: '44×44pt',
+      wcag: { ratio: '4.9:1', level: 'AA', notesRu: 'Кнопка быстрой очистки (X) справа.', notesEn: 'Built-in clear button (X).' },
+      motion: { easing: 'ease', duration: '120ms', physics: 'Direct focus glow' },
+      philosophyRu: 'Минималистичный сквиркл со светло-серым фоном.',
+      philosophyEn: 'Minimalist squircle with light gray fill.',
+      highlightsRu: [{ label: 'Скругление', value: '10px сквиркл' }, { label: 'Текст', value: '17px SF Pro' }],
+      highlightsEn: [{ label: 'Rounding', value: '10px squircle' }, { label: 'Typography', value: '17px SF Pro' }],
+      tokens: [{ name: 'systemGray6', value: '#F2F2F7', role: 'Фон' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '56px', padding: '16px 16px 8px', borderRadius: '4px',
       typography: { font: 'Roboto', size: '16px', weight: '400', lineHeight: '24px' },
@@ -361,17 +416,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsEn: [{ label: 'Height', value: '56px' }, { label: 'Label', value: 'Floating label' }],
       tokens: [{ name: 'md.sys.color.surface-variant', value: '#E7E0EC', role: 'Фон' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '44px', padding: '10px 14px', borderRadius: '10px',
-      typography: { font: 'SF Pro', size: '17px', weight: '400', lineHeight: '22px' },
-      elevation: 'None', touchTarget: '44×44pt',
-      wcag: { ratio: '4.9:1', level: 'AA', notesRu: 'Кнопка быстрой очистки (X) справа.', notesEn: 'Built-in clear button (X).' },
-      motion: { easing: 'ease', duration: '120ms', physics: 'Direct focus glow' },
-      philosophyRu: 'Минималистичный сквиркл со светло-серым фоном.',
-      philosophyEn: 'Minimalist squircle with light gray fill.',
-      highlightsRu: [{ label: 'Скругление', value: '10px сквиркл' }, { label: 'Текст', value: '17px SF Pro' }],
-      highlightsEn: [{ label: 'Rounding', value: '10px squircle' }, { label: 'Typography', value: '17px SF Pro' }],
-      tokens: [{ name: 'systemGray6', value: '#F2F2F7', role: 'Фон' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '48px', padding: '10px 16px', borderRadius: '14px',
+      typography: { font: 'Samsung Sans', size: '15px', weight: '400', lineHeight: '20px' },
+      elevation: 'None', touchTarget: '48×48dp',
+      wcag: { ratio: '4.8:1', level: 'AA', notesRu: 'Мягкий фон и синяя обводка при фокусе.', notesEn: 'Soft container with blue focus ring.' },
+      motion: { easing: 'ease', duration: '150ms', physics: 'Direct' },
+      philosophyRu: 'Крупное поле с мягкими углами для легкого набора на смартфонах Galaxy.',
+      philosophyEn: 'Generous field with soft corners for effortless typing on Galaxy devices.',
+      highlightsRu: [{ label: 'Высота', value: '48px' }], highlightsEn: [{ label: 'Height', value: '48px' }],
+      tokens: [{ name: 'sesl_edittext_bg', value: '#F2F4F6', role: 'Фон поля' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '32px', padding: '4px 10px', borderRadius: '4px',
@@ -435,6 +489,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   switch: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '31px', padding: '2px', borderRadius: '9999px',
+      typography: { font: 'SF Pro', size: '15px', weight: '400', lineHeight: '20px' },
+      elevation: '0 3px 8px rgba(0,0,0,0.15)', touchTarget: '44×44pt',
+      wcag: { ratio: '5.8:1', level: 'AAA', notesRu: 'SystemGreen (#34C759) с физикой отскока.', notesEn: 'SystemGreen (#34C759) spring.' },
+      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Fluid spring' },
+      philosophyRu: 'Золотой стандарт тумблера: белый круг на сочном зеленом фоне.',
+      philosophyEn: 'The digital switch benchmark: white thumb on rich green.',
+      highlightsRu: [{ label: 'Цвет', value: 'SystemGreen #34C759' }], highlightsEn: [{ label: 'Color', value: 'SystemGreen #34C759' }],
+      tokens: [{ name: 'systemGreen', value: '#34C759', role: 'Активно' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '32px', padding: '4px', borderRadius: '9999px',
       typography: { font: 'Roboto', size: '14px', weight: '500', lineHeight: '20px' },
@@ -446,16 +511,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Трек', value: '52×32px' }], highlightsEn: [{ label: 'Track', value: '52×32px' }],
       tokens: [{ name: 'md.sys.color.primary', value: '#1447E6', role: 'Трек' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '31px', padding: '2px', borderRadius: '9999px',
-      typography: { font: 'SF Pro', size: '15px', weight: '400', lineHeight: '20px' },
-      elevation: '0 3px 8px rgba(0,0,0,0.15)', touchTarget: '44×44pt',
-      wcag: { ratio: '5.8:1', level: 'AAA', notesRu: 'SystemGreen (#34C759) с физикой отскока.', notesEn: 'SystemGreen (#34C759) spring.' },
-      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Fluid spring' },
-      philosophyRu: 'Золотой стандарт тумблера: белый круг на сочном зеленом фоне.',
-      philosophyEn: 'The digital switch benchmark: white thumb on rich green.',
-      highlightsRu: [{ label: 'Цвет', value: 'SystemGreen #34C759' }], highlightsEn: [{ label: 'Color', value: 'SystemGreen #34C759' }],
-      tokens: [{ name: 'systemGreen', value: '#34C759', role: 'Активно' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '30px', padding: '2px', borderRadius: '9999px',
+      typography: { font: 'Samsung Sans', size: '15px', weight: '400', lineHeight: '20px' },
+      elevation: 'None', touchTarget: '48×48dp',
+      wcag: { ratio: '5.2:1', level: 'AA', notesRu: 'Глубокий синий цвет активации One UI (#034EA2).', notesEn: 'Deep Samsung blue active track (#034EA2).' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '200ms', physics: 'Smooth glide' },
+      philosophyRu: 'Высокий комфортный тумблер настроек в меню Galaxy.',
+      philosophyEn: 'Ergonomic toggle switch for Galaxy Settings.',
+      highlightsRu: [{ label: 'Цвет', value: '#034EA2' }], highlightsEn: [{ label: 'Color', value: '#034EA2' }],
+      tokens: [{ name: 'sesl_switch_track_on', value: '#034EA2', role: 'Активный трек' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '20px', padding: '3px', borderRadius: '9999px',
@@ -514,6 +579,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   select: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '44px', padding: '10px 14px', borderRadius: '10px',
+      typography: { font: 'SF Pro', size: '17px', weight: '400', lineHeight: '22px' },
+      elevation: 'Native Context Menu Glass', touchTarget: '44×44pt',
+      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Контекстное меню с размытием заднего плана.', notesEn: 'Context menu with liquid glass blur.' },
+      motion: { easing: 'spring(400, 28)', duration: '160ms', physics: 'Pop-in' },
+      philosophyRu: 'Нативное меню с галочкой у выбранного пункта.',
+      philosophyEn: 'Native context menu with checkmark.',
+      highlightsRu: [{ label: 'Стиль', value: 'iOS Context Menu' }], highlightsEn: [{ label: 'Style', value: 'iOS Context Menu' }],
+      tokens: [{ name: 'menuBackground', value: 'rgba(250,250,250,0.85)', role: 'Фон' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '56px', padding: '16px', borderRadius: '4px',
       typography: { font: 'Roboto', size: '16px', weight: '400', lineHeight: '24px' },
@@ -525,16 +601,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Мульти-выбор', value: 'Чипсы' }], highlightsEn: [{ label: 'Multi-select', value: 'Chips' }],
       tokens: [{ name: 'md.sys.color.surface-container-high', value: '#ECE6F0', role: 'Меню' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '44px', padding: '10px 14px', borderRadius: '10px',
-      typography: { font: 'SF Pro', size: '17px', weight: '400', lineHeight: '22px' },
-      elevation: 'Native Context Menu Glass', touchTarget: '44×44pt',
-      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Контекстное меню с размытием заднего плана.', notesEn: 'Context menu with liquid glass blur.' },
-      motion: { easing: 'spring(400, 28)', duration: '160ms', physics: 'Pop-in' },
-      philosophyRu: 'Нативное меню с галочкой у выбранного пункта.',
-      philosophyEn: 'Native context menu with checkmark.',
-      highlightsRu: [{ label: 'Стиль', value: 'iOS Context Menu' }], highlightsEn: [{ label: 'Style', value: 'iOS Context Menu' }],
-      tokens: [{ name: 'menuBackground', value: 'rgba(250,250,250,0.85)', role: 'Фон' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '48px', padding: '12px 16px', borderRadius: '16px',
+      typography: { font: 'Samsung Sans', size: '15px', weight: '500', lineHeight: '20px' },
+      elevation: 'Level 2 Bottom Sheet', touchTarget: '48×48dp',
+      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Открытие в виде Bottom Sheet снизу экрана для удобного выбора большим пальцем.', notesEn: 'Bottom Sheet modal anchored to lower screen zone.' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '220ms', physics: 'Slide up' },
+      philosophyRu: 'В One UI выпадающие списки открываются снизу экрана (Bottom Sheet), где до них легко дотянуться.',
+      philosophyEn: 'One UI opens selection lists as bottom sheets within easy thumb reach.',
+      highlightsRu: [{ label: 'Тип', value: 'Bottom Sheet' }], highlightsEn: [{ label: 'Type', value: 'Bottom Sheet' }],
+      tokens: [{ name: 'sesl_spinner_bg', value: '#FFFFFF', role: 'Фон селектора' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '32px', padding: '4px 10px', borderRadius: '4px',
@@ -593,6 +669,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   datepicker: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '340px', padding: '16px', borderRadius: '14px',
+      typography: { font: 'SF Pro', size: '17px', weight: '600', lineHeight: '22px' },
+      elevation: 'Subtle shadow + Vibrancy', touchTarget: '44×44pt',
+      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Компактный инлайн-календарь.', notesEn: 'Compact graphical inline calendar.' },
+      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Slide' },
+      philosophyRu: 'Минималистичная сетка с системным акцентным цветом.',
+      philosophyEn: 'Minimalist calendar grid with system tint.',
+      highlightsRu: [{ label: 'Радиус', value: '14px' }], highlightsEn: [{ label: 'Radius', value: '14px' }],
+      tokens: [{ name: 'systemBlue', value: '#0071E3', role: 'Дата' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '480px', padding: '16px', borderRadius: '28px',
       typography: { font: 'Roboto', size: '14px', weight: '400', lineHeight: '20px' },
@@ -604,16 +691,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Радиус', value: '28px' }], highlightsEn: [{ label: 'Radius', value: '28px' }],
       tokens: [{ name: 'md.sys.color.primary', value: '#1447E6', role: 'День' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '340px', padding: '16px', borderRadius: '14px',
-      typography: { font: 'SF Pro', size: '17px', weight: '600', lineHeight: '22px' },
-      elevation: 'Subtle shadow + Vibrancy', touchTarget: '44×44pt',
-      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Компактный инлайн-календарь.', notesEn: 'Compact graphical inline calendar.' },
-      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Slide' },
-      philosophyRu: 'Минималистичная сетка с системным акцентным цветом.',
-      philosophyEn: 'Minimalist calendar grid with system tint.',
-      highlightsRu: [{ label: 'Радиус', value: '14px' }], highlightsEn: [{ label: 'Radius', value: '14px' }],
-      tokens: [{ name: 'systemBlue', value: '#0071E3', role: 'Дата' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '380px', padding: '16px', borderRadius: '24px',
+      typography: { font: 'Samsung Sans', size: '15px', weight: '600', lineHeight: '20px' },
+      elevation: 'Level 2 Card', touchTarget: '48×48dp',
+      wcag: { ratio: '5.1:1', level: 'AA', notesRu: 'Круглые кнопки дней с контрастным синим индикатором #034EA2.', notesEn: 'Circular day pills with contrasting cobalt blue mark.' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '220ms', physics: 'Page glide' },
+      philosophyRu: 'Календарь One UI оптимизирован для быстрого свайпа месяцев одной рукой.',
+      philosophyEn: 'One UI Calendar is optimized for quick one-handed month swiping.',
+      highlightsRu: [{ label: 'Форма дня', value: 'Круг 40px' }], highlightsEn: [{ label: 'Day target', value: 'Circle 40px' }],
+      tokens: [{ name: 'sesl_calendar_selected_day', value: '#034EA2', role: 'Выбранный день' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '300px', padding: '12px', borderRadius: '4px',
@@ -672,6 +759,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   modal: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: 'Auto', padding: '20px', borderRadius: '14px',
+      typography: { font: 'SF Pro', size: '17px (Title)', weight: '600', lineHeight: '22px' },
+      elevation: 'Vibrancy blur', touchTarget: '44×44pt',
+      wcag: { ratio: '5.5:1', level: 'AAA', notesRu: 'Разделительные тонкие линии 0.5px.', notesEn: 'Hairline 0.5px dividers.' },
+      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Spring pop-in' },
+      philosophyRu: 'Компактный системный алерт с разделителями.',
+      philosophyEn: 'Iconic iOS modal alert.',
+      highlightsRu: [{ label: 'Стекло', value: 'Vibrancy' }], highlightsEn: [{ label: 'Material', value: 'Vibrancy' }],
+      tokens: [{ name: 'alertCornerRadius', value: '14px', role: 'Скругление' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: 'Auto', padding: '24px', borderRadius: '28px',
       typography: { font: 'Roboto', size: '24px', weight: '400', lineHeight: '32px' },
@@ -683,16 +781,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Радиус', value: '28px' }], highlightsEn: [{ label: 'Radius', value: '28px' }],
       tokens: [{ name: 'md.sys.shape.corner.extra-large', value: '28px', role: 'Радиус' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: 'Auto', padding: '20px', borderRadius: '14px',
-      typography: { font: 'SF Pro', size: '17px', weight: '600', lineHeight: '22px' },
-      elevation: 'Vibrancy blur', touchTarget: '44×44pt',
-      wcag: { ratio: '5.5:1', level: 'AAA', notesRu: 'Разделительные тонкие линии 0.5px.', notesEn: 'Hairline 0.5px dividers.' },
-      motion: { easing: 'spring(500, 30)', duration: '180ms', physics: 'Spring pop-in' },
-      philosophyRu: 'Компактный системный алерт с разделителями.',
-      philosophyEn: 'Iconic iOS modal alert.',
-      highlightsRu: [{ label: 'Стекло', value: 'Vibrancy' }], highlightsEn: [{ label: 'Material', value: 'Vibrancy' }],
-      tokens: [{ name: 'alertCornerRadius', value: '14px', role: 'Скругление' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: 'Auto', padding: '24px', borderRadius: '24px',
+      typography: { font: 'Samsung Sans', size: '18px', weight: '700', lineHeight: '24px' },
+      elevation: 'Level 3 Dialog', touchTarget: '48×48dp',
+      wcag: { ratio: '5.1:1', level: 'AA', notesRu: 'Крупные скругления 24px и кнопки действий внизу в легком доступе.', notesEn: 'Prominent 24px squircle with bottom thumb-friendly buttons.' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '220ms', physics: 'Pop scale' },
+      philosophyRu: 'Диалоговые окна One UI центрируются так, чтобы ключевые кнопки отмены и подтверждения были внизу.',
+      philosophyEn: 'One UI dialogs position affirmative buttons at bottom for natural thumb tapping.',
+      highlightsRu: [{ label: 'Радиус', value: '24px сквиркл' }], highlightsEn: [{ label: 'Radius', value: '24px squircle' }],
+      tokens: [{ name: 'sesl_dialog_corner_radius', value: '24px', role: 'Скругление окна' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: 'Auto', padding: '24px', borderRadius: '8px',
@@ -751,6 +849,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   radio: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '18px', padding: '13px', borderRadius: '50%',
+      typography: { font: 'SF Pro', size: '15px', weight: '400', lineHeight: '20px' },
+      elevation: 'None', touchTarget: '44×44pt',
+      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Пружинная анимация точки.', notesEn: 'Spring bullet animation.' },
+      motion: { easing: 'spring(500, 30)', duration: '140ms', physics: 'Pop' },
+      philosophyRu: 'Часто заменяется строками с галочкой (Checkmark rows).',
+      philosophyEn: 'Frequently rendered as checkmark table rows.',
+      highlightsRu: [{ label: 'Стиль', value: 'Галочка в строке' }], highlightsEn: [{ label: 'Style', value: 'Row checkmark' }],
+      tokens: [{ name: 'systemBlue', value: '#0071E3', role: 'Точка' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '20px', padding: '10px', borderRadius: '50%',
       typography: { font: 'Roboto', size: '14px', weight: '400', lineHeight: '20px' },
@@ -762,16 +871,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Размер', value: '20px' }], highlightsEn: [{ label: 'Size', value: '20px' }],
       tokens: [{ name: 'md.sys.color.primary', value: '#1447E6', role: 'Точка' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '18px', padding: '13px', borderRadius: '50%',
-      typography: { font: 'SF Pro', size: '15px', weight: '400', lineHeight: '20px' },
-      elevation: 'None', touchTarget: '44×44pt',
-      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Пружинная анимация точки.', notesEn: 'Spring bullet animation.' },
-      motion: { easing: 'spring(500, 30)', duration: '140ms', physics: 'Pop' },
-      philosophyRu: 'Часто заменяется строками с галочкой (Checkmark rows).',
-      philosophyEn: 'Frequently rendered as checkmark table rows.',
-      highlightsRu: [{ label: 'Стиль', value: 'Галочка в строке' }], highlightsEn: [{ label: 'Style', value: 'Row checkmark' }],
-      tokens: [{ name: 'systemBlue', value: '#0071E3', role: 'Точка' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '22px', padding: '13px', borderRadius: '50%',
+      typography: { font: 'Samsung Sans', size: '15px', weight: '400', lineHeight: '20px' },
+      elevation: 'None', touchTarget: '48×48dp',
+      wcag: { ratio: '5.1:1', level: 'AA', notesRu: 'Контрастный синий маркер #034EA2 с мягким расширением круга.', notesEn: 'Cobalt blue mark with tactile ripple scaling.' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '180ms', physics: 'Scale pop' },
+      philosophyRu: 'Крупная область нажатия 48dp для комфортного выбора опций на ходу.',
+      philosophyEn: '48dp touch target for comfortable one-handed option selection on the move.',
+      highlightsRu: [{ label: 'Диаметр', value: '22px' }], highlightsEn: [{ label: 'Diameter', value: '22px' }],
+      tokens: [{ name: 'sesl_radio_dot', value: '#034EA2', role: 'Точка выбора' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '16px', padding: '8px', borderRadius: '50%',
@@ -830,6 +939,17 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
   tag: {
+    'Apple iOS HIG': {
+      system: 'Apple iOS HIG', creator: 'Apple', platform: 'iOS, iPadOS', height: '28px', padding: '4px 10px', borderRadius: '14px',
+      typography: { font: 'SF Pro', size: '13px', weight: '500', lineHeight: '18px' },
+      elevation: 'None', touchTarget: '32×32pt',
+      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Полупрозрачная тонировка с акцентом.', notesEn: 'Translucent tint with accent.' },
+      motion: { easing: 'spring(500, 30)', duration: '140ms', physics: 'Spring vanish' },
+      philosophyRu: 'Капсулы с мягким акцентным фоном.',
+      philosophyEn: 'Capsules with soft accent tint.',
+      highlightsRu: [{ label: 'Форма', value: 'Капсула' }], highlightsEn: [{ label: 'Shape', value: 'Capsule' }],
+      tokens: [{ name: 'tagTint', value: 'rgba(0,113,227,0.12)', role: 'Фон' }],
+    },
     'Material Design 3': {
       system: 'Material Design 3', creator: 'Google', platform: 'Android, Web', height: '32px', padding: '6px 12px', borderRadius: '8px',
       typography: { font: 'Roboto', size: '14px', weight: '500', lineHeight: '20px' },
@@ -841,16 +961,16 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
       highlightsRu: [{ label: 'Радиус', value: '8px' }], highlightsEn: [{ label: 'Radius', value: '8px' }],
       tokens: [{ name: 'md.sys.shape.corner.small', value: '8px', role: 'Радиус' }],
     },
-    'Apple HIG': {
-      system: 'Apple HIG', creator: 'Apple', platform: 'iOS, macOS', height: '28px', padding: '4px 10px', borderRadius: '14px',
-      typography: { font: 'SF Pro', size: '13px', weight: '500', lineHeight: '18px' },
-      elevation: 'None', touchTarget: '32×32pt',
-      wcag: { ratio: '5.0:1', level: 'AA', notesRu: 'Полупрозрачная тонировка с акцентом.', notesEn: 'Translucent tint with accent.' },
-      motion: { easing: 'spring(500, 30)', duration: '140ms', physics: 'Spring vanish' },
-      philosophyRu: 'Капсулы с мягким акцентным фоном.',
-      philosophyEn: 'Capsules with soft accent tint.',
-      highlightsRu: [{ label: 'Форма', value: 'Капсула' }], highlightsEn: [{ label: 'Shape', value: 'Capsule' }],
-      tokens: [{ name: 'tagTint', value: 'rgba(0,113,227,0.12)', role: 'Фон' }],
+    'Samsung One UI': {
+      system: 'Samsung One UI', creator: 'Samsung', platform: 'Android, Galaxy', height: '28px', padding: '4px 12px', borderRadius: '14px',
+      typography: { font: 'Samsung Sans', size: '13px', weight: '600', lineHeight: '18px' },
+      elevation: 'None', touchTarget: '36×36dp',
+      wcag: { ratio: '4.9:1', level: 'AA', notesRu: 'Мягкий фон #E8F0FE с фирменным синим текстом #034EA2.', notesEn: 'Soft #E8F0FE surface with cobalt text.' },
+      motion: { easing: 'cubic-bezier(0.33, 1, 0.68, 1)', duration: '160ms', physics: 'Scale out' },
+      philosophyRu: 'Легкие закругленные чипсы категорий в приложении Samsung Files и Галерея.',
+      philosophyEn: 'Approachable squircle filter tags in Samsung Gallery and My Files.',
+      highlightsRu: [{ label: 'Скругление', value: '14px' }], highlightsEn: [{ label: 'Rounding', value: '14px' }],
+      tokens: [{ name: 'sesl_tag_bg', value: '#E8F0FE', role: 'Фон тега' }],
     },
     'Fluent UI': {
       system: 'Fluent UI', creator: 'Microsoft', platform: 'Windows, Web', height: '24px', padding: '2px 8px', borderRadius: '4px',
@@ -865,7 +985,7 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
     'Atlassian': {
       system: 'Atlassian', creator: 'Atlassian', platform: 'Web', height: '20px', padding: '2px 6px', borderRadius: '3px',
-      typography: { font: 'sans-serif', size: '11px', weight: '700', lineHeight: '16px' },
+      typography: { font: 'sans-serif', size: '11px', weight: '700', lineHeight: '16px', letterSpacing: '+0.5px' },
       elevation: 'None', touchTarget: '20×20px',
       wcag: { ratio: '5.2:1', level: 'AAA', notesRu: 'Atlassian Lozenge с верхним регистром.', notesEn: 'Uppercase lozenge badge.' },
       motion: { easing: 'ease', duration: '100ms', physics: 'Fade' },
@@ -909,3 +1029,18 @@ export const COMPONENT_ANATOMY: Record<ComponentType, Record<string, SystemAnato
     },
   },
 };
+
+export function getSystemAnatomy(component: ComponentType, systemName: string): SystemAnatomySpec | undefined {
+  const map = COMPONENT_ANATOMY[component];
+  if (!map) return undefined;
+  if (map[systemName]) return map[systemName];
+  const name = systemName.toLowerCase();
+  for (const [key, val] of Object.entries(map)) {
+    if (key.toLowerCase() === name) return val;
+    if (name.includes('apple') && key.toLowerCase().includes('apple')) return val;
+    if (name.includes('samsung') && key.toLowerCase().includes('samsung')) return val;
+    if (name.includes('material') && key.toLowerCase().includes('material')) return val;
+    if (name.includes('fluent') && key.toLowerCase().includes('fluent')) return val;
+  }
+  return undefined;
+}

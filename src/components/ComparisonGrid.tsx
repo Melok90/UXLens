@@ -681,6 +681,7 @@ export default function ComparisonGrid() {
   const activeState = useStore(state => state.activeState);
   const activeVariant = useStore(state => state.activeVariant);
   const searchQuery = useStore(state => state.searchQuery);
+  const platformFilter = useStore(state => state.platformFilter);
   const setActiveComponent = useStore(state => state.setActiveComponent);
   const setActiveState = useStore(state => state.setActiveState);
   const setActiveVariant = useStore(state => state.setActiveVariant);
@@ -802,6 +803,36 @@ export default function ComparisonGrid() {
         "Для вторичных действий используйте default type.",
         "Группируйте связанные действия."
       ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: <InteractiveButton system="Apple iOS HIG" variant={activeVariant} state={activeState} tText={tText} />,
+      codeContent: `Button(action: { /* action */ }) {\n  Text("${tText("Основное действие")}")\n    .font(.body.weight(.semibold))\n}\n.buttonStyle(.borderedProminent)\n.controlSize(.regular)`,
+      logicTitle: "Human Interface Button",
+      logicDescription: "Кнопки со скруглением squircle (~12px), высотой 44pt и тактильным откликом Haptics. Четкая иерархия через Prominent, Tinted, Gray и Plain стили.",
+      accessibilityText: "Минимальный тач-таргет 44x44pt. Полная поддержка Dynamic Type, VoiceOver и Increase Contrast.",
+      bestPractices: [
+        "Используйте одну Prominent кнопку на экран.",
+        "Вторичные действия делайте Gray или Tinted.",
+        "Текст кнопки должен начинаться с глагола действия."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: <InteractiveButton system="Samsung One UI" variant={activeVariant} state={activeState} tText={tText} />,
+      codeContent: `<com.google.android.material.button.MaterialButton\n  android:layout_width="match_parent"\n  android:layout_height="48dp"\n  app:cornerRadius="24dp"\n  app:backgroundTint="#034EA2"\n  android:text="${tText("Основное действие")}" />`,
+      logicTitle: "One UI Action Button",
+      logicDescription: "Сверхскругленные кнопки с радиусом 20-24dp и высотой 48dp, расположенные в нижней зоне экрана (Interaction Area) для комфортного управления одной рукой.",
+      accessibilityText: "Сенсорная область 48x48dp. Поддержка TalkBack, Haptic Feedback и масштабирования шрифта One UI.",
+      bestPractices: [
+        "Размещайте кнопки в зоне досягаемости большого пальца.",
+        "Используйте фирменный кобальтовый синий (#034EA2).",
+        "Ограничивайте длину подписи кнопки."
+      ]
     }
   ];
 
@@ -895,6 +926,36 @@ export default function ComparisonGrid() {
         "Группируйте связанные поля.",
         "Выделяйте фокус цветом."
       ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: <InteractiveInput system="Apple iOS HIG" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
+      codeContent: `TextField("${tText('Введите текст')}", text: $text)\n  .textFieldStyle(.roundedBorder)\n  .padding(.horizontal)`,
+      logicTitle: "iOS Cupertino Input",
+      logicDescription: "Плавное скругление углов 12px, адаптивный фон (System Gray 6) и чистая типографика SF Pro. Адаптивная экранная клавиатура в зависимости от типа поля.",
+      accessibilityText: "Высота поля 44pt для удобного ввода пальцем. Поддержка Dictation и VoiceOver с четким зачитыванием плейсхолдера.",
+      bestPractices: [
+        "Указывайте правильный contentType для автозаполнения.",
+        "Всегда добавляйте кнопку быстрой очистки (Clear Button).",
+        "Адаптируйте тип экранной клавиатуры под тип данных."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: <InteractiveInput system="Samsung One UI" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
+      codeContent: `<com.google.android.material.textfield.TextInputLayout\n  style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"\n  app:boxCornerRadiusTopStart="16dp"\n  app:boxCornerRadiusBottomEnd="16dp"\n  app:boxStrokeColor="#034EA2" />`,
+      logicTitle: "One UI Rounded Input",
+      logicDescription: "Скругленный контейнер 16-20dp с фоновым заполнением и четкой индикацией фокуса фирменным синим цветом. Оптимизирован для набора текста одной рукой.",
+      accessibilityText: "Сенсорная высота не менее 48dp. Поддержка озвучивания ошибок ввода через TalkBack.",
+      bestPractices: [
+        "Размещайте поле ввода ниже для легкого касания.",
+        "Используйте встроенную плавающую метку.",
+        "Мгновенно валидируйте ввод при потере фокуса."
+      ]
     }
   ];
 
@@ -987,6 +1048,36 @@ export default function ComparisonGrid() {
         "Используйте в таблицах и списках.",
         "Может содержать иконки check/close.",
         "Стандартизируйте размер (small/default)."
+      ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: <InteractiveSwitch system="Apple iOS HIG" state={activeState} />,
+      codeContent: `Toggle("Уведомления", isOn: $isEnabled)\n  .toggleStyle(SwitchToggleStyle(tint: .green))`,
+      logicTitle: "iOS Signature Switch",
+      logicDescription: "Эталонный мобильный переключатель (51x31pt) с фирменным зеленым цветом (#34C759) и тактильным щелчком Haptic Feedback при переключении.",
+      accessibilityText: "Размер тач-таргета 51x31pt. Голосовое сопровождение VoiceOver: 'Включено / Выключено, Переключатель'.",
+      bestPractices: [
+        "Используйте переключатель только для мгновенных настроек без кнопки 'Сохранить'.",
+        "Всегда сопровождайте четкой текстовой меткой слева.",
+        "Не используйте для подтверждения действий в формах."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: <InteractiveSwitch system="Samsung One UI" state={activeState} />,
+      codeContent: `<androidx.appcompat.widget.SwitchCompat\n  android:layout_width="wrap_content"\n  android:layout_height="48dp"\n  app:thumbTint="@color/white"\n  app:trackTint="#034EA2" />`,
+      logicTitle: "One UI Thumb Switch",
+      logicDescription: "Компактный переключатель (50x28dp) с плавной физической пружинной анимацией и акцентным сапфировым синим фоном (#034EA2).",
+      accessibilityText: "Минимальная сенсорная зона 48dp вокруг свитча для предотвращения ложных нажатий. Поддержка TalkBack.",
+      bestPractices: [
+        "Применяйте для системных тумблеров и быстрых настроек.",
+        "Обеспечивайте контраст ползунка в неактивном состоянии.",
+        "Размещайте по правому краю строки списка настроек."
       ]
     }
   ];
@@ -1297,6 +1388,106 @@ export default function ComparisonGrid() {
         "Используйте 'maxTagCount' для чистоты.",
         "Включайте поиск по умолчанию для списков.",
         "Подсвечивайте совпадения в результатах."
+      ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[240px] text-left">
+          <div
+            onClick={(e) => handleToggle("Apple iOS HIG", e)}
+            className={getInputStateClasses(
+              openSystem === "Apple iOS HIG" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              "px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-neutral-700 bg-[#767680]/10 flex items-center justify-between cursor-pointer",
+              "hover:bg-[#767680]/15",
+              "bg-[#767680]/20",
+              "border-[#007AFF] ring-2 ring-[#007AFF]/25",
+              "opacity-50 cursor-not-allowed",
+              "border-[#FF3B30] ring-2 ring-[#FF3B30]/30"
+            )}
+          >
+            <div className="flex items-center gap-1.5">
+              <span className="bg-[#007AFF]/15 text-[#007AFF] text-xs px-2.5 py-0.5 rounded-full font-semibold">
+                Опция 1
+              </span>
+              <span className="text-xs text-gray-500">+ 2</span>
+            </div>
+            <ChevronDown className="w-4 h-4 text-[#007AFF]" />
+          </div>
+          {(openSystem === "Apple iOS HIG" || activeState === 'open') && (
+            <div className="absolute z-10 w-[240px] mt-1 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 dark:border-neutral-700 overflow-hidden" onClick={e => e.stopPropagation()}>
+              <div className="max-h-[140px] overflow-y-auto p-1">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="px-3 py-2 text-xs rounded-lg hover:bg-[#007AFF]/10 flex items-center justify-between cursor-pointer">
+                    <span>Параметр {i}</span>
+                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#007AFF]" />}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ),
+      codeContent: `Picker("Категория", selection: $selection) {\n  ForEach(options, id: \\.self) { Text($0) }\n}\n.pickerStyle(.menu)`,
+      logicTitle: "iOS Context Menu Picker",
+      logicDescription: "На мобильных устройствах iOS выбор вариантов реализуется через контекстное всплывающее меню (UIMenu) или нижний полуэкранный барабан (Wheel Picker).",
+      accessibilityText: "Роль UIAccessibilityTraitSelected. Переключение фокуса по элементам через свайпы VoiceOver.",
+      bestPractices: [
+        "Для < 5 элементов используйте Segmented Control.",
+        "Для списков дат используйте DatePicker Wheel.",
+        "Для длинных списков открывайте отдельный модальный экран со строкой поиска."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[240px] text-left">
+          <div
+            onClick={(e) => handleToggle("Samsung One UI", e)}
+            className={getInputStateClasses(
+              openSystem === "Samsung One UI" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              "px-4 py-2.5 rounded-2xl border border-[#DFE2E6] dark:border-neutral-700 bg-[#F2F4F7] dark:bg-neutral-800 flex items-center justify-between cursor-pointer",
+              "hover:border-[#034EA2]/50",
+              "bg-[#E8EDF5]",
+              "border-[#034EA2] ring-2 ring-[#034EA2]/25",
+              "opacity-50 cursor-not-allowed",
+              "border-[#E53935] ring-2 ring-[#E53935]/30"
+            )}
+          >
+            <div className="flex items-center gap-1.5">
+              <span className="bg-[#034EA2] text-white text-xs px-2.5 py-0.5 rounded-full font-bold">
+                Выбор 1
+              </span>
+              <span className="text-xs text-gray-500">+ 3</span>
+            </div>
+            <ChevronDown className="w-4 h-4 text-[#034EA2]" />
+          </div>
+          {(openSystem === "Samsung One UI" || activeState === 'open') && (
+            <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-neutral-800 shadow-xl rounded-2xl border border-[#DFE2E6] dark:border-neutral-700 overflow-hidden" onClick={e => e.stopPropagation()}>
+              <div className="max-h-[140px] overflow-y-auto p-1">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="px-3.5 py-2 text-xs rounded-xl hover:bg-[#034EA2]/10 flex items-center justify-between cursor-pointer">
+                    <span className="font-medium">Элемент One UI {i}</span>
+                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#034EA2]" />}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ),
+      codeContent: `<com.google.android.material.textfield.MaterialAutoCompleteTextView\n  android:layout_width="match_parent"\n  android:layout_height="48dp"\n  app:simpleItems="@array/options" />`,
+      logicTitle: "One UI Bottom Dropdown",
+      logicDescription: "Выпадающее меню в One UI открывается в нижней части экрана рядом с большим пальцем пользователя с плавным появлением и скруглением 20dp.",
+      accessibilityText: "Сенсорная зона каждой строки не менее 48dp для исключения случайного выбора соседнего пункта.",
+      bestPractices: [
+        "Группируйте элементы в нижней половине экрана.",
+        "Показывайте галочку на текущем выбранном варианте.",
+        "Используйте диалоговое окно со списком радиокнопок при большом числе опций."
       ]
     }
   ];
@@ -1654,6 +1845,130 @@ export default function ComparisonGrid() {
         "Настраивайте форматы отображения.",
         "Включайте 'showTime' если нужно время."
       ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[240px] text-left">
+          <div
+            onClick={(e) => handleToggle("Apple iOS HIG DP", e)}
+            className={getInputStateClasses(
+              openSystem === "Apple iOS HIG DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              "px-3.5 py-2 border border-gray-300 dark:border-neutral-700 rounded-xl bg-[#767680]/10 flex items-center justify-between cursor-pointer",
+              "hover:bg-[#767680]/15",
+              "border-[#007AFF]",
+              "border-[#007AFF] ring-2 ring-[#007AFF]/25",
+              "opacity-50 grayscale",
+              "border-[#FF3B30] ring-2 ring-[#FF3B30]/30"
+            )}
+          >
+            <span className="text-sm font-medium">{selectedDay} мая 2026</span>
+            <Calendar className="w-4 h-4 text-[#007AFF]" />
+          </div>
+          {(openSystem === "Apple iOS HIG DP" || activeState === 'focus' || activeState === 'open') && (
+            <div className="absolute z-10 w-[280px] mt-2 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md shadow-2xl rounded-2xl p-4 border border-gray-200 dark:border-neutral-700" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-semibold text-sm">Май 2026</span>
+                <div className="flex gap-1 text-[#007AFF]">
+                  <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full p-0.5" />
+                  <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full p-0.5" />
+                </div>
+              </div>
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {['П', 'В', 'С', 'Ч', 'П', 'С', 'В'].map(d => <span key={d} className="text-[10px] text-gray-400 font-semibold">{d}</span>)}
+                {Array.from({length: 31}).map((_, i) => {
+                  const day = i + 1;
+                  const isSelected = selectedDay === day;
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => setSelectedDay(day)}
+                      className={`w-8 h-8 flex items-center justify-center text-xs rounded-full cursor-pointer transition-all ${
+                        isSelected ? 'bg-[#007AFF] text-white font-bold shadow-xs' : 'hover:bg-[#007AFF]/10'
+                      }`}
+                    >
+                      {day}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      ),
+      codeContent: `DatePicker("Выберите дату", selection: $date, displayedComponents: [.date])\n  .datePickerStyle(.graphical)\n  .tint(.blue)`,
+      logicTitle: "iOS Graphical DatePicker",
+      logicDescription: "Календарь iOS в стиле Graphical или Compact. Отображается в виде всплывающего окна (Popover) на iPad или полуэкрана (Sheet) на iPhone с синей подсветкой выбранной даты.",
+      accessibilityText: "Адаптация для VoiceOver: каждая ячейка озвучивается как 'День недели, число, месяц, выбрано'.",
+      bestPractices: [
+        "Используйте компактный стиль даты для экономии пространства формы.",
+        "Открывайте календарь в модальном Sheet на смартфонах.",
+        "Блокируйте недоступные даты с понижением контраста."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[240px] text-left">
+          <div
+            onClick={(e) => handleToggle("Samsung One UI DP", e)}
+            className={getInputStateClasses(
+              openSystem === "Samsung One UI DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              "px-4 py-2 border border-[#DFE2E6] dark:border-neutral-700 rounded-2xl bg-[#F2F4F7] dark:bg-neutral-800 flex items-center justify-between cursor-pointer",
+              "hover:border-[#034EA2]/50",
+              "border-[#034EA2]",
+              "border-[#034EA2] ring-2 ring-[#034EA2]/25",
+              "opacity-50 grayscale",
+              "border-[#E53935] ring-2 ring-[#E53935]/30"
+            )}
+          >
+            <span className="text-sm font-semibold">{selectedDay} мая 2026</span>
+            <Calendar className="w-4 h-4 text-[#034EA2]" />
+          </div>
+          {(openSystem === "Samsung One UI DP" || activeState === 'focus' || activeState === 'open') && (
+            <div className="absolute z-10 w-[280px] mt-2 bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl p-4 border border-[#DFE2E6] dark:border-neutral-700" onClick={e => e.stopPropagation()}>
+              <div className="flex justify-between items-center mb-3">
+                <span className="font-bold text-sm text-[#034EA2]">Май 2026</span>
+                <div className="flex gap-1 text-[#034EA2]">
+                  <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-full p-0.5" />
+                  <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-full p-0.5" />
+                </div>
+              </div>
+              <div className="grid grid-cols-7 gap-1 text-center">
+                {['П', 'В', 'С', 'Ч', 'П', 'С', 'В'].map(d => <span key={d} className="text-[10px] text-gray-500 font-bold">{d}</span>)}
+                {Array.from({length: 31}).map((_, i) => {
+                  const day = i + 1;
+                  const isSelected = selectedDay === day;
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => setSelectedDay(day)}
+                      className={`w-8 h-8 flex items-center justify-center text-xs rounded-2xl cursor-pointer transition-all ${
+                        isSelected ? 'bg-[#034EA2] text-white font-bold shadow-md' : 'hover:bg-[#034EA2]/10'
+                      }`}
+                    >
+                      {day}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      ),
+      codeContent: `<com.google.android.material.datepicker.MaterialDatePicker\n  android:layout_width="match_parent"\n  android:layout_height="wrap_content"\n  app:pickerTheme="@style/ThemeOverlay.OneUI.DatePicker" />`,
+      logicTitle: "One UI Bottom Sheet DatePicker",
+      logicDescription: "Календарь One UI размещается в нижнем диалоговом окне (Bottom Sheet Dialog) со скругленными углами 28dp для удобства выбора пальцем.",
+      accessibilityText: "Сенсорные ячейки 40dp с достаточным расстоянием между днями. Полная поддержка TalkBack.",
+      bestPractices: [
+        "Используйте нижний модальный диалог на смартфонах.",
+        "Подсвечивайте сегодняшний день контуром.",
+        "Разрешайте быстрый выбор месяца и года через выпадающий заголовок."
+      ]
     }
   ];
 
@@ -1965,6 +2280,54 @@ export default function ComparisonGrid() {
         "Для кастомных сложных форм используйте компонент Modal.",
         "У диалогов предупреждения всегда должна быть иконка."
       ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[260px] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-xl border border-gray-200/80 dark:border-neutral-700 rounded-[20px] shadow-2xl p-4 text-center">
+          <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Подтверждение действия</h4>
+          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">Это действие нельзя будет отменить. Продолжить?</p>
+          <div className="flex border-t border-gray-200 dark:border-neutral-700 mt-4 pt-2 -mx-4 -mb-2 divide-x divide-gray-200 dark:divide-neutral-700">
+            <button className="flex-1 py-2 text-xs font-normal text-[#007AFF] hover:bg-gray-50 dark:hover:bg-neutral-700">Отмена</button>
+            <button className="flex-1 py-2 text-xs font-semibold text-[#FF3B30] hover:bg-gray-50 dark:hover:bg-neutral-700">Удалить</button>
+          </div>
+        </div>
+      ),
+      codeContent: `.alert("Подтверждение", isPresented: $showAlert) {\n  Button("Отмена", role: .cancel) { }\n  Button("Удалить", role: .destructive) { }\n} message: {\n  Text("Это действие нельзя отменить.")\n}`,
+      logicTitle: "iOS Alert / ActionSheet",
+      logicDescription: "Классический центрированный Alert со скруглением 20px и разделением кнопок тонкими разделителями. Для длинных списков действий используется ActionSheet, выезжающий снизу.",
+      accessibilityText: "Автоматический захват фокуса (Accessibility Focus Trap), озвучивание заголовка и сообщения при открытии.",
+      bestPractices: [
+        "Ограничивайте число кнопок в Alert до 2-3.",
+        "Разрушительное действие (Destructive) красьте в системный красный #FF3B30.",
+        "Кнопку отмены всегда делайте стандартной и предсказуемой."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: (
+        <div className="w-full max-w-[260px] bg-white dark:bg-neutral-800 border border-[#DFE2E6] dark:border-neutral-700 rounded-[26px] shadow-2xl p-4 text-left">
+          <h4 className="font-bold text-sm text-gray-900 dark:text-white">Удалить элемент?</h4>
+          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1.5">Элемент будет перемещен в корзину на 30 дней.</p>
+          <div className="flex justify-end gap-2 mt-4">
+            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold text-gray-600 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-700">Отмена</button>
+            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#E53935] text-white shadow-xs">Удалить</button>
+          </div>
+        </div>
+      ),
+      codeContent: `<com.google.android.material.dialog.MaterialAlertDialogBuilder\n  android:layout_width="match_parent"\n  android:layout_height="wrap_content"\n  app:shapeAppearanceOverlay="@style/ShapeAppearance.OneUI.Dialog" />`,
+      logicTitle: "One UI Bottom-Weighted Dialog",
+      logicDescription: "Диалоговые окна в One UI имеют мягкий радиус 26-28dp и смещены ближе к нижней части экрана для комфортного подтверждения большим пальцем одной руки.",
+      accessibilityText: "Большие зоны кнопок подтверждения (48dp). Четкая поддержка клавиши Back и TalkBack.",
+      bestPractices: [
+        "Используйте закругленные кнопки-таблетки для действий.",
+        "Размещайте положительное или опасное действие справа.",
+        "Предоставляйте возможность закрыть диалог тапом вне его области."
+      ]
     }
   ];
 
@@ -2057,6 +2420,36 @@ export default function ComparisonGrid() {
         "Используйте Radio.Group для управления состоянием.",
         "Можно стилизовать как кнопки для компактности.",
         "Рекомендуется использовать для статических и легко сравниваемых опций."
+      ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: <InteractiveRadio system="Apple iOS HIG" state={activeState} tText={tText} />,
+      codeContent: `Picker("Выбор", selection: $selected) {\n  Text("${tText('Основная опция')}").tag(1)\n  Text("${tText('Вторичная опция')}").tag(2)\n}\n.pickerStyle(.inline)`,
+      logicTitle: "iOS Checkmark Selection",
+      logicDescription: "В iOS вместо традиционных радиокнопок чаще используются строки списка с синей системной галочкой справа (Checkmark selection) или Segmented Control.",
+      accessibilityText: "Атрибут .isSelected озвучивается VoiceOver для каждого пункта при переходе.",
+      bestPractices: [
+        "Для 2-4 вариантов используйте сегментированный переключатель.",
+        "В длинных формах используйте списки с синей системной галочкой.",
+        "Всегда устанавливайте значение по умолчанию."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: <InteractiveRadio system="Samsung One UI" state={activeState} tText={tText} />,
+      codeContent: `<RadioGroup\n  android:layout_width="match_parent"\n  android:layout_height="wrap_content">\n  <RadioButton\n    android:layout_width="wrap_content"\n    android:layout_height="48dp"\n    app:buttonTint="#034EA2"\n    android:text="${tText('Основная опция')}" />\n</RadioGroup>`,
+      logicTitle: "One UI Radio Button",
+      logicDescription: "Круглые переключатели с акцентной кобальтовой заливкой (#034EA2) и просторными отступами между пунктами для безошибочного тапа.",
+      accessibilityText: "Высота строки выбора не менее 48dp, поддержка TalkBack с озвучиванием '1 из 2'.",
+      bestPractices: [
+        "Обеспечивайте кликабельность всей строки, а не только кружка.",
+        "Выравнивайте радиокнопки по левому краю.",
+        "Используйте для взаимоисключающих опций."
       ]
     }
   ];
@@ -2151,6 +2544,36 @@ export default function ComparisonGrid() {
         "Позволяют пользователю быстро визуально классифицировать данные.",
         "Поддерживают разнообразную палитру цветов из коробки."
       ]
+    },
+    {
+      title: "Apple iOS HIG",
+      icon: logos.apple,
+      previewType: "button",
+      previewContent: <InteractiveTag system="Apple iOS HIG" state={activeState} tText={tText} />,
+      codeContent: `Text("Активный тег")\n  .font(.caption.weight(.semibold))\n  .padding(.horizontal, 10)\n  .padding(.vertical, 4)\n  .background(Capsule().fill(Color.blue.opacity(0.12)))\n  .foregroundColor(.blue)`,
+      logicTitle: "iOS Capsule Badge / Tag",
+      logicDescription: "Компактные капсульные чипсы (Capsule) с полупрозрачным тонированием (Vibrancy) и аккуратной типографикой SF Pro.",
+      accessibilityText: "Четкий контраст текста и фона, кнопка закрытия с меткой 'Удалить тег' для скринридера.",
+      bestPractices: [
+        "Используйте для фильтрации и категоризации элементов.",
+        "Обеспечьте минимальную высоту касания 32-44pt при наличии действия.",
+        "Не перегружайте экран более чем 5-6 тегами в строке."
+      ]
+    },
+    {
+      title: "Samsung One UI",
+      icon: logos.samsung,
+      previewType: "button",
+      previewContent: <InteractiveTag system="Samsung One UI" state={activeState} tText={tText} />,
+      codeContent: `<com.google.android.material.chip.Chip\n  android:layout_width="wrap_content"\n  android:layout_height="36dp"\n  app:chipCornerRadius="18dp"\n  app:chipBackgroundColor="#034EA215"\n  android:textColor="#034EA2"\n  app:closeIconVisible="true" />`,
+      logicTitle: "One UI Filter Chip",
+      logicDescription: "Округлые чипы (16-18dp скругление) с комфортной высотой 36dp и горизонтальным скроллом для фильтров в галерее и сообщениях.",
+      accessibilityText: "Сенсорная область оптимизирована для мобильных экранов, поддержка TalkBack.",
+      bestPractices: [
+        "Помещайте фильтр-чипы в горизонтально скроллящуюся панель.",
+        "Выделяйте активный чип заливкой кобальтового цвета.",
+        "Добавляйте иконку крестика для быстрого сброса фильтра."
+      ]
     }
   ];
 
@@ -2164,6 +2587,25 @@ export default function ComparisonGrid() {
     activeComponent === 'datepicker' ? datepickerCards : 
     activeComponent === 'modal' ? modalCards : [];
 
+  const SYSTEM_PLATFORM_MAP: Record<string, 'web' | 'mobile' | 'both'> = {
+    'Apple iOS HIG': 'mobile',
+    'Material Design 3': 'both',
+    'Samsung One UI': 'mobile',
+    'Fluent UI': 'web',
+    'Atlassian': 'web',
+    'IBM Carbon': 'web',
+    'Shopify Polaris': 'web',
+    'Ant Design': 'web',
+  };
+
+  const platformCards = allCards.filter(card => {
+    if (platformFilter === 'all') return true;
+    const sysPlatform = SYSTEM_PLATFORM_MAP[card.title] || 'both';
+    if (platformFilter === 'web') return sysPlatform === 'web' || sysPlatform === 'both';
+    if (platformFilter === 'mobile') return sysPlatform === 'mobile' || sysPlatform === 'both';
+    return true;
+  });
+
   const query = searchQuery.trim().toLowerCase();
 
   const componentMatchesQuery = (type: ComponentType) =>
@@ -2174,8 +2616,8 @@ export default function ComparisonGrid() {
   const queryTargetsActiveComponent = query.length > 0 && componentMatchesQuery(activeComponent);
 
   const filteredCards = queryTargetsActiveComponent
-    ? allCards
-    : allCards.filter(card => card.title.toLowerCase().includes(query));
+    ? platformCards
+    : platformCards.filter(card => card.title.toLowerCase().includes(query));
 
   // Запрос описывает другой компонент — предлагаем переключиться вместо тупика.
   const suggestedComponent =
