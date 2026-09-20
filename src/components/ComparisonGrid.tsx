@@ -2186,7 +2186,15 @@ export default function ComparisonGrid() {
   const tokensFor = (systemTitle: string) =>
     getDesignTokens(systemTitle, activeComponent, activeVariant, activeState);
 
-  const [inspectSystem, setInspectSystem] = useState<string | null>(null);
+  const storeInspectSystem = useStore((state) => state.inspectSystem);
+  const setStoreInspectSystem = useStore((state) => state.setInspectSystem);
+  const [localInspectSystem, setLocalInspectSystem] = useState<string | null>(null);
+
+  const inspectSystem = storeInspectSystem || localInspectSystem;
+  const setInspectSystem = (sys: string | null) => {
+    setLocalInspectSystem(sys);
+    setStoreInspectSystem(sys);
+  };
 
   return (
     <section className="flex flex-col gap-6 min-w-0">
