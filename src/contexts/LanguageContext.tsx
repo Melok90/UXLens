@@ -108,6 +108,9 @@ const translations: Translations = {
     "systems.carbon.desc": "Открытая система проектирования IBM для продуктов и цифрового опыта. Построена на основе стандартов дизайна IBM.",
     "systems.polaris.desc": "Помогает создавать отличный опыт для миллионов продавцов, использующих Shopify каждый день.",
     "systems.ant.desc": "Корпоративная система проектирования для фоновых приложений, предоставляющая богатый набор компонентов React.",
+    "systems.apple.desc": "Стандарты интерфейсов Apple, основанные на ясности, уважении к контенту и глубине взаимодействия на всех платформах Apple.",
+    "systems.figma": "Figma Kit",
+    "systems.platforms": "Платформы",
 
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",
@@ -214,6 +217,9 @@ const translations: Translations = {
     "systems.carbon.desc": "IBM's open design system for products and digital experiences. Built on the foundation of IBM's design standards.",
     "systems.polaris.desc": "Helps create great experiences for millions of merchants who use Shopify every day.",
     "systems.ant.desc": "An enterprise-class design system for web applications, providing a rich set of React components.",
+    "systems.apple.desc": "Apple's interface standards built on clarity, deference, and depth. Providing an intuitive and cohesive experience across all Apple platforms.",
+    "systems.figma": "Figma Kit",
+    "systems.platforms": "Platforms",
 
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",
