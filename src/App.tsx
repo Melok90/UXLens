@@ -2,8 +2,6 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { AiAdvisorModal } from './components/AiAdvisorModal';
-import { useStore } from './store/useStore';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const SystemsPage = lazy(() => import('./pages/SystemsPage'));
@@ -21,10 +19,6 @@ function LoadingPlaceholder() {
 }
 
 export default function App() {
-  const isAiAdvisorOpen = useStore((state) => state.isAiAdvisorOpen);
-  const setIsAiAdvisorOpen = useStore((state) => state.setIsAiAdvisorOpen);
-  const setInspectSystem = useStore((state) => state.setInspectSystem);
-
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-surface dark:bg-[#0e0e10] transition-colors duration-200">
@@ -40,15 +34,6 @@ export default function App() {
         </main>
 
         <Footer />
-
-        {/* Global AI UX Advisor Modal */}
-        <AiAdvisorModal
-          isOpen={isAiAdvisorOpen}
-          onClose={() => setIsAiAdvisorOpen(false)}
-          onCompareSystems={(systemA) => {
-            setInspectSystem(systemA);
-          }}
-        />
       </div>
     </Router>
   );

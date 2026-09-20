@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Share2, Menu, X, Check, Sparkles } from 'lucide-react';
+import { Search, Share2, Menu, X, Check } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
@@ -11,7 +11,6 @@ export default function Header() {
   const { t } = useLanguage();
   const searchQuery = useStore((state) => state.searchQuery);
   const setSearchQuery = useStore((state) => state.setSearchQuery);
-  const setIsAiAdvisorOpen = useStore((state) => state.setIsAiAdvisorOpen);
   const [isShared, setIsShared] = useState(false);
 
   const handleShare = async () => {
@@ -66,16 +65,6 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center justify-end gap-2.5 flex-1">
-          {/* AI Advisor Button */}
-          <button
-            onClick={() => setIsAiAdvisorOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-accent-blue/10 to-purple-500/10 hover:from-accent-blue/20 hover:to-purple-500/20 border border-accent-blue/30 dark:border-accent-blue/40 rounded-md text-xs font-semibold text-accent-blue dark:text-blue-400 transition-all cursor-pointer shadow-2xs"
-            title={t('ai.advisor')}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
-            <span className="hidden sm:inline">{t('ai.advisor')}</span>
-          </button>
-
           <LanguageToggle />
           <ThemeToggle />
           <button
