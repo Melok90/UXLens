@@ -2,6 +2,13 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import ComparisonCard from './ComparisonCard';
 import { ComponentState, ComponentType, ComponentVariant } from '../App';
+import {
+  InteractiveButton,
+  InteractiveSwitch,
+  InteractiveInput,
+  InteractiveRadio,
+  InteractiveTag,
+} from './InteractivePreviews';
 
 import { getDesignTokens } from '../utils/tokens';
 
@@ -709,7 +716,7 @@ export default function ComparisonGrid() {
       title: "Material Design 3",
       icon: logos.material,
       previewType: "button",
-      previewContent: renderButton("Material Design 3", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="Material Design 3" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button variant="${activeVariant === 'secondary' ? 'outlined' : activeVariant === 'tertiary' || activeVariant === 'icon' ? 'text' : 'filled'}"${activeVariant === 'destructive' ? ' color="error"' : ''}${activeState === 'disabled' ? ' disabled' : ''}${activeState === 'loading' ? ' loading' : ''}>${activeVariant === 'icon' ? '\n  <SearchIcon />\n' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Используется стандартная высота 40px с полностью скругленными углами. Элевация применяется для обозначения состояния интерактивности.",
@@ -724,7 +731,7 @@ export default function ComparisonGrid() {
       title: "Fluent UI",
       icon: logos.fluent,
       previewType: "button",
-      previewContent: renderButton("Fluent UI", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="Fluent UI" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button appearance="${activeVariant === 'secondary' ? 'outline' : activeVariant === 'tertiary' || activeVariant === 'icon' ? 'transparent' : 'primary'}"${activeState === 'disabled' ? ' disabled' : ''}${activeState === 'loading' ? ' icon={<Spinner />}' : ''}>${activeVariant === 'icon' ? '\n  <SearchIcon />\n' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Тонкое скругление (радиус 4px) с акцентным на плоские цвета и отчетливые состояния при наведении вместо теней.",
@@ -739,7 +746,7 @@ export default function ComparisonGrid() {
       title: "Atlassian",
       icon: logos.atlassian,
       previewType: "button",
-      previewContent: renderButton("Atlassian", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="Atlassian" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button appearance="${activeVariant === 'secondary' ? 'default' : activeVariant === 'tertiary' || activeVariant === 'icon' ? 'subtle' : activeVariant === 'destructive' ? 'danger' : 'primary'}"${activeState === 'disabled' ? ' isDisabled' : ''}${activeState === 'loading' ? ' isLoading' : ''}${activeVariant === 'icon' ? ' spacing="none"' : ''}>${activeVariant === 'icon' ? '\n  <SearchIcon />\n' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Компактная высота по умолчанию (32px), адаптированная для информационно-плотных интерфейсов. Радиус 3px.",
@@ -754,7 +761,7 @@ export default function ComparisonGrid() {
       title: "IBM Carbon",
       icon: logos.carbon,
       previewType: "button",
-      previewContent: renderButton("IBM Carbon", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="IBM Carbon" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button kind="${activeVariant === 'secondary' ? 'secondary' : activeVariant === 'tertiary' ? 'tertiary' : activeVariant === 'destructive' ? 'danger' : activeVariant === 'icon' ? 'ghost' : 'primary'}"${activeState === 'disabled' ? ' disabled' : ''}${activeVariant === 'icon' ? ' renderIcon={Search}' : ''}${activeVariant === 'icon' ? ' hasIconOnly iconDescription="Search"' : ''}>${activeVariant === 'icon' ? '' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Строгое соблюдение радиуса 2px для профессионального, строгого вида. Фокус на высокой эффективности и четкой иерархии.",
@@ -769,7 +776,7 @@ export default function ComparisonGrid() {
       title: "Shopify Polaris",
       icon: logos.polaris,
       previewType: "button",
-      previewContent: renderButton("Shopify Polaris", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="Shopify Polaris" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button variant="${activeVariant === 'primary' || activeVariant === 'default' ? 'primary' : activeVariant === 'secondary' ? 'monochromeOutline' : 'plain'}"${activeVariant === 'destructive' ? ' tone="critical"' : ''}${activeState === 'disabled' ? ' disabled' : ''}${activeState === 'loading' ? ' loading' : ''}${activeVariant === 'icon' ? ' icon={SearchIcon}' : ''}>${activeVariant === 'icon' ? '' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Мягкий радиус 8px, разработанный для формирования доверия и ясности в коммерческой среде.",
@@ -784,7 +791,7 @@ export default function ComparisonGrid() {
       title: "Ant Design",
       icon: logos.ant,
       previewType: "button",
-      previewContent: renderButton("Ant Design", activeVariant, activeState, tText),
+      previewContent: <InteractiveButton system="Ant Design" variant={activeVariant} state={activeState} tText={tText} />,
       codeContent: `<Button type="${activeVariant === 'secondary' ? 'default' : activeVariant === 'tertiary' || activeVariant === 'icon' ? 'text' : 'primary'}"${activeVariant === 'destructive' ? ' danger' : ''}${activeState === 'disabled' ? ' disabled' : ''}${activeState === 'loading' ? ' loading' : ''}${activeVariant === 'icon' ? ' icon={<SearchOutlined />}' : ''}>${activeVariant === 'icon' ? '' : tText("Основное действие")}</Button>`,
       logicTitle: "Основная логика",
       logicDescription: "Оптимизировано для корпоративных приложений с радиусом 6px. Фокус на ясности и визуальном отклике.",
@@ -802,14 +809,7 @@ export default function ComparisonGrid() {
       title: "Material Design 3",
       icon: logos.material,
       previewType: "button",
-      previewContent: (
-        <div className="w-full max-w-[240px] flex flex-col gap-1 text-left group">
-          <div className={getInputStateClasses(activeState, "px-4 py-3 rounded-t-[4px] transition-all border-b border-[#49454F] bg-[#E7E0EC]", "bg-[#EBE4EF] border-[#1D1B20]", "", "bg-[#E7E0EC] border-[#6750A4] border-b-2", "opacity-50 border-[#1D1B20]/12 bg-[#E7E0EC] cursor-not-allowed", "border-[#B3261E] bg-[var(--md-sys-color-error-container)]")}>
-            <span className="text-[12px] block transition-colors text-[#49454F] group-focus-within:text-[#6750A4]">{tText('Метка')}</span>
-            <input className="bg-transparent border-none outline-none w-full text-[#1D1B20] placeholder:text-[#49454F]" defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"} />
-          </div>
-        </div>
-      ),
+      previewContent: <InteractiveInput system="Material Design 3" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<TextField label="Метка" variant="filled" />`,
       logicTitle: "Filled-вариант",
       logicDescription: "Использует заливку фона с акцентной нижней границей. Текст метки перемещается вверх при фокусе.",
@@ -824,24 +824,7 @@ export default function ComparisonGrid() {
       title: "Fluent UI",
       icon: logos.fluent,
       previewType: "button",
-      previewContent: (
-        <div className="relative w-full max-w-[240px] text-left">
-          <input
-            className={getInputStateClasses(
-              activeState,
-              "w-full px-3 py-1.5 rounded-[2px] outline-none transition-all border border-[#605E5C] hover:border-[#323130] focus:border-[#0078D4] focus:ring-1 focus:ring-[#0078D4]",
-              "border-[#323130]",
-              "",
-              "border-[#0078D4] ring-1 ring-[#0078D4]",
-              "opacity-50 cursor-not-allowed bg-[#f3f2f1] text-[#a19f9d]",
-              "border-[#A4262C] ring-1 ring-[#A4262C]"
-            )}
-            defaultValue={tText('Введите текст')}
-            key={language}
-            disabled={activeState === "disabled"}
-          />
-        </div>
-      ),
+      previewContent: <InteractiveInput system="Fluent UI" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<Input placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Outline-стиль",
       logicDescription: "Тонкая рамка 1px с небольшим скруглением. В состоянии фокуса рамка становится толще.",
@@ -856,11 +839,7 @@ export default function ComparisonGrid() {
       title: "Atlassian",
       icon: logos.atlassian,
       previewType: "button",
-      previewContent: (
-        <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[3px] transition-all outline-none bg-[#F4F5F7] border-2 border-transparent", "bg-[#EBECF0]", "", "bg-white border-[#4C90FF]", "opacity-50 cursor-not-allowed bg-[#F4F5F7]", "border-[#DE350B] bg-white")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
-        </div>
-      ),
+      previewContent: <InteractiveInput system="Atlassian" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<Textfield placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Грей-фон",
       logicDescription: "По умолчанию фон серый без границ. При фокусе фон меняется на белый и появляется обводка.",
@@ -875,11 +854,7 @@ export default function ComparisonGrid() {
       title: "IBM Carbon",
       icon: logos.carbon,
       previewType: "button",
-      previewContent: (
-        <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-4 py-3 rounded-none transition-all outline-none bg-[#f4f4f4] border-b border-[#8D8D8D]", "bg-[#E5E5E5]", "", "outline outline-2 outline-[#0F62FE] outline-offset-[-2px] border-b-[#0F62FE]", "opacity-50 cursor-not-allowed border-transparent text-[#c6c6c6]", "outline outline-2 outline-[#da1e28] outline-offset-[-2px] border-b-[#da1e28]")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
-        </div>
-      ),
+      previewContent: <InteractiveInput system="IBM Carbon" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<TextInput labelText="Метка" />`,
       logicTitle: "Индустриальный вид",
       logicDescription: "Отсутствие скруглений, серый фон и четкая нижняя граница.",
@@ -894,11 +869,7 @@ export default function ComparisonGrid() {
       title: "Shopify Polaris",
       icon: logos.polaris,
       previewType: "button",
-      previewContent: (
-        <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[8px] shadow-sm transition-all outline-none border border-[#8C9196]", "border-[#5C5F62]", "", "border-[#008060] ring-2 ring-[#008060]/[0.2]", "opacity-50 cursor-not-allowed bg-[#f4f6f8]", "border-[#d82c0d] ring-2 ring-[#d82c0d]/20 bg-[#fff4f4]")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
-        </div>
-      ),
+      previewContent: <InteractiveInput system="Shopify Polaris" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<TextField label="Метка" />`,
       logicTitle: "Дружелюбный радиус",
       logicDescription: "Крупные скругления (12px) и мягкие тени создают ощущение надежности.",
@@ -913,11 +884,7 @@ export default function ComparisonGrid() {
       title: "Ant Design",
       icon: logos.ant,
       previewType: "button",
-      previewContent: (
-        <div className="w-full max-w-[240px] text-left">
-          <input className={getInputStateClasses(activeState, "w-full px-3 py-2 rounded-[6px] transition-all outline-none border border-[#D9D9D9]", "border-[#4096FF]", "", "border-[#1677FF] ring-4 ring-[#1677FF]/[0.1]", "opacity-50 cursor-not-allowed bg-[#f5f5f5] text-[#00000040]", "border-[#ff4d4f] ring-4 ring-[#ff4d4f]/10")} defaultValue={tText('Введите текст')} key={language} disabled={activeState === "disabled"}/>
-        </div>
-      ),
+      previewContent: <InteractiveInput system="Ant Design" state={activeState} placeholder={tText('Введите текст')} label={tText('Метка')} />,
       codeContent: `<Input placeholder="${tText('Введите текст')}" />`,
       logicTitle: "Корпоративный баланс",
       logicDescription: "Классический сбалансированный дизайн с радиусом 6px.",
@@ -935,11 +902,7 @@ export default function ComparisonGrid() {
       title: "Material Design 3",
       icon: logos.material,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[52px] h-[32px] rounded-full p-1 transition-all flex items-center cursor-pointer bg-accent-blue", "brightness-110", "", "ring-2 ring-accent-blue ring-offset-2", "bg-gray-200 opacity-50 cursor-not-allowed", "")}>
-          <div className="w-[24px] h-[24px] bg-white rounded-full transition-all shadow-sm translate-x-[20px]" />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="Material Design 3" state={activeState} />,
       codeContent: `<Switch\n  selected\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "M3 Switch",
       logicDescription: "Высокий трек (32px) с заметным ползунком. В активном состоянии ползунок может содержать иконку галочки.",
@@ -954,11 +917,7 @@ export default function ComparisonGrid() {
       title: "Fluent UI",
       icon: logos.fluent,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[40px] h-[20px] rounded-full p-[2px] transition-all flex items-center cursor-pointer border bg-[#0078D4] border-[#0078D4]", "brightness-125", "", "outline outline-2 outline-[#0078D4] outline-offset-1", "bg-gray-100 border-gray-200 opacity-50 cursor-not-allowed", "")}>
-          <div className="w-[14px] h-[14px] bg-white rounded-full translate-x-[20px]" />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="Fluent UI" state={activeState} />,
       codeContent: `<Toggle\n  checked\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "Fluent Toggle",
       logicDescription: "Более тонкий и компактный вид. Четкие состояния без лишних теней.",
@@ -973,11 +932,7 @@ export default function ComparisonGrid() {
       title: "Atlassian",
       icon: logos.atlassian,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[40px] h-[20px] rounded-full p-[2px] transition-all flex items-center cursor-pointer bg-[#0052CC]", "bg-[#0065FF]", "", "ring-2 ring-[#4C90FF] ring-offset-2", "bg-[#F4F5F7] opacity-50 cursor-not-allowed", "")}>
-          <div className="w-[16px] h-[16px] bg-white rounded-full translate-x-[20px] shadow-sm" />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="Atlassian" state={activeState} />,
       codeContent: `<Toggle\n  isChecked\n  ${activeState === 'disabled' ? 'isDisabled' : ''}\n/>`,
       logicTitle: "ADG Toggle",
       logicDescription: "Минималистичный дизайн, ползунок почти заполняет высоту трека.",
@@ -992,11 +947,7 @@ export default function ComparisonGrid() {
       title: "IBM Carbon",
       icon: logos.carbon,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[48px] h-[24px] transition-all flex items-center cursor-pointer p-[3px] rounded-full bg-[#24a148]", "bg-[#1d823a]", "", "ring-2 ring-offset-1 ring-[#24a148]", "bg-[#e0e0e0] opacity-50 cursor-not-allowed", "")}>
-          <div className="w-[18px] h-[18px] bg-white rounded-full translate-x-[24px]" />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="IBM Carbon" state={activeState} />,
       codeContent: `<Toggle\n  toggled\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "Carbon Toggle",
       logicDescription: "Использует зеленый цвет для активного состояния по умолчанию. Строгие формы.",
@@ -1011,11 +962,7 @@ export default function ComparisonGrid() {
       title: "Shopify Polaris",
       icon: logos.polaris,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[44px] h-[24px] rounded-full p-1 transition-all flex items-center cursor-pointer border bg-[#008060] border-[#008060]", "bg-[#006e52]", "", "ring-2 ring-offset-2 ring-[#008060]", "bg-gray-100 border-gray-200 cursor-not-allowed", "")}>
-          <div className={`w-[16px] h-[16px] bg-white rounded-full translate-x-[20px] shadow-sm`} />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="Shopify Polaris" state={activeState} />,
       codeContent: `<SettingToggle\n  enabled\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "Polaris Switch",
       logicDescription: "Мягкие формы, акцент на доступности в контексте e-commerce.",
@@ -1030,11 +977,7 @@ export default function ComparisonGrid() {
       title: "Ant Design",
       icon: logos.ant,
       previewType: "button",
-      previewContent: (
-        <div className={getInputStateClasses(activeState, "w-[44px] h-[22px] rounded-full p-[2px] transition-all flex items-center cursor-pointer bg-[#1677ff]", "bg-[#4096ff]", "", "ring-4 ring-[#1677ff]/30", "bg-gray-200 cursor-not-allowed opacity-50", "")}>
-          <div className="w-[18px] h-[18px] bg-white rounded-full translate-x-[22px] shadow-sm" />
-        </div>
-      ),
+      previewContent: <InteractiveSwitch system="Ant Design" state={activeState} />,
       codeContent: `<Switch\n  defaultChecked\n  ${activeState === 'disabled' ? 'disabled' : ''}\n/>`,
       logicTitle: "Ant Switch",
       logicDescription: "Компактный и функциональный. Поддерживает текст или иконки внутри трека.",
@@ -2029,7 +1972,7 @@ export default function ComparisonGrid() {
       title: "Material Design 3",
       icon: logos.material,
       previewType: "button",
-      previewContent: renderRadio("Material Design 3", activeState, tText),
+      previewContent: <InteractiveRadio system="Material Design 3" state={activeState} tText={tText} />,
       codeContent: `<Radio \n  checked={true} \n  value="option1" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Круглый переключатель. При выборе отображается внутренний закрашенный круг, который масштабируется от 0 до 100%.",
@@ -2044,7 +1987,7 @@ export default function ComparisonGrid() {
       title: "Fluent UI",
       icon: logos.fluent,
       previewType: "button",
-      previewContent: renderRadio("Fluent UI", activeState, tText),
+      previewContent: <InteractiveRadio system="Fluent UI" state={activeState} tText={tText} />,
       codeContent: `<Radio \n  checked \n  value="apple" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Круг с тонкой границей по умолчанию. В активном состоянии граница окрашивается в акцентный цвет, и появляется внутренний круг.",
@@ -2059,7 +2002,7 @@ export default function ComparisonGrid() {
       title: "Atlassian",
       icon: logos.atlassian,
       previewType: "button",
-      previewContent: renderRadio("Atlassian", activeState, tText),
+      previewContent: <InteractiveRadio system="Atlassian" state={activeState} tText={tText} />,
       codeContent: `<Radio \n  isChecked \n  value="option" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Компактный размер. По умолчанию белый фон с тонкой границей. При выборе фон меняется, или заполняется внутренний цветной маркер.",
@@ -2074,7 +2017,7 @@ export default function ComparisonGrid() {
       title: "IBM Carbon",
       icon: logos.carbon,
       previewType: "button",
-      previewContent: renderRadio("IBM Carbon", activeState, tText),
+      previewContent: <InteractiveRadio system="IBM Carbon" state={activeState} tText={tText} />,
       codeContent: `<RadioButton \n  checked \n  value="standard" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Строгие формы и четкий контраст. Размер маркера и границы обеспечивает высокую читаемость состояния.",
@@ -2089,7 +2032,7 @@ export default function ComparisonGrid() {
       title: "Shopify Polaris",
       icon: logos.polaris,
       previewType: "button",
-      previewContent: renderRadio("Shopify Polaris", activeState, tText),
+      previewContent: <InteractiveRadio system="Shopify Polaris" state={activeState} tText={tText} />,
       codeContent: `<RadioButton \n  checked \n  id="radio1" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Уверенный размер для легкого касания пальцем. Содержит небольшую тень в неактивном состоянии.",
@@ -2104,7 +2047,7 @@ export default function ComparisonGrid() {
       title: "Ant Design",
       icon: logos.ant,
       previewType: "button",
-      previewContent: renderRadio("Ant Design", activeState, tText),
+      previewContent: <InteractiveRadio system="Ant Design" state={activeState} tText={tText} />,
       codeContent: `<Radio \n  checked \n  value={1} \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Минималистичный дизайн с плавными анимациями включения и изменения цвета границы при наведении.",
@@ -2122,7 +2065,7 @@ export default function ComparisonGrid() {
       title: "Material Design 3",
       icon: logos.material,
       previewType: "button",
-      previewContent: renderTag("Material Design 3", activeState, tText),
+      previewContent: <InteractiveTag system="Material Design 3" state={activeState} tText={tText} />,
       codeContent: `<Chip \n  label="Новый" \n/>`,
       logicTitle: "Основная логика",
       logicDescription: "Крупные закругленные чипы (8px радиус) для фильтров, выбора или ввода. Высота 32px обеспечивает удобство на сенсорных экранах.",
@@ -2137,7 +2080,7 @@ export default function ComparisonGrid() {
       title: "Fluent UI",
       icon: logos.fluent,
       previewType: "button",
-      previewContent: renderTag("Fluent UI", activeState, tText),
+      previewContent: <InteractiveTag system="Fluent UI" state={activeState} tText={tText} />,
       codeContent: `<Tag>Новый</Tag>`,
       logicTitle: "Основная логика",
       logicDescription: "Компактные теги с легким серым фоном и небольшим скруглением. Отлично подходят для метаданных.",
@@ -2152,7 +2095,7 @@ export default function ComparisonGrid() {
       title: "Atlassian",
       icon: logos.atlassian,
       previewType: "button",
-      previewContent: renderTag("Atlassian", activeState, tText),
+      previewContent: <InteractiveTag system="Atlassian" state={activeState} tText={tText} />,
       codeContent: `<Lozenge>Новый</Lozenge>`,
       logicTitle: "Основная логика",
       logicDescription: "Lozenges (Ромбы) используются для выделения состояний или свойств. Имеют жирный uppercase текст для яркости.",
@@ -2167,7 +2110,7 @@ export default function ComparisonGrid() {
       title: "IBM Carbon",
       icon: logos.carbon,
       previewType: "button",
-      previewContent: renderTag("IBM Carbon", activeState, tText),
+      previewContent: <InteractiveTag system="IBM Carbon" state={activeState} tText={tText} />,
       codeContent: `<Tag type="gray">Новый</Tag>`,
       logicTitle: "Основная логика",
       logicDescription: "Полностью закругленные края (pill shape) для отличия от обычных кнопок. Четкий контур фокуса.",
@@ -2182,7 +2125,7 @@ export default function ComparisonGrid() {
       title: "Shopify Polaris",
       icon: logos.polaris,
       previewType: "button",
-      previewContent: renderTag("Shopify Polaris", activeState, tText),
+      previewContent: <InteractiveTag system="Shopify Polaris" state={activeState} tText={tText} />,
       codeContent: `<Badge>Новый</Badge>`,
       logicTitle: "Основная логика",
       logicDescription: "Бейджи (Badges) используются для маркировки или классификации элементов. Слегка скругленные углы и спокойные цвета.",
@@ -2197,7 +2140,7 @@ export default function ComparisonGrid() {
       title: "Ant Design",
       icon: logos.ant,
       previewType: "button",
-      previewContent: renderTag("Ant Design", activeState, tText),
+      previewContent: <InteractiveTag system="Ant Design" state={activeState} tText={tText} />,
       codeContent: `<Tag>Новый</Tag>`,
       logicTitle: "Основная логика",
       logicDescription: "Цветная рамка и светлый фон. Компактный дизайн (высота 22px), который легко вписывается в плотные таблицы данных.",
