@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
 import ComparisonCard from './ComparisonCard';
+import { ComponentInspectorModal } from './ComponentInspectorModal';
 import { ComponentState, ComponentType, ComponentVariant } from '../App';
 import {
   InteractiveButton,
@@ -2185,8 +2186,27 @@ export default function ComparisonGrid() {
   const tokensFor = (systemTitle: string) =>
     getDesignTokens(systemTitle, activeComponent, activeVariant, activeState);
 
+  const [inspectSystem, setInspectSystem] = useState<string | null>(null);
+
   return (
-    <section className="flex flex-col gap-8 min-w-0">
+    <section className="flex flex-col gap-6 min-w-0">
+      {/* Quick Action Toolbar */}
+      <div className="flex items-center justify-between gap-4 flex-wrap pb-2 border-b border-[#cfc4c5]/60">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+            {filteredCards.length} {t('context.systemsCount')}
+          </span>
+        </div>
+
+        <button
+          onClick={() => setInspectSystem(filteredCards[0]?.title || 'Material Design 3')}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-surface-container-low hover:bg-surface-container border border-[#cfc4c5] rounded-full text-xs font-semibold text-black transition-all shadow-xs cursor-pointer"
+        >
+          <ArrowLeftRight className="w-3.5 h-3.5 text-accent-blue" />
+          <span>{t('grid.compareSideBySide')}</span>
+        </button>
+      </div>
+
       {filteredCards.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredCards.map((card) => (
@@ -2202,6 +2222,7 @@ export default function ComparisonGrid() {
               accessibilityText={tText(card.accessibilityText)}
               bestPractices={card.bestPractices.map(tText)}
               designTokens={tokensFor(card.title)}
+              onInspect={() => setInspectSystem(card.title)}
             />
           ))}
         </div>
@@ -2234,6 +2255,20 @@ export default function ComparisonGrid() {
           </button>
         </div>
       )}
+
+      {/* Component Deep-Dive & Side-by-Side Modal */}
+      <ComponentInspectorModal
+        isOpen={!!inspectSystem}
+        onClose={() => setInspectSystem(null)}
+        initialSystem={inspectSystem || 'Material Design 3'}
+        activeComponent={activeComponent}
+        activeVariant={activeVariant}
+        activeState={activeState}
+        allCards={allCards.map((c) => ({
+          ...c,
+          designTokens: tokensFor(c.title),
+        }))}
+      />
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import { Eye, LockKeyhole, Copy, Check, Code2, Layers } from 'lucide-react';
+import { Eye, LockKeyhole, Copy, Check, Code2, Layers, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { tokensToCssVariables, tokensToTailwind } from '../utils/tokens';
@@ -15,6 +15,7 @@ interface ComparisonCardProps {
   accessibilityText: string;
   bestPractices: string[];
   designTokens?: Record<string, any>;
+  onInspect?: () => void;
 }
 
 type CardView = 'preview' | 'code' | 'tokens';
@@ -31,6 +32,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   accessibilityText,
   bestPractices,
   designTokens,
+  onInspect,
 }) => {
   const { t } = useLanguage();
   const [view, setView] = useState<CardView>('preview');
@@ -93,42 +95,56 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           <h3 className="text-sm font-bold text-black truncate">{title}</h3>
         </div>
 
-        {/* View Switcher: UI / Code / Tokens */}
-        <div className="flex bg-surface-container-low p-0.5 rounded-md border border-[#cfc4c5] ml-2 shrink-0">
-          <button
-            onClick={() => setView('preview')}
-            className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
-              view === 'preview'
-                ? 'bg-white shadow-xs text-black font-semibold'
-                : 'text-[#5d5f5f] hover:text-black'
-            }`}
-          >
-            {t('grid.tabUi')}
-          </button>
-
-          {codeContent && (
+        <div className="flex items-center gap-1.5 shrink-0 ml-2">
+          {/* View Switcher: UI / Code / Tokens */}
+          <div className="flex bg-surface-container-low p-0.5 rounded-md border border-[#cfc4c5]">
             <button
-              onClick={() => setView('code')}
+              onClick={() => setView('preview')}
               className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
-                view === 'code'
+                view === 'preview'
                   ? 'bg-white shadow-xs text-black font-semibold'
                   : 'text-[#5d5f5f] hover:text-black'
               }`}
             >
-              {t('grid.tabCode')}
+              {t('grid.tabUi')}
             </button>
-          )}
 
-          {designTokens && (
+            {codeContent && (
+              <button
+                onClick={() => setView('code')}
+                className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
+                  view === 'code'
+                    ? 'bg-white shadow-xs text-black font-semibold'
+                    : 'text-[#5d5f5f] hover:text-black'
+                }`}
+              >
+                {t('grid.tabCode')}
+              </button>
+            )}
+
+            {designTokens && (
+              <button
+                onClick={() => setView('tokens')}
+                className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
+                  view === 'tokens'
+                    ? 'bg-white shadow-xs text-black font-semibold'
+                    : 'text-[#5d5f5f] hover:text-black'
+                }`}
+              >
+                {t('grid.tabTokens')}
+              </button>
+            )}
+          </div>
+
+          {/* Deep-Dive Inspect Button */}
+          {onInspect && (
             <button
-              onClick={() => setView('tokens')}
-              className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
-                view === 'tokens'
-                  ? 'bg-white shadow-xs text-black font-semibold'
-                  : 'text-[#5d5f5f] hover:text-black'
-              }`}
+              onClick={onInspect}
+              className="px-2 py-1 bg-surface-container-low hover:bg-surface-container border border-[#cfc4c5] rounded-md text-[#5d5f5f] hover:text-black transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
+              title={t('grid.inspect')}
             >
-              {t('grid.tabTokens')}
+              <Maximize2 className="w-3 h-3 text-accent-blue" />
+              <span className="hidden lg:inline">{t('grid.inspect')}</span>
             </button>
           )}
         </div>
