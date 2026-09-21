@@ -1,8 +1,26 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useStore } from '../store/useStore';
 import CustomSelect from './CustomSelect';
-import { Globe, Smartphone, Layers } from 'lucide-react';
+import {
+  Globe,
+  Smartphone,
+  Layers,
+  LayoutGrid,
+  MousePointer2,
+  TextCursorInput,
+  ToggleLeft,
+  ListFilter,
+  Calendar,
+  AppWindow,
+  CircleDot,
+  Tag,
+  SlidersHorizontal,
+  RotateCcw,
+  ExternalLink,
+} from 'lucide-react';
 import {
   COMPONENT_LABEL_KEYS,
   COMPONENT_MATRIX,
@@ -13,17 +31,28 @@ import {
   variantsFor,
 } from '../utils/stateMatrix';
 
+const COMPONENT_ICONS: Record<ComponentType, React.FC<{ className?: string }>> = {
+  button: MousePointer2,
+  input: TextCursorInput,
+  switch: ToggleLeft,
+  select: ListFilter,
+  datepicker: Calendar,
+  modal: AppWindow,
+  radio: CircleDot,
+  tag: Tag,
+};
+
 export default function Filters() {
   const { t } = useLanguage();
-  
-  const activeComponent = useStore(state => state.activeComponent);
-  const activeState = useStore(state => state.activeState);
-  const activeVariant = useStore(state => state.activeVariant);
-  const platformFilter = useStore(state => state.platformFilter);
-  const setActiveComponent = useStore(state => state.setActiveComponent);
-  const setActiveState = useStore(state => state.setActiveState);
-  const setActiveVariant = useStore(state => state.setActiveVariant);
-  const setPlatformFilter = useStore(state => state.setPlatformFilter);
+
+  const activeComponent = useStore((state) => state.activeComponent);
+  const activeState = useStore((state) => state.activeState);
+  const activeVariant = useStore((state) => state.activeVariant);
+  const platformFilter = useStore((state) => state.platformFilter);
+  const setActiveComponent = useStore((state) => state.setActiveComponent);
+  const setActiveState = useStore((state) => state.setActiveState);
+  const setActiveVariant = useStore((state) => state.setActiveVariant);
+  const setPlatformFilter = useStore((state) => state.setPlatformFilter);
 
   const onComponentChange = (type: ComponentType) => {
     const spec = COMPONENT_MATRIX[type];
@@ -32,153 +61,160 @@ export default function Filters() {
     setActiveState(spec.defaultState);
   };
 
-  const variantOptions = variantsFor(activeComponent).map(variant => ({
+  const resetFilters = () => {
+    setPlatformFilter('all');
+    onComponentChange('button');
+  };
+
+  const variantOptions = variantsFor(activeComponent).map((variant) => ({
     value: variant,
     label: t(VARIANT_LABEL_KEYS[variant]),
   }));
 
-  const stateOptions = statesFor(activeComponent).map(state => ({
+  const stateOptions = statesFor(activeComponent).map((state) => ({
     value: state,
     label: t(STATE_LABEL_KEYS[state]),
   }));
 
   return (
-    <section className="flex flex-col gap-5">
-      {/* Platform Switcher */}
-      <div className="flex flex-wrap items-center gap-2.5">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
-          {t('filters.platform')}
-        </span>
-        <div className="inline-flex p-0.5 bg-zinc-100/90 dark:bg-zinc-900/90 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+    <section className="bg-white dark:bg-[#101114] border border-zinc-200/90 dark:border-zinc-800/90 rounded-2xl p-5 sm:p-6 shadow-xs linear-card space-y-4 sm:space-y-5">
+      {/* Card Header */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h2 className="text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
+            {t('filters.title')}
+          </h2>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+            {t('filters.subtitle')}
+          </p>
+        </div>
+        <Link
+          to="/systems"
+          className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer shrink-0 pt-1"
+        >
+          <span>{t('filters.openDocs')}</span>
+          <ExternalLink className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
+      {/* Row 1: Platform (without search field as requested) */}
+      <div className="flex items-center flex-wrap gap-3 sm:gap-4">
+        <div className="w-24 sm:w-28 shrink-0 flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+          <Smartphone className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+          <span>{t('filters.platform')}</span>
+        </div>
+        <div className="inline-flex p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xs">
           <button
             type="button"
             onClick={() => setPlatformFilter('all')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'all'
-                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
-            {t('filters.platform.all')}
+            <span>{t('filters.platform.all')}</span>
           </button>
           <button
             type="button"
             onClick={() => setPlatformFilter('web')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'web'
-                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
-            {t('filters.platform.web')}
+            <span>{t('filters.platform.web')}</span>
           </button>
           <button
             type="button"
             onClick={() => setPlatformFilter('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'mobile'
-                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
             <Smartphone className="w-3.5 h-3.5" />
-            {t('filters.platform.mobile')}
+            <span>{t('filters.platform.mobile')}</span>
           </button>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
-          {t('filters.component')}
-        </span>
-        {COMPONENT_TYPES.map(type => (
-          <FilterButton 
-            key={type}
-            label={t(COMPONENT_LABEL_KEYS[type])} 
-            active={activeComponent === type} 
-            onClick={() => onComponentChange(type)}
-          />
-        ))}
+      {/* Row 2: Component Pills with icons */}
+      <div className="flex items-center flex-wrap gap-3 sm:gap-4">
+        <div className="w-24 sm:w-28 shrink-0 flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+          <LayoutGrid className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+          <span>{t('filters.component')}</span>
+        </div>
+        <div className="flex items-center flex-wrap gap-2">
+          {COMPONENT_TYPES.map((type) => {
+            const Icon = COMPONENT_ICONS[type];
+            const isActive = activeComponent === type;
+            return (
+              <button
+                key={type}
+                type="button"
+                onClick={() => onComponentChange(type)}
+                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs transition-all cursor-pointer ${
+                  isActive
+                    ? 'border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-semibold shadow-xs'
+                    : 'border-zinc-200/90 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-850 font-medium shadow-2xs'
+                }`}
+              >
+                {Icon && <Icon className="w-3.5 h-3.5 shrink-0" />}
+                <span>{t(COMPONENT_LABEL_KEYS[type])}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {variantOptions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
-            {t('filters.type')}
-          </span>
-          <CustomSelect 
-             value={activeVariant}
-             onChange={(val) => setActiveVariant(val as ComponentVariant)}
-             options={variantOptions}
-             className="min-w-[150px]"
-           />
-        </div>
-      )}
+      {/* Row 3: Type, State, and Reset Filters */}
+      <div className="flex items-center flex-wrap gap-y-3 gap-x-6 pt-1">
+        {variantOptions.length > 0 && (
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+              <Layers className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+              <span>{t('filters.type')}</span>
+            </div>
+            <CustomSelect
+              value={activeVariant}
+              onChange={(val) => setActiveVariant(val as ComponentVariant)}
+              options={variantOptions}
+              className="min-w-[150px] sm:min-w-[170px]"
+            />
+          </div>
+        )}
 
-      {stateOptions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
-            {t('filters.state')}
-          </span>
-          <CustomSelect 
-             value={activeState}
-             onChange={(val) => setActiveState(val as ComponentState)}
-             options={stateOptions}
-             className="min-w-[150px]"
-           />
+        {stateOptions.length > 0 && (
+          <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
+              <SlidersHorizontal className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+              <span>{t('filters.state')}</span>
+            </div>
+            <CustomSelect
+              value={activeState}
+              onChange={(val) => setActiveState(val as ComponentState)}
+              options={stateOptions}
+              className="min-w-[150px] sm:min-w-[170px]"
+            />
+          </div>
+        )}
+
+        <div className="flex items-center border-l border-zinc-200 dark:border-zinc-800 pl-4 py-0.5">
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="flex items-center gap-1.5 text-xs font-medium text-[#5e6ad2] dark:text-[#828cf5] hover:opacity-80 transition-opacity cursor-pointer"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>{t('filters.reset')}</span>
+          </button>
         </div>
-      )}
+      </div>
     </section>
-  );
-}
-
-interface FilterButtonProps {
-  key?: string | number;
-  label: string;
-  active?: boolean;
-  variant?: 'default' | 'ghost' | 'error';
-  onClick?: () => void;
-}
-
-function FilterButton({ label, active = false, variant = 'default', onClick }: FilterButtonProps) {
-  if (variant === 'error') {
-    return (
-      <button 
-        onClick={onClick}
-        className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer text-xs font-medium ${
-          active 
-            ? 'border-rose-600 bg-rose-600 text-white' 
-            : 'border-transparent text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30'
-        }`}
-      >
-        {label}
-      </button>
-    );
-  }
-
-  if (active) {
-    return (
-      <button 
-        onClick={onClick}
-        className="px-3 py-1.5 rounded-lg border border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs transition-all cursor-pointer shadow-2xs"
-      >
-        {label}
-      </button>
-    );
-  }
-
-  return (
-    <button 
-      onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer font-medium text-xs ${
-        variant === 'ghost' 
-          ? 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800' 
-          : 'border-zinc-200 dark:border-zinc-800/90 bg-white/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-850'
-      }`}
-    >
-      {label}
-    </button>
   );
 }
