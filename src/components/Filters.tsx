@@ -43,20 +43,20 @@ export default function Filters() {
   }));
 
   return (
-    <section className="flex flex-col gap-6">
+    <section className="flex flex-col gap-5">
       {/* Platform Switcher */}
       <div className="flex flex-wrap items-center gap-2.5">
-        <span className="text-xs font-bold uppercase tracking-wider text-[#757777] dark:text-neutral-400 mr-2">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
           {t('filters.platform')}
         </span>
-        <div className="inline-flex p-1 bg-surface-container-low dark:bg-neutral-800 rounded-xl border border-[#e5dedf] dark:border-neutral-700 shadow-xs">
+        <div className="inline-flex p-0.5 bg-zinc-100/90 dark:bg-zinc-900/90 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
           <button
             type="button"
             onClick={() => setPlatformFilter('all')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
               platformFilter === 'all'
-                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
-                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
+                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Layers className="w-3.5 h-3.5" />
@@ -65,10 +65,10 @@ export default function Filters() {
           <button
             type="button"
             onClick={() => setPlatformFilter('web')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
               platformFilter === 'web'
-                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
-                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
+                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
@@ -77,10 +77,10 @@ export default function Filters() {
           <button
             type="button"
             onClick={() => setPlatformFilter('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
               platformFilter === 'mobile'
-                ? 'bg-black dark:bg-white text-white dark:text-black shadow-xs'
-                : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
+                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
             <Smartphone className="w-3.5 h-3.5" />
@@ -89,8 +89,8 @@ export default function Filters() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
           {t('filters.component')}
         </span>
         {COMPONENT_TYPES.map(type => (
@@ -104,8 +104,8 @@ export default function Filters() {
       </div>
 
       {variantOptions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
             {t('filters.type')}
           </span>
           <CustomSelect 
@@ -118,8 +118,8 @@ export default function Filters() {
       )}
 
       {stateOptions.length > 0 && (
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="text-sm font-semibold text-[#4c4546] dark:text-neutral-400 mr-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mr-1">
             {t('filters.state')}
           </span>
           <CustomSelect 
@@ -147,10 +147,10 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
     return (
       <button 
         onClick={onClick}
-        className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer text-sm font-medium ${
+        className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer text-xs font-medium ${
           active 
-            ? 'border-[#ba1a1a] bg-[#ba1a1a] text-white' 
-            : 'border-transparent text-[#ba1a1a] hover:bg-red-50 dark:hover:bg-red-950/40'
+            ? 'border-rose-600 bg-rose-600 text-white' 
+            : 'border-transparent text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30'
         }`}
       >
         {label}
@@ -162,7 +162,7 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
     return (
       <button 
         onClick={onClick}
-        className="px-4 py-1.5 rounded-full border border-black dark:border-white bg-black dark:bg-white text-white dark:text-black font-semibold text-sm transition-all cursor-pointer shadow-xs"
+        className="px-3 py-1.5 rounded-lg border border-zinc-900 dark:border-white bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 font-semibold text-xs transition-all cursor-pointer shadow-2xs"
       >
         {label}
       </button>
@@ -172,10 +172,10 @@ function FilterButton({ label, active = false, variant = 'default', onClick }: F
   return (
     <button 
       onClick={onClick}
-      className={`px-4 py-1.5 rounded-full border transition-colors cursor-pointer font-medium text-sm ${
+      className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer font-medium text-xs ${
         variant === 'ghost' 
-          ? 'border-transparent text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white hover:bg-surface-container-low dark:hover:bg-neutral-800' 
-          : 'border-[#cfc4c5] dark:border-neutral-700 bg-white dark:bg-neutral-800 text-black dark:text-white hover:bg-surface-container-low dark:hover:bg-neutral-700'
+          ? 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800' 
+          : 'border-zinc-200 dark:border-zinc-800/90 bg-white/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-850'
       }`}
     >
       {label}

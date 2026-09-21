@@ -1,26 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   
-  --color-surface: #f9f9f9;
-  --color-surface-container: #eeeeee;
-  --color-surface-container-low: #f3f3f3;
+  --color-linear-accent: #5e6ad2;
+  --color-linear-accent-hover: #6875e5;
+  --color-surface: #fbfbfb;
+  --color-surface-card: #ffffff;
+  --color-surface-container: #f4f4f6;
+  --color-surface-container-low: #f8f9fa;
   --color-surface-container-lowest: #ffffff;
-  --color-accent-blue: #1447E6;
+  --color-accent-blue: #5e6ad2;
   --color-accent-red: #FF6568;
   --color-interactive-charcoal: #0A0A0A;
   --color-neutral-muted: #A1A1A1;
 }
 
 html.dark {
-  --color-surface: #121214;
-  --color-surface-container: #1c1c20;
-  --color-surface-container-low: #18181c;
-  --color-surface-container-lowest: #232328;
+  --color-surface: #08090a;
+  --color-surface-card: #101114;
+  --color-surface-container: #15161a;
+  --color-surface-container-low: #0c0d0f;
+  --color-surface-container-lowest: #101114;
   color-scheme: dark;
 }
 
@@ -29,13 +33,34 @@ html.dark {
     @apply overflow-x-hidden;
   }
   body {
-    @apply bg-surface text-[#1b1b1b] font-sans antialiased overflow-x-hidden transition-colors duration-200;
+    @apply bg-[#fbfbfb] text-[#121316] font-sans antialiased overflow-x-hidden transition-colors duration-200;
   }
   html.dark body {
-    @apply bg-[#121214] text-[#ededed];
+    @apply bg-[#08090a] text-[#ededed];
   }
 }
 
 .blur-sm {
   filter: blur(2px);
 }
+
+/* Linear-style engineering workbench dot matrix pattern */
+.workbench-grid {
+  background-image: radial-gradient(#d4d4d8 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+html.dark .workbench-grid {
+  background-image: radial-gradient(#27272a 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Linear card subtle top inner highlight */
+.linear-card {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+html.dark .linear-card {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05), 0 2px 8px 0 rgba(0, 0, 0, 0.4);
+}
+

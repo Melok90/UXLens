@@ -32,60 +32,72 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-surface-container-lowest dark:bg-[#16161a] border-b border-[#cfc4c5] dark:border-neutral-800 sticky top-0 z-40 transition-colors">
-      <div className="flex justify-between items-center w-full px-4 md:px-10 max-w-[1280px] mx-auto h-[64px] relative">
+    <header className="bg-white/80 dark:bg-[#08090a]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 sticky top-0 z-40 transition-colors">
+      <div className="flex justify-between items-center w-full px-4 md:px-10 max-w-[1280px] mx-auto h-[60px] relative">
         <div className="flex items-center gap-8 flex-1">
-          <Link className="text-2xl font-bold text-black dark:text-white tracking-tight" to="/">
-            UXLens
+          <Link className="flex items-center gap-2 group" to="/">
+            <div className="w-7 h-7 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-black font-bold text-xs shadow-xs group-hover:scale-105 transition-transform">
+              UX
+            </div>
+            <span className="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
+              Lens
+            </span>
+            <span className="hidden sm:inline-block text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-500">
+              v2.0
+            </span>
           </Link>
 
-          <div className="hidden lg:flex items-center bg-surface-container-low dark:bg-neutral-800/80 px-3 py-1.5 rounded-md border border-[#cfc4c5] dark:border-neutral-700 focus-within:border-accent-blue focus-within:ring-1 focus-within:ring-accent-blue transition-all group relative">
-            <Search className="text-[#4c4546] dark:text-neutral-400 w-4.5 h-4.5 mr-2" />
+          <div className="hidden lg:flex items-center bg-zinc-100/70 dark:bg-zinc-900/80 px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 focus-within:border-[#5e6ad2] focus-within:ring-2 focus-within:ring-[#5e6ad2]/20 transition-all group relative">
+            <Search className="text-zinc-400 dark:text-zinc-500 w-4 h-4 mr-2" />
             <input
-              className="bg-transparent border-none outline-none text-sm text-black dark:text-white placeholder:text-[#4c4546] dark:placeholder:text-neutral-500 w-48"
+              className="bg-transparent border-none outline-none text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 w-48"
               placeholder={t('hero.searchPlaceholder')}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            {searchQuery && (
+            {searchQuery ? (
               <button
                 onClick={() => setSearchQuery('')}
-                className="ml-1 text-[#4c4546] dark:text-neutral-400 hover:text-black dark:hover:text-white cursor-pointer"
+                className="ml-1 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 cursor-pointer"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               </button>
+            ) : (
+              <kbd className="hidden xl:inline-block text-[10px] font-mono text-zinc-400 dark:text-zinc-500 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-1.5 py-0.2 rounded shadow-2xs">
+                ⌘K
+              </kbd>
             )}
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-6 h-full pt-1">
+        <nav className="hidden md:flex items-center justify-center gap-7 h-full">
           <NavLink to="/" label={t('nav.components')} active={location.pathname === '/'} />
           <NavLink to="/systems" label={t('nav.systems')} active={location.pathname === '/systems'} />
         </nav>
 
-        <div className="flex items-center justify-end gap-2.5 flex-1">
+        <div className="flex items-center justify-end gap-2 flex-1">
           <LanguageToggle />
           <ThemeToggle />
           <button
             onClick={handleShare}
-            className="text-sm font-medium min-w-[110px] justify-center text-black dark:text-white border border-[#cfc4c5] dark:border-neutral-700 px-3 py-1.5 rounded hover:bg-surface-container-low dark:hover:bg-neutral-800 transition-colors hidden sm:flex items-center gap-2 cursor-pointer"
+            className="text-xs font-medium min-w-[96px] justify-center text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 px-3 py-1.5 rounded-lg transition-colors hidden sm:flex items-center gap-1.5 cursor-pointer"
           >
             {isShared ? (
               <>
-                <Check className="w-4 h-4 text-green-600 dark:text-green-400" /> {t('nav.share')}
+                <Check className="w-3.5 h-3.5 text-emerald-500" /> {t('nav.share')}
               </>
             ) : (
               <>
-                <Share2 className="w-4 h-4" /> {t('nav.share')}
+                <Share2 className="w-3.5 h-3.5" /> {t('nav.share')}
               </>
             )}
           </button>
-          <button className="text-sm font-semibold min-w-[80px] justify-center bg-black text-white dark:bg-white dark:text-black px-4 py-1.5 rounded hover:opacity-80 transition-opacity cursor-pointer">
+          <button className="text-xs font-semibold min-w-[72px] justify-center bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 px-3.5 py-1.5 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-xs cursor-pointer">
             {t('nav.login')}
           </button>
-          <button className="md:hidden p-2 text-black dark:text-white cursor-pointer">
-            <Menu className="w-6 h-6" />
+          <button className="md:hidden p-2 text-zinc-700 dark:text-zinc-300 cursor-pointer">
+            <Menu className="w-5 h-5" />
           </button>
         </div>
       </div>
@@ -97,10 +109,10 @@ function NavLink({ to, label, active = false }: { to: string; label: string; act
   return (
     <Link
       to={to}
-      className={`text-[15px] pb-1 transition-colors duration-200 border-b-2 ${
+      className={`text-xs font-medium transition-colors duration-150 py-1 border-b-2 relative ${
         active
-          ? 'text-black dark:text-white border-accent-blue font-semibold'
-          : 'text-[#5d5f5f] dark:text-neutral-400 border-transparent hover:text-black dark:hover:text-white'
+          ? 'text-zinc-950 dark:text-white border-[#5e6ad2] font-semibold'
+          : 'text-zinc-500 dark:text-zinc-400 border-transparent hover:text-zinc-900 dark:hover:text-zinc-200'
       }`}
     >
       {label}

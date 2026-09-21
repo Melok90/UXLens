@@ -70,7 +70,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   };
 
   return (
-    <div className="bg-surface-container-lowest dark:bg-[#18181c] border border-[#cfc4c5] dark:border-neutral-800 rounded-xl overflow-hidden flex flex-col shadow-sm relative transition-colors">
+    <div className="bg-white dark:bg-[#101114] border border-zinc-200/90 dark:border-zinc-800/80 rounded-xl overflow-hidden flex flex-col linear-card relative transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -78,32 +78,32 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-black dark:bg-white text-white dark:text-black text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none"
+            className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 pointer-events-none"
           >
-            <Check className="w-3.5 h-3.5 text-green-400 dark:text-green-600" />
+            <Check className="w-3.5 h-3.5 text-emerald-500" />
             <span>{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Header */}
-      <div className="p-3 border-b border-[#cfc4c5] dark:border-neutral-800 flex justify-between items-center bg-[#f9f9f9] dark:bg-[#141416]">
+      <div className="px-3.5 py-2.5 border-b border-zinc-200/90 dark:border-zinc-800/80 flex justify-between items-center bg-zinc-50/70 dark:bg-[#121316]/90">
         <div className="flex items-center gap-2 min-w-0">
           <div className="w-5 h-5 flex items-center justify-center shrink-0">
             {icon}
           </div>
-          <h3 className="text-sm font-bold text-black dark:text-white truncate">{title}</h3>
+          <h3 className="text-xs font-bold text-zinc-900 dark:text-white truncate tracking-tight">{title}</h3>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0 ml-2">
           {/* View Switcher: UI / Code / Tokens */}
-          <div className="flex bg-surface-container-low dark:bg-neutral-800 p-0.5 rounded-md border border-[#cfc4c5] dark:border-neutral-700">
+          <div className="flex bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-md border border-zinc-200 dark:border-zinc-800">
             <button
               onClick={() => setView('preview')}
-              className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
+              className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                 view === 'preview'
-                  ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
-                  : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                  ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
+                  : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
               }`}
             >
               {t('grid.tabUi')}
@@ -112,10 +112,10 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             {codeContent && (
               <button
                 onClick={() => setView('code')}
-                className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
+                className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                   view === 'code'
-                    ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
-                    : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                    ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabCode')}
@@ -125,10 +125,10 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             {designTokens && (
               <button
                 onClick={() => setView('tokens')}
-                className={`px-2 py-1 text-[11px] font-medium rounded-sm transition-all sm:text-[12px] sm:px-2.5 ${
+                className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                   view === 'tokens'
-                    ? 'bg-white dark:bg-neutral-700 shadow-xs text-black dark:text-white font-semibold'
-                    : 'text-[#5d5f5f] dark:text-neutral-400 hover:text-black dark:hover:text-white'
+                    ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabTokens')}
@@ -140,10 +140,10 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           {onInspect && (
             <button
               onClick={onInspect}
-              className="px-2 py-1 bg-surface-container-low dark:bg-neutral-800 hover:bg-surface-container dark:hover:bg-neutral-700 border border-[#cfc4c5] dark:border-neutral-700 rounded-md text-[#5d5f5f] dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
+              className="px-2 py-1 bg-white dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-800 rounded-md text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
               title={t('grid.inspect')}
             >
-              <Maximize2 className="w-3 h-3 text-accent-blue" />
+              <Maximize2 className="w-3 h-3 text-[#5e6ad2]" />
               <span className="hidden lg:inline">{t('grid.inspect')}</span>
             </button>
           )}
@@ -152,16 +152,16 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
       {/* Sub-header for Token format switcher */}
       {view === 'tokens' && (
-        <div className="bg-[#2d2d2d] px-3 py-1.5 border-b border-[#3d3d3d] flex items-center justify-between">
+        <div className="bg-[#0c0d0e] px-3 py-1.5 border-b border-zinc-800/80 flex items-center justify-between">
           <div className="flex items-center gap-1">
             {(['json', 'css', 'tailwind'] as TokenFormat[]).map((fmt) => (
               <button
                 key={fmt}
                 onClick={() => setTokenFormat(fmt)}
-                className={`px-2 py-0.5 text-[10px] uppercase tracking-wider rounded font-mono transition-colors ${
+                className={`px-2 py-0.5 text-[10px] uppercase tracking-wider rounded font-mono transition-colors cursor-pointer ${
                   tokenFormat === fmt
                     ? 'bg-white/20 text-white font-semibold'
-                    : 'text-gray-400 hover:text-white'
+                    : 'text-zinc-400 hover:text-white'
                 }`}
               >
                 {fmt}
@@ -170,34 +170,34 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           </div>
           <button
             onClick={handleCopyTokens}
-            className="flex items-center gap-1 text-[11px] text-gray-300 hover:text-white transition-colors p-1"
+            className="flex items-center gap-1 text-[11px] text-zinc-300 hover:text-white transition-colors p-1 cursor-pointer"
             title={t('grid.copyJson')}
           >
             {copied ? (
-              <Check className="w-3.5 h-3.5 text-green-400" />
+              <Check className="w-3.5 h-3.5 text-emerald-400" />
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
-            <span className="hidden sm:inline">{t('grid.copyJson')}</span>
+            <span className="hidden sm:inline font-mono text-[10px]">{t('grid.copyJson')}</span>
           </button>
         </div>
       )}
 
-      {/* Content Area */}
-      <div className="border-b border-[#cfc4c5] dark:border-neutral-800 h-[200px] flex items-center justify-center bg-surface-container dark:bg-neutral-900/60 relative">
+      {/* Content Area with Workbench Grid */}
+      <div className="border-b border-zinc-200/90 dark:border-zinc-800/80 h-[205px] flex items-center justify-center bg-zinc-50/60 dark:bg-[#0c0d0f] workbench-grid relative">
         {view === 'preview' ? (
           <div className="p-6 w-full h-full flex justify-center items-center overflow-auto">
             {previewContent}
           </div>
         ) : view === 'code' ? (
-          <div className="p-4 w-full h-full bg-[#1e1e1e] text-[#d4d4d4] font-mono text-[12px] sm:text-[13px] overflow-auto relative">
+          <div className="p-4 w-full h-full bg-[#0c0d0e] text-zinc-300 font-mono text-[12px] overflow-auto relative">
             <button
               onClick={handleCopyCode}
-              className="absolute top-3 right-3 p-1.5 bg-black/40 hover:bg-black/60 text-white rounded transition-colors flex items-center gap-1.5 z-10 cursor-pointer"
+              className="absolute top-3 right-3 p-1.5 bg-white/10 hover:bg-white/20 text-white rounded transition-colors flex items-center gap-1.5 z-10 cursor-pointer"
               title={t('grid.copyCode')}
             >
               {copied ? (
-                <Check className="w-3.5 h-3.5 text-green-400" />
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
               ) : (
                 <Copy className="w-3.5 h-3.5" />
               )}
@@ -208,7 +208,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             </pre>
           </div>
         ) : (
-          <div className="p-4 w-full h-full bg-[#1e1e1e] text-[#d4d4d4] font-mono text-[11px] sm:text-[12px] overflow-auto relative">
+          <div className="p-4 w-full h-full bg-[#0c0d0e] text-zinc-300 font-mono text-[11px] sm:text-[12px] overflow-auto relative">
             <pre className="!m-0 p-0 !bg-transparent text-[#ce9178] leading-relaxed">
               <code>{getExportedTokensText()}</code>
             </pre>
@@ -217,20 +217,22 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       </div>
 
       {/* Details */}
-      <div className="p-4 flex flex-col gap-4">
+      <div className="p-4 flex flex-col gap-3.5">
         <div>
-          <h4 className="text-sm font-semibold text-black dark:text-white mb-1">{logicTitle}</h4>
-          <p className="text-[15px] text-[#5d5f5f] dark:text-neutral-400 leading-relaxed">{logicDescription}</p>
+          <h4 className="text-xs font-bold text-zinc-900 dark:text-white mb-1">{logicTitle}</h4>
+          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">{logicDescription}</p>
         </div>
 
-        <div className="bg-[#f3f4f4] dark:bg-neutral-800/80 p-3 rounded-lg flex items-start gap-2">
-          <Eye className="text-black dark:text-white w-[18px] h-[18px] mt-[2px] shrink-0" />
-          <p className="text-[13px] text-black dark:text-neutral-200">{accessibilityText}</p>
+        <div className="bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-200/70 dark:border-zinc-800/70 p-2.5 rounded-lg flex items-start gap-2">
+          <Eye className="text-zinc-700 dark:text-zinc-300 w-4 h-4 mt-0.5 shrink-0" />
+          <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-snug">{accessibilityText}</p>
         </div>
 
-        <div className="relative">
-          <h4 className="text-sm font-semibold text-black dark:text-white mb-1">{t('grid.bestpractices')}</h4>
-          <ul className="list-disc pl-5 text-[15px] text-[#5d5f5f] dark:text-neutral-400 space-y-1 opacity-40 blur-[2px]">
+        <div className="relative pt-1">
+          <h4 className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-1">
+            {t('grid.bestpractices')}
+          </h4>
+          <ul className="list-disc pl-4 text-xs text-zinc-500 dark:text-zinc-400 space-y-1 opacity-40 blur-[2px]">
             {bestPractices.map((practice, index) => (
               <li key={index}>{practice}</li>
             ))}
@@ -239,9 +241,9 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="bg-black dark:bg-white text-white dark:text-black text-sm font-semibold px-4 py-2 rounded flex items-center gap-2 hover:bg-interactive-charcoal dark:hover:bg-neutral-200 transition-colors shadow-lg cursor-pointer"
+              className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 text-xs font-semibold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-lg cursor-pointer"
             >
-              <LockKeyhole className="w-4 h-4" /> {t('pro.cta')}
+              <LockKeyhole className="w-3.5 h-3.5" /> {t('pro.cta')}
             </motion.button>
           </div>
         </div>
