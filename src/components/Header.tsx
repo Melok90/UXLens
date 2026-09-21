@@ -82,15 +82,15 @@ export default function Header() {
           <button
             type="button"
             onClick={() => setIsProModalOpen(true)}
-            className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
               isProUser
-                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30'
-                : 'bg-gradient-to-r from-amber-500/15 via-indigo-500/15 to-purple-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-300 hover:opacity-90 shadow-2xs'
+                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20'
+                : 'bg-gradient-to-r from-amber-500/15 via-indigo-500/15 to-purple-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-300 hover:opacity-90 shadow-2xs hover:shadow-xs'
             }`}
-            title="UX Lens PRO"
+            title={isProUser ? t('nav.proActive') : t('nav.unlockPro')}
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-            <span className="font-mono text-[11px] font-bold">{isProUser ? 'PRO Active' : 'PRO'}</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
+            <span className="font-semibold text-xs whitespace-nowrap">{isProUser ? t('nav.proActive') : t('nav.unlockPro')}</span>
           </button>
           <LanguageToggle />
           <ThemeToggle />

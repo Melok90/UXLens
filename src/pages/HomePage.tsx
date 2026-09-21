@@ -21,6 +21,7 @@ export default function HomePage() {
   const setActiveState = useStore(state => state.setActiveState);
   const setSearchQuery = useStore(state => state.setSearchQuery);
   const setPlatformFilter = useStore(state => state.setPlatformFilter);
+  const isProUser = useStore(state => state.isProUser);
 
   const hydrated = useRef(false);
 
@@ -57,7 +58,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Filters />
-      <LivePlayground />
+      {isProUser && <LivePlayground />}
       <ComparisonGrid />
     </>
   );

@@ -20,6 +20,7 @@ import {
   SlidersHorizontal,
   RotateCcw,
   ExternalLink,
+  Sparkles,
 } from 'lucide-react';
 import {
   COMPONENT_LABEL_KEYS,
@@ -53,6 +54,8 @@ export default function Filters() {
   const setActiveState = useStore((state) => state.setActiveState);
   const setActiveVariant = useStore((state) => state.setActiveVariant);
   const setPlatformFilter = useStore((state) => state.setPlatformFilter);
+  const isProUser = useStore((state) => state.isProUser);
+  const setIsProModalOpen = useStore((state) => state.setIsProModalOpen);
 
   const onComponentChange = (type: ComponentType) => {
     const spec = COMPONENT_MATRIX[type];
@@ -88,13 +91,27 @@ export default function Filters() {
             {t('filters.subtitle')}
           </p>
         </div>
-        <Link
-          to="/systems"
-          className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer shrink-0 pt-1"
-        >
-          <span>{t('filters.openDocs')}</span>
-          <ExternalLink className="w-3.5 h-3.5" />
-        </Link>
+        <div className="flex items-center gap-3 shrink-0 pt-0.5">
+          <button
+            type="button"
+            onClick={() => setIsProModalOpen(true)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs ${
+              isProUser
+                ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20'
+                : 'bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-purple-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-300 hover:border-amber-500/50 hover:bg-amber-500/15'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <span>{isProUser ? t('nav.proActive') : t('nav.unlockPro')}</span>
+          </button>
+          <Link
+            to="/systems"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
+          >
+            <span>{t('filters.openDocs')}</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
 
       {/* Row 1: Platform (without search field as requested) */}
