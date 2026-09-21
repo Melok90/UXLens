@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import { Eye, LockKeyhole, Copy, Check, Code2, Layers, Maximize2 } from 'lucide-react';
+import { Eye, Copy, Check, Code2, Layers, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { tokensToCssVariables, tokensToTailwind } from '../utils/tokens';
@@ -253,24 +253,15 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-snug">{accessibilityText}</p>
         </div>
 
-        <div className="relative pt-1">
-          <h4 className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 mb-1">
+        <div className="pt-1">
+          <h4 className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1.5">
             {t('grid.bestpractices')}
           </h4>
-          <ul className="list-disc pl-4 text-xs text-zinc-500 dark:text-zinc-400 space-y-1 opacity-40 blur-[2px]">
+          <ul className="list-disc pl-4 text-xs text-zinc-600 dark:text-zinc-400 space-y-1">
             {bestPractices.map((practice, index) => (
-              <li key={index}>{practice}</li>
+              <li key={index} className="leading-relaxed">{practice}</li>
             ))}
           </ul>
-          <div className="absolute inset-0 flex justify-center items-center z-10">
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 text-xs font-semibold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-lg cursor-pointer"
-            >
-              <LockKeyhole className="w-3.5 h-3.5" /> {t('pro.cta')}
-            </motion.button>
-          </div>
         </div>
       </div>
     </div>

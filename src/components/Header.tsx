@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Share2, Menu, X, Check } from 'lucide-react';
+import { Search, Share2, Menu, X, Check, Sparkles } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
@@ -11,6 +11,8 @@ export default function Header() {
   const { t, language } = useLanguage();
   const searchQuery = useStore((state) => state.searchQuery);
   const setSearchQuery = useStore((state) => state.setSearchQuery);
+  const isProUser = useStore((state) => state.isProUser);
+  const setIsProModalOpen = useStore((state) => state.setIsProModalOpen);
   const [isShared, setIsShared] = useState(false);
 
   const handleShare = async () => {
@@ -82,6 +84,20 @@ export default function Header() {
         <div className="flex items-center justify-end gap-2 flex-1">
           <LanguageToggle />
           <ThemeToggle />
+
+          {/* Unobtrusive PRO Entry Point */}
+          <button
+            type="button"
+            onClick={() => setIsProModalOpen(true)}
+            aria-label={t('nav.unlockPro') || 'UX Lens Pro'}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs border bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-800 dark:text-zinc-200 hover:border-amber-400/60 dark:hover:border-amber-500/50 hover:text-zinc-950 dark:hover:text-white"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 transition-transform group-hover:scale-110 shrink-0" aria-hidden="true" />
+            <span className="font-mono tracking-tight font-bold">PRO</span>
+            {isProUser && (
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" aria-hidden="true" />
+            )}
+          </button>
           <button
             type="button"
             onClick={handleShare}
