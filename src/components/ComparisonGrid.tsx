@@ -2639,7 +2639,7 @@ export default function ComparisonGrid() {
   };
 
   return (
-    <section className="flex flex-col gap-6 min-w-0">
+    <section id="comparison-grid" className="flex flex-col gap-6 min-w-0">
       {/* Quick Action Toolbar */}
       <div className="flex items-center justify-between gap-4 flex-wrap pb-2 border-b border-[#cfc4c5]/60">
         <div className="flex items-center gap-2">

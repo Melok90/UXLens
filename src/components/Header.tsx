@@ -8,7 +8,7 @@ import { useStore } from '../store/useStore';
 
 export default function Header() {
   const location = useLocation();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const searchQuery = useStore((state) => state.searchQuery);
   const setSearchQuery = useStore((state) => state.setSearchQuery);
   const isProUser = useStore((state) => state.isProUser);
@@ -90,7 +90,16 @@ export default function Header() {
             title={isProUser ? t('nav.proActive') : t('nav.unlockPro')}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
-            <span className="font-semibold text-xs whitespace-nowrap">{isProUser ? t('nav.proActive') : t('nav.unlockPro')}</span>
+            <span className="font-semibold text-xs whitespace-nowrap">
+              {isProUser ? (
+                t('nav.proActive')
+              ) : (
+                <>
+                  <span className="hidden sm:inline">{language === 'ru' ? 'Разблокировать ' : 'Unlock '}</span>
+                  <span>PRO</span>
+                </>
+              )}
+            </span>
           </button>
           <LanguageToggle />
           <ThemeToggle />
@@ -108,7 +117,7 @@ export default function Header() {
               </>
             )}
           </button>
-          <button className="text-xs font-semibold min-w-[72px] justify-center bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 px-3.5 py-1.5 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-xs cursor-pointer">
+          <button className="hidden sm:flex items-center text-xs font-semibold min-w-[72px] justify-center bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 px-3.5 py-1.5 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-xs cursor-pointer">
             {t('nav.login')}
           </button>
           <button className="md:hidden p-2 text-zinc-700 dark:text-zinc-300 cursor-pointer">
