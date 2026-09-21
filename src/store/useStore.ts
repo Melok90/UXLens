@@ -13,6 +13,9 @@ interface AppState {
   platformFilter: PlatformFilter;
   isAiAdvisorOpen: boolean;
   inspectSystem: string | null;
+  customText: string;
+  customBrandColor: string | null;
+  isRtl: boolean;
   setActiveComponent: (component: ComponentType) => void;
   setActiveState: (state: ComponentState) => void;
   setActiveVariant: (variant: ComponentVariant) => void;
@@ -21,6 +24,10 @@ interface AppState {
   setPlatformFilter: (platform: PlatformFilter) => void;
   setIsAiAdvisorOpen: (open: boolean) => void;
   setInspectSystem: (system: string | null) => void;
+  setCustomText: (text: string) => void;
+  setCustomBrandColor: (color: string | null) => void;
+  setIsRtl: (rtl: boolean) => void;
+  resetPlayground: () => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -32,6 +39,9 @@ export const useStore = create<AppState>((set) => ({
   platformFilter: 'all',
   isAiAdvisorOpen: false,
   inspectSystem: null,
+  customText: '',
+  customBrandColor: null,
+  isRtl: false,
   setActiveComponent: (component) => set({ activeComponent: component }),
   setActiveState: (state) => set({ activeState: state }),
   setActiveVariant: (variant) => set({ activeVariant: variant }),
@@ -40,4 +50,8 @@ export const useStore = create<AppState>((set) => ({
   setPlatformFilter: (platform) => set({ platformFilter: platform }),
   setIsAiAdvisorOpen: (open) => set({ isAiAdvisorOpen: open }),
   setInspectSystem: (system) => set({ inspectSystem: system }),
+  setCustomText: (text) => set({ customText: text }),
+  setCustomBrandColor: (color) => set({ customBrandColor: color }),
+  setIsRtl: (rtl) => set({ isRtl: rtl }),
+  resetPlayground: () => set({ customText: '', customBrandColor: null, isRtl: false }),
 }));

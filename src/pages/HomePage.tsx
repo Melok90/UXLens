@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Hero from '../components/Hero';
 import Filters from '../components/Filters';
+import LivePlayground from '../components/LivePlayground';
 import ComparisonGrid from '../components/ComparisonGrid';
 import { useStore } from '../store/useStore';
 import { readFiltersFromParams, writeFiltersToParams } from '../utils/urlState';
@@ -56,6 +57,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Filters />
+      <LivePlayground />
       <ComparisonGrid />
     </>
   );

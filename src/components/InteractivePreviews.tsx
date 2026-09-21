@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, Check, X, RotateCcw, Calendar, CheckCircle2 } from 'lucide-react';
 import { ComponentState, ComponentVariant } from '../App';
+import { useStore } from '../store/useStore';
 
 interface InteractiveButtonProps {
   system: string;
@@ -17,6 +18,9 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   tText,
 }) => {
   const [clicked, setClicked] = useState(false);
+  const customText = useStore((s) => s.customText);
+  const customBrandColor = useStore((s) => s.customBrandColor);
+  const isRtl = useStore((s) => s.isRtl);
   const isLoading = state === 'loading';
   const isDisabled = state === 'disabled' || isLoading;
 
@@ -274,30 +278,49 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   if (state === 'disabled') appliedStateClass = disabled;
   if (state === 'error') appliedStateClass = isOutlined ? errorOutlined : errorFilled;
 
+  const buttonLabel = customText.trim() ? customText : tText('Основное действие');
+
+  const customBrandStyle: React.CSSProperties = {};
+  if (customBrandColor && state !== 'disabled' && state !== 'error') {
+    if (variant === 'primary' || variant === 'default') {
+      customBrandStyle.backgroundColor = customBrandColor;
+      customBrandStyle.borderColor = 'transparent';
+      customBrandStyle.color = '#ffffff';
+    } else if (variant === 'secondary') {
+      customBrandStyle.color = customBrandColor;
+      customBrandStyle.borderColor = customBrandColor;
+    } else if (variant === 'tertiary') {
+      customBrandStyle.color = customBrandColor;
+    } else if (variant === 'icon') {
+      customBrandStyle.color = customBrandColor;
+    }
+  }
+
   const content = isLoading ? (
     <div className={`flex items-center justify-center ${variant === 'icon' ? '' : 'gap-2'}`}>
       <svg className={`animate-spin ${variant === 'icon' ? 'h-4 w-4' : 'h-3.5 w-3.5'}`} viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
       </svg>
-      {variant !== 'icon' && tText('Основное действие')}
+      {variant !== 'icon' && <span className="truncate max-w-[210px]">{buttonLabel}</span>}
     </div>
   ) : variant === 'icon' ? (
     <Search size={16} />
   ) : (
-    <span className="flex items-center gap-1.5">
-      {clicked && <Check className="w-3.5 h-3.5 animate-in fade-in zoom-in-75" />}
-      {tText('Основное действие')}
+    <span className="flex items-center gap-1.5 truncate max-w-[220px]">
+      {clicked && <Check className="w-3.5 h-3.5 shrink-0 animate-in fade-in zoom-in-75" />}
+      <span className="truncate">{buttonLabel}</span>
     </span>
   );
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2 max-w-full">
       <motion.button
         whileHover={isDisabled ? undefined : { scale: 1.03 }}
         whileTap={isDisabled ? undefined : { scale: 0.95 }}
         onClick={handleClick}
         className={`${base} ${appliedStateClass} ${hover} ${active}`}
+        style={customBrandStyle}
         disabled={isDisabled}
       >
         {content}
@@ -318,6 +341,8 @@ interface InteractiveSwitchProps {
 
 export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, state }) => {
   const [checked, setChecked] = useState(true);
+  const customBrandColor = useStore((s) => s.customBrandColor);
+  const isRtl = useStore((s) => s.isRtl);
   const isDisabled = state === 'disabled';
 
   const toggle = () => {
@@ -428,9 +453,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
   };
 
   const cfg = getSystemConfig();
+  const activeBgColor = (customBrandColor && !isDisabled) ? customBrandColor : cfg.activeBg;
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
       <div
         onClick={toggle}
         className={`relative flex items-center transition-colors duration-200 ${cfg.rounded} ${cfg.border} ${
@@ -439,7 +465,7 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
         style={{
           width: `${cfg.trackW}px`,
           height: `${cfg.trackH}px`,
-          backgroundColor: checked ? cfg.activeBg : cfg.inactiveBg,
+          backgroundColor: checked ? activeBgColor : cfg.inactiveBg,
         }}
       >
         <motion.div
@@ -453,7 +479,7 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           className={`${cfg.rounded} shadow-sm flex items-center justify-center`}
         >
           {system === 'Material Design 3' && checked && (
-            <Check className="w-3 h-3 text-[#6750a4]" strokeWidth={3} />
+            <Check className="w-3 h-3" style={{ color: activeBgColor }} strokeWidth={3} />
           )}
         </motion.div>
       </div>
@@ -477,52 +503,72 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   placeholder = 'Введите текст',
   label = 'Метка',
 }) => {
-  const [value, setValue] = useState(placeholder);
+  const customText = useStore((s) => s.customText);
+  const customBrandColor = useStore((s) => s.customBrandColor);
+  const isRtl = useStore((s) => s.isRtl);
+
+  const [userTyped, setUserTyped] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const isDisabled = state === 'disabled';
   const isError = state === 'error';
 
+  const currentValue = userTyped !== null ? userTyped : (customText.trim() ? customText : placeholder);
+
   const clear = () => {
     if (isDisabled) return;
-    setValue('');
+    setUserTyped('');
   };
 
   if (system === 'Material Design 3') {
+    const m3Border = isError
+      ? 'border-[#B3261E] border-b-2'
+      : isFocused || state === 'focus'
+      ? 'border-accent-blue border-b-2 bg-[#ece6f0]'
+      : 'border-[#49454F]';
+
+    const m3Style: React.CSSProperties = {};
+    if (customBrandColor && (isFocused || state === 'focus') && !isError) {
+      m3Style.borderBottomColor = customBrandColor;
+    }
+
+    const m3LabelStyle: React.CSSProperties = {};
+    if (customBrandColor && (isFocused || currentValue.length > 0 || state === 'focus') && !isError) {
+      m3LabelStyle.color = customBrandColor;
+    }
+
     return (
-      <div className="w-full max-w-[240px] flex flex-col gap-1 text-left relative">
+      <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] flex flex-col gap-1 text-left relative">
         <div
-          className={`px-4 pt-4 pb-2 rounded-t-[4px] transition-all border-b bg-[#E7E0EC] relative ${
-            isError
-              ? 'border-[#B3261E] border-b-2'
-              : isFocused || state === 'focus'
-              ? 'border-accent-blue border-b-2 bg-[#ece6f0]'
-              : 'border-[#49454F]'
-          } ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`px-4 pt-4 pb-2 rounded-t-[4px] transition-all border-b bg-[#E7E0EC] relative ${m3Border} ${
+            isDisabled ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          style={m3Style}
         >
           <span
             className={`absolute transition-all duration-150 text-[11px] ${
-              isFocused || value.length > 0 || state === 'focus'
+              isFocused || currentValue.length > 0 || state === 'focus'
                 ? 'top-1.5 text-accent-blue font-medium'
                 : 'top-3.5 text-sm text-[#49454F]'
             } ${isError ? '!text-[#B3261E]' : ''}`}
+            style={m3LabelStyle}
           >
             {label}
           </span>
           <div className="flex items-center justify-between mt-1">
             <input
               type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
+              value={currentValue}
+              onChange={(e) => setUserTyped(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
               disabled={isDisabled}
               className="bg-transparent border-none outline-none w-full text-[#1D1B20] text-sm pt-1"
             />
-            {value.length > 0 && !isDisabled && (
+            {currentValue.length > 0 && !isDisabled && (
               <button
                 type="button"
                 onClick={clear}
-                className="text-[#49454F] hover:text-black p-0.5"
+                className="text-[#49454F] hover:text-black p-0.5 cursor-pointer"
                 title="Очистить"
               >
                 <X className="w-3.5 h-3.5" />
@@ -535,29 +581,38 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   }
 
   if (system === 'Fluent UI') {
+    const fluentBorder = isError
+      ? 'border-[#A4262C] ring-1 ring-[#A4262C]'
+      : isFocused || state === 'focus'
+      ? 'border-[#0078D4] ring-1 ring-[#0078D4]'
+      : 'border-[#605E5C] hover:border-[#323130]';
+
+    const fluentStyle: React.CSSProperties = {};
+    if (customBrandColor && (isFocused || state === 'focus') && !isError) {
+      fluentStyle.borderColor = customBrandColor;
+      fluentStyle.boxShadow = `0 0 0 1px ${customBrandColor}`;
+    }
+
     return (
-      <div className="w-full max-w-[240px] text-left">
+      <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
         <div
-          className={`flex items-center px-3 py-1.5 rounded-[2px] bg-white border transition-all ${
-            isError
-              ? 'border-[#A4262C] ring-1 ring-[#A4262C]'
-              : isFocused || state === 'focus'
-              ? 'border-[#0078D4] ring-1 ring-[#0078D4]'
-              : 'border-[#605E5C] hover:border-[#323130]'
-          } ${isDisabled ? 'bg-[#f3f2f1] text-[#a19f9d] opacity-60 cursor-not-allowed' : ''}`}
+          className={`flex items-center px-3 py-1.5 rounded-[2px] bg-white border transition-all ${fluentBorder} ${
+            isDisabled ? 'bg-[#f3f2f1] text-[#a19f9d] opacity-60 cursor-not-allowed' : ''
+          }`}
+          style={fluentStyle}
         >
           <input
             type="text"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            value={currentValue}
+            onChange={(e) => setUserTyped(e.target.value)}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             disabled={isDisabled}
             className="w-full bg-transparent border-none outline-none text-xs text-[#323130]"
             placeholder={placeholder}
           />
-          {value.length > 0 && !isDisabled && (
-            <button type="button" onClick={clear} className="text-gray-400 hover:text-black">
+          {currentValue.length > 0 && !isDisabled && (
+            <button type="button" onClick={clear} className="text-gray-400 hover:text-black cursor-pointer">
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -597,25 +652,32 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
     return 'rounded-md';
   };
 
+  const genericStyle: React.CSSProperties = {};
+  if (customBrandColor && (isFocused || state === 'focus') && !isError) {
+    genericStyle.borderColor = customBrandColor;
+    genericStyle.boxShadow = `0 0 0 2px ${customBrandColor}33`;
+  }
+
   return (
-    <div className="w-full max-w-[240px] text-left">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
       <div
         className={`flex items-center px-3 py-1.5 bg-white border transition-all ${getRadius()} ${getBorderClasses()} ${
           isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''
         }`}
+        style={genericStyle}
       >
         <input
           type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={currentValue}
+          onChange={(e) => setUserTyped(e.target.value)}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={isDisabled}
           className="w-full bg-transparent border-none outline-none text-xs text-gray-800"
           placeholder={placeholder}
         />
-        {value.length > 0 && !isDisabled && (
-          <button type="button" onClick={clear} className="text-gray-400 hover:text-black">
+        {currentValue.length > 0 && !isDisabled && (
+          <button type="button" onClick={clear} className="text-gray-400 hover:text-black cursor-pointer">
             <X className="w-3.5 h-3.5" />
           </button>
         )}
@@ -632,6 +694,9 @@ interface InteractiveRadioProps {
 
 export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, state, tText }) => {
   const [selected, setSelected] = useState<number>(1);
+  const customText = useStore((s) => s.customText);
+  const customBrandColor = useStore((s) => s.customBrandColor);
+  const isRtl = useStore((s) => s.isRtl);
   const isDisabled = state === 'disabled';
 
   const getColor = () => {
@@ -656,10 +721,11 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
     }
   };
 
-  const color = getColor();
+  const color = (customBrandColor && !isDisabled) ? customBrandColor : getColor();
+  const opt1Label = customText.trim() ? customText : tText('Основная опция');
 
   return (
-    <div className="flex flex-col gap-2.5 text-left select-none">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col gap-2.5 text-left select-none max-w-full">
       {[1, 2].map((opt) => {
         const isOptSelected = selected === opt;
         return (
@@ -669,7 +735,7 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
             className={`flex items-center gap-2.5 ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             <div
-              className="w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center transition-all bg-white"
+              className="w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center transition-all bg-white shrink-0"
               style={{ borderColor: isOptSelected ? color : '#8A8886' }}
             >
               {isOptSelected && (
@@ -682,8 +748,8 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
                 />
               )}
             </div>
-            <span className="text-xs font-medium text-gray-800">
-              {tText(opt === 1 ? 'Основная опция' : 'Вторичная опция')}
+            <span className="text-xs font-medium text-gray-800 truncate max-w-[200px]">
+              {opt === 1 ? opt1Label : tText('Вторичная опция')}
             </span>
           </div>
         );
@@ -700,7 +766,18 @@ interface InteractiveTagProps {
 
 export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, tText }) => {
   const [visible, setVisible] = useState(true);
+  const customText = useStore((s) => s.customText);
+  const customBrandColor = useStore((s) => s.customBrandColor);
+  const isRtl = useStore((s) => s.isRtl);
   const isDisabled = state === 'disabled';
+
+  const tagLabel = customText.trim() ? customText : tText('Активный тег');
+
+  const customStyle: React.CSSProperties = (customBrandColor && !isDisabled) ? {
+    backgroundColor: `${customBrandColor}18`,
+    color: customBrandColor,
+    borderColor: `${customBrandColor}55`,
+  } : {};
 
   const getSystemClasses = () => {
     switch (system) {
@@ -725,7 +802,7 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
   };
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
       <AnimatePresence mode="wait">
         {visible ? (
           <motion.div
@@ -733,11 +810,12 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
+            style={customStyle}
             className={`flex items-center gap-1.5 shadow-xs ${getSystemClasses()} ${
               isDisabled ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            <span>{tText('Активный тег')}</span>
+            <span className="truncate max-w-[200px]">{tagLabel}</span>
             {!isDisabled && (
               <button
                 type="button"

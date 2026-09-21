@@ -3,6 +3,7 @@ import { Eye, LockKeyhole, Copy, Check, Code2, Layers, Maximize2 } from 'lucide-
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { tokensToCssVariables, tokensToTailwind } from '../utils/tokens';
+import { useStore } from '../store/useStore';
 
 interface ComparisonCardProps {
   title: string;
@@ -35,6 +36,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   onInspect,
 }) => {
   const { t } = useLanguage();
+  const isRtl = useStore((state) => state.isRtl);
   const [view, setView] = useState<CardView>('preview');
   const [tokenFormat, setTokenFormat] = useState<TokenFormat>('json');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -186,7 +188,12 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       {/* Content Area with Workbench Grid */}
       <div className="border-b border-zinc-200/90 dark:border-zinc-800/80 h-[205px] flex items-center justify-center bg-zinc-50/60 dark:bg-[#0c0d0f] workbench-grid relative">
         {view === 'preview' ? (
-          <div className="p-6 w-full h-full flex justify-center items-center overflow-auto">
+          <div
+            dir={isRtl ? 'rtl' : 'ltr'}
+            className={`p-6 w-full h-full flex justify-center items-center overflow-auto ${
+              isRtl ? 'text-right' : ''
+            }`}
+          >
             {previewContent}
           </div>
         ) : view === 'code' ? (

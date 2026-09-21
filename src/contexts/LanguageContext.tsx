@@ -126,6 +126,22 @@ const translations: Translations = {
     "systems.platform.web": "Web",
     "systems.platform.mobile": "Mobile",
 
+    // Live Playground
+    "playground.title": "Live Playground",
+    "playground.badge": "Тестирование в реальном времени",
+    "playground.desc": "Проверьте поведение компонентов с вашим текстом и фирменным цветом бренда на всех 8 дизайн-системах",
+    "playground.customText": "Текст компонента",
+    "playground.customTextPlaceholder": "Введите произвольный текст (напр., 'Купить сейчас', 'Оформить заказ')...",
+    "playground.brandColor": "Цвет бренда (HEX)",
+    "playground.brandPresets": "Пресеты бренда",
+    "playground.direction": "Направление",
+    "playground.reset": "Сбросить настройки",
+    "playground.activeOverrides": "активно",
+    "playground.preset1": "Начать работу",
+    "playground.preset2": "Оформить заказ ($49)",
+    "playground.preset3": "Подтвердить перевод",
+    "playground.presetLong": "Очень длинный текст для проверки обрезки и переполнения контейнера",
+
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",
     "footer.changelog": "Список измененений",
@@ -248,6 +264,22 @@ const translations: Translations = {
     "systems.platform.all": "All platforms",
     "systems.platform.web": "Web",
     "systems.platform.mobile": "Mobile",
+
+    // Live Playground
+    "playground.title": "Live Playground",
+    "playground.badge": "Real-Time Sandbox",
+    "playground.desc": "Test components with your custom text and brand accent color across all 8 design systems",
+    "playground.customText": "Component Text",
+    "playground.customTextPlaceholder": "Enter custom text (e.g. 'Get Started', 'Checkout $49')...",
+    "playground.brandColor": "Brand Color (HEX)",
+    "playground.brandPresets": "Brand Presets",
+    "playground.direction": "Direction",
+    "playground.reset": "Reset Overrides",
+    "playground.activeOverrides": "active",
+    "playground.preset1": "Get Started",
+    "playground.preset2": "Checkout ($49)",
+    "playground.preset3": "Confirm Transfer",
+    "playground.presetLong": "Extremely long label to stress-test text truncation and container overflow",
 
     // Footer
     "footer.rights": "© 2026 UXLens Open Source Project",

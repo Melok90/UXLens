@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useStore } from '../store/useStore';
 import { ComponentType, ComponentVariant, ComponentState } from '../App';
 import { COMPONENT_ANATOMY, SystemAnatomySpec } from '../data/componentAnatomy';
 
@@ -51,6 +52,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
   allCards,
 }) => {
   const { t, language } = useLanguage();
+  const isRtl = useStore((state) => state.isRtl);
   const [activeTab, setActiveTab] = useState<ModalTab>('anatomy');
   const [selectedSystem, setSelectedSystem] = useState<string>(initialSystem);
   const [compareSystemA, setCompareSystemA] = useState<string>(initialSystem);
@@ -293,7 +295,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
                     )}
 
                     {/* Live interactive component preview */}
-                    <div className="relative z-10">
+                    <div dir={isRtl ? 'rtl' : 'ltr'} className="relative z-10">
                       {getCardPreview(selectedSystem) || (
                         <div className="px-5 py-2.5 bg-[#5e6ad2] text-white rounded-lg font-medium text-sm shadow">
                           {activeComponent}
@@ -527,7 +529,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
                     </span>
                   </div>
 
-                  <div className="h-[180px] p-6 flex items-center justify-center bg-zinc-50/40 dark:bg-[#0c0d0f] workbench-grid overflow-auto">
+                  <div dir={isRtl ? 'rtl' : 'ltr'} className="h-[180px] p-6 flex items-center justify-center bg-zinc-50/40 dark:bg-[#0c0d0f] workbench-grid overflow-auto">
                     {getCardPreview(compareSystemA) || (
                       <div className="px-5 py-2.5 bg-[#5e6ad2] text-white rounded-lg font-medium text-sm shadow">
                         {activeComponent}
@@ -558,7 +560,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
                     </span>
                   </div>
 
-                  <div className="h-[180px] p-6 flex items-center justify-center bg-zinc-50/40 dark:bg-[#0c0d0f] workbench-grid overflow-auto">
+                  <div dir={isRtl ? 'rtl' : 'ltr'} className="h-[180px] p-6 flex items-center justify-center bg-zinc-50/40 dark:bg-[#0c0d0f] workbench-grid overflow-auto">
                     {getCardPreview(compareSystemB) || (
                       <div className="px-5 py-2.5 bg-indigo-600 text-white rounded-lg font-medium text-sm shadow">
                         {activeComponent}
