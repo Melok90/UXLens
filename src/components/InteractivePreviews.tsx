@@ -18,9 +18,15 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   tText,
 }) => {
   const [clicked, setClicked] = useState(false);
+  const isProUser = useStore((s) => s.isProUser);
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+
+  const effectiveText = isProUser ? customText : '';
+  const effectiveBrandColor = isProUser ? customBrandColor : null;
+  const effectiveRtl = isProUser ? isRtl : false;
+
   const isLoading = state === 'loading';
   const isDisabled = state === 'disabled' || isLoading;
 
@@ -278,21 +284,21 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   if (state === 'disabled') appliedStateClass = disabled;
   if (state === 'error') appliedStateClass = isOutlined ? errorOutlined : errorFilled;
 
-  const buttonLabel = customText.trim() ? customText : tText('Основное действие');
+  const buttonLabel = effectiveText.trim() ? effectiveText : tText('Основное действие');
 
   const customBrandStyle: React.CSSProperties = {};
-  if (customBrandColor && state !== 'disabled' && state !== 'error') {
+  if (effectiveBrandColor && state !== 'disabled' && state !== 'error') {
     if (variant === 'primary' || variant === 'default') {
-      customBrandStyle.backgroundColor = customBrandColor;
+      customBrandStyle.backgroundColor = effectiveBrandColor;
       customBrandStyle.borderColor = 'transparent';
       customBrandStyle.color = '#ffffff';
     } else if (variant === 'secondary') {
-      customBrandStyle.color = customBrandColor;
-      customBrandStyle.borderColor = customBrandColor;
+      customBrandStyle.color = effectiveBrandColor;
+      customBrandStyle.borderColor = effectiveBrandColor;
     } else if (variant === 'tertiary') {
-      customBrandStyle.color = customBrandColor;
+      customBrandStyle.color = effectiveBrandColor;
     } else if (variant === 'icon') {
-      customBrandStyle.color = customBrandColor;
+      customBrandStyle.color = effectiveBrandColor;
     }
   }
 
@@ -314,7 +320,7 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
   );
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2 max-w-full">
+    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2 max-w-full">
       <motion.button
         whileHover={isDisabled ? undefined : { scale: 1.03 }}
         whileTap={isDisabled ? undefined : { scale: 0.95 }}
@@ -341,8 +347,11 @@ interface InteractiveSwitchProps {
 
 export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, state }) => {
   const [checked, setChecked] = useState(true);
+  const isProUser = useStore((s) => s.isProUser);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+  const effectiveBrandColor = isProUser ? customBrandColor : null;
+  const effectiveRtl = isProUser ? isRtl : false;
   const isDisabled = state === 'disabled';
 
   const toggle = () => {
@@ -453,10 +462,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
   };
 
   const cfg = getSystemConfig();
-  const activeBgColor = (customBrandColor && !isDisabled) ? customBrandColor : cfg.activeBg;
+  const activeBgColor = (effectiveBrandColor && !isDisabled) ? effectiveBrandColor : cfg.activeBg;
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
+    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
       <div
         onClick={toggle}
         className={`relative flex items-center transition-colors duration-200 ${cfg.rounded} ${cfg.border} ${
@@ -503,16 +512,21 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   placeholder = 'Введите текст',
   label = 'Метка',
 }) => {
+  const isProUser = useStore((s) => s.isProUser);
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+
+  const effectiveText = isProUser ? customText : '';
+  const effectiveBrandColor = isProUser ? customBrandColor : null;
+  const effectiveRtl = isProUser ? isRtl : false;
 
   const [userTyped, setUserTyped] = useState<string | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const isDisabled = state === 'disabled';
   const isError = state === 'error';
 
-  const currentValue = userTyped !== null ? userTyped : (customText.trim() ? customText : placeholder);
+  const currentValue = userTyped !== null ? userTyped : (effectiveText.trim() ? effectiveText : placeholder);
 
   const clear = () => {
     if (isDisabled) return;
@@ -527,17 +541,17 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
       : 'border-[#49454F]';
 
     const m3Style: React.CSSProperties = {};
-    if (customBrandColor && (isFocused || state === 'focus') && !isError) {
-      m3Style.borderBottomColor = customBrandColor;
+    if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+      m3Style.borderBottomColor = effectiveBrandColor;
     }
 
     const m3LabelStyle: React.CSSProperties = {};
-    if (customBrandColor && (isFocused || currentValue.length > 0 || state === 'focus') && !isError) {
-      m3LabelStyle.color = customBrandColor;
+    if (effectiveBrandColor && (isFocused || currentValue.length > 0 || state === 'focus') && !isError) {
+      m3LabelStyle.color = effectiveBrandColor;
     }
 
     return (
-      <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] flex flex-col gap-1 text-left relative">
+      <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] flex flex-col gap-1 text-left relative">
         <div
           className={`px-4 pt-4 pb-2 rounded-t-[4px] transition-all border-b bg-[#E7E0EC] relative ${m3Border} ${
             isDisabled ? 'opacity-50 cursor-not-allowed' : ''
@@ -588,13 +602,13 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
       : 'border-[#605E5C] hover:border-[#323130]';
 
     const fluentStyle: React.CSSProperties = {};
-    if (customBrandColor && (isFocused || state === 'focus') && !isError) {
-      fluentStyle.borderColor = customBrandColor;
-      fluentStyle.boxShadow = `0 0 0 1px ${customBrandColor}`;
+    if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+      fluentStyle.borderColor = effectiveBrandColor;
+      fluentStyle.boxShadow = `0 0 0 1px ${effectiveBrandColor}`;
     }
 
     return (
-      <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
+      <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
         <div
           className={`flex items-center px-3 py-1.5 rounded-[2px] bg-white border transition-all ${fluentBorder} ${
             isDisabled ? 'bg-[#f3f2f1] text-[#a19f9d] opacity-60 cursor-not-allowed' : ''
@@ -653,13 +667,13 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   };
 
   const genericStyle: React.CSSProperties = {};
-  if (customBrandColor && (isFocused || state === 'focus') && !isError) {
-    genericStyle.borderColor = customBrandColor;
-    genericStyle.boxShadow = `0 0 0 2px ${customBrandColor}33`;
+  if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+    genericStyle.borderColor = effectiveBrandColor;
+    genericStyle.boxShadow = `0 0 0 2px ${effectiveBrandColor}33`;
   }
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
+    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
       <div
         className={`flex items-center px-3 py-1.5 bg-white border transition-all ${getRadius()} ${getBorderClasses()} ${
           isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''
@@ -694,9 +708,14 @@ interface InteractiveRadioProps {
 
 export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, state, tText }) => {
   const [selected, setSelected] = useState<number>(1);
+  const isProUser = useStore((s) => s.isProUser);
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+
+  const effectiveText = isProUser ? customText : '';
+  const effectiveBrandColor = isProUser ? customBrandColor : null;
+  const effectiveRtl = isProUser ? isRtl : false;
   const isDisabled = state === 'disabled';
 
   const getColor = () => {
@@ -721,11 +740,11 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
     }
   };
 
-  const color = (customBrandColor && !isDisabled) ? customBrandColor : getColor();
-  const opt1Label = customText.trim() ? customText : tText('Основная опция');
+  const color = (effectiveBrandColor && !isDisabled) ? effectiveBrandColor : getColor();
+  const opt1Label = effectiveText.trim() ? effectiveText : tText('Основная опция');
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col gap-2.5 text-left select-none max-w-full">
+    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col gap-2.5 text-left select-none max-w-full">
       {[1, 2].map((opt) => {
         const isOptSelected = selected === opt;
         return (
@@ -766,17 +785,22 @@ interface InteractiveTagProps {
 
 export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, tText }) => {
   const [visible, setVisible] = useState(true);
+  const isProUser = useStore((s) => s.isProUser);
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+
+  const effectiveText = isProUser ? customText : '';
+  const effectiveBrandColor = isProUser ? customBrandColor : null;
+  const effectiveRtl = isProUser ? isRtl : false;
   const isDisabled = state === 'disabled';
 
-  const tagLabel = customText.trim() ? customText : tText('Активный тег');
+  const tagLabel = effectiveText.trim() ? effectiveText : tText('Активный тег');
 
-  const customStyle: React.CSSProperties = (customBrandColor && !isDisabled) ? {
-    backgroundColor: `${customBrandColor}18`,
-    color: customBrandColor,
-    borderColor: `${customBrandColor}55`,
+  const customStyle: React.CSSProperties = (effectiveBrandColor && !isDisabled) ? {
+    backgroundColor: `${effectiveBrandColor}18`,
+    color: effectiveBrandColor,
+    borderColor: `${effectiveBrandColor}55`,
   } : {};
 
   const getSystemClasses = () => {
@@ -802,7 +826,7 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
   };
 
   return (
-    <div dir={isRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
+    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
       <AnimatePresence mode="wait">
         {visible ? (
           <motion.div

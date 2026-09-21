@@ -16,6 +16,8 @@ interface AppState {
   customText: string;
   customBrandColor: string | null;
   isRtl: boolean;
+  isProUser: boolean;
+  isProModalOpen: boolean;
   setActiveComponent: (component: ComponentType) => void;
   setActiveState: (state: ComponentState) => void;
   setActiveVariant: (variant: ComponentVariant) => void;
@@ -27,6 +29,9 @@ interface AppState {
   setCustomText: (text: string) => void;
   setCustomBrandColor: (color: string | null) => void;
   setIsRtl: (rtl: boolean) => void;
+  setIsProUser: (pro: boolean) => void;
+  setIsProModalOpen: (open: boolean) => void;
+  toggleProUser: () => void;
   resetPlayground: () => void;
 }
 
@@ -42,6 +47,8 @@ export const useStore = create<AppState>((set) => ({
   customText: '',
   customBrandColor: null,
   isRtl: false,
+  isProUser: false,
+  isProModalOpen: false,
   setActiveComponent: (component) => set({ activeComponent: component }),
   setActiveState: (state) => set({ activeState: state }),
   setActiveVariant: (variant) => set({ activeVariant: variant }),
@@ -53,5 +60,8 @@ export const useStore = create<AppState>((set) => ({
   setCustomText: (text) => set({ customText: text }),
   setCustomBrandColor: (color) => set({ customBrandColor: color }),
   setIsRtl: (rtl) => set({ isRtl: rtl }),
+  setIsProUser: (pro) => set({ isProUser: pro }),
+  setIsProModalOpen: (open) => set({ isProModalOpen: open }),
+  toggleProUser: () => set((state) => ({ isProUser: !state.isProUser })),
   resetPlayground: () => set({ customText: '', customBrandColor: null, isRtl: false }),
 }));

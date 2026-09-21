@@ -52,7 +52,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
   allCards,
 }) => {
   const { t, language } = useLanguage();
-  const isRtl = useStore((state) => state.isRtl);
+  const isRtl = useStore((state) => state.isProUser && state.isRtl);
   const [activeTab, setActiveTab] = useState<ModalTab>('anatomy');
   const [selectedSystem, setSelectedSystem] = useState<string>(initialSystem);
   const [compareSystemA, setCompareSystemA] = useState<string>(initialSystem);

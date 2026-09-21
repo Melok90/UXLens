@@ -36,7 +36,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
   onInspect,
 }) => {
   const { t } = useLanguage();
-  const isRtl = useStore((state) => state.isRtl);
+  const isRtl = useStore((state) => state.isProUser && state.isRtl);
   const [view, setView] = useState<CardView>('preview');
   const [tokenFormat, setTokenFormat] = useState<TokenFormat>('json');
   const [toastMessage, setToastMessage] = useState<string | null>(null);

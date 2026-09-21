@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ProUpgradeModal from './components/ProUpgradeModal';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const SystemsPage = lazy(() => import('./pages/SystemsPage'));
@@ -34,6 +35,7 @@ export default function App() {
         </main>
 
         <Footer />
+        <ProUpgradeModal />
       </div>
     </Router>
   );
