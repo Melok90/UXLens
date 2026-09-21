@@ -1,19 +1,10 @@
 import { useLanguage } from '../contexts/LanguageContext';
-import { Sparkles } from 'lucide-react';
 
 export default function Hero() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <section className="max-w-3xl flex flex-col items-start gap-3">
-      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-[#5e6ad2]/30 bg-[#5e6ad2]/5 dark:bg-[#5e6ad2]/10 text-[#5e6ad2] dark:text-[#828cf5] text-xs font-medium">
-        <Sparkles className="w-3.5 h-3.5" />
-        <span>
-          {language === 'ru'
-            ? 'Инженерный компаратор дизайн-систем'
-            : 'Engineering Design System Comparator'}
-        </span>
-      </div>
 
       <h1 className="text-3xl sm:text-4xl lg:text-[44px] leading-[1.12] font-bold text-zinc-950 dark:text-white tracking-tight">
         {t('hero.title')}
