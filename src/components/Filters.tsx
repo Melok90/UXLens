@@ -21,7 +21,6 @@ import {
   SlidersHorizontal,
   RotateCcw,
   ExternalLink,
-  Sparkles,
   BookOpen,
   ChevronDown,
   ChevronRight,
@@ -61,8 +60,6 @@ export default function Filters() {
   const setActiveState = useStore((state) => state.setActiveState);
   const setActiveVariant = useStore((state) => state.setActiveVariant);
   const setPlatformFilter = useStore((state) => state.setPlatformFilter);
-  const isProUser = useStore((state) => state.isProUser);
-  const setIsProModalOpen = useStore((state) => state.setIsProModalOpen);
 
   // Mobile Bottom Sheet state
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
@@ -144,18 +141,6 @@ export default function Filters() {
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0 pt-0.5">
-            <button
-              type="button"
-              onClick={() => setIsProModalOpen(true)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer shadow-2xs ${
-                isProUser
-                  ? 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20'
-                  : 'bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-purple-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-300 hover:border-amber-500/50 hover:bg-amber-500/15'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-              <span>{isProUser ? t('nav.proActive') : t('nav.unlockPro')}</span>
-            </button>
             <Link
               to="/systems"
               className="flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors cursor-pointer"
@@ -414,7 +399,7 @@ export default function Filters() {
             <ChevronRight className="w-4 h-4" />
           </button>
 
-          <div className="flex items-center justify-center gap-4 pt-0.5 text-xs">
+          <div className="flex items-center justify-center pt-0.5 text-xs">
             <button
               type="button"
               onClick={resetFilters}
@@ -422,15 +407,6 @@ export default function Filters() {
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{t('filters.reset')}</span>
-            </button>
-            <span className="text-zinc-300 dark:text-zinc-700">•</span>
-            <button
-              type="button"
-              onClick={() => setIsProModalOpen(true)}
-              className="text-amber-600 dark:text-amber-400 hover:opacity-80 transition-opacity flex items-center gap-1 font-semibold cursor-pointer py-1"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{isProUser ? t('nav.proActive') : t('nav.unlockPro')}</span>
             </button>
           </div>
         </div>

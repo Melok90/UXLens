@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Share2, Menu, X, Check, Sparkles } from 'lucide-react';
+import { Search, Share2, Menu, X, Check } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import LanguageToggle from './LanguageToggle';
 import ThemeToggle from './ThemeToggle';
@@ -8,11 +8,9 @@ import { useStore } from '../store/useStore';
 
 export default function Header() {
   const location = useLocation();
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const searchQuery = useStore((state) => state.searchQuery);
   const setSearchQuery = useStore((state) => state.setSearchQuery);
-  const isProUser = useStore((state) => state.isProUser);
-  const setIsProModalOpen = useStore((state) => state.setIsProModalOpen);
   const [isShared, setIsShared] = useState(false);
 
   const handleShare = async () => {
@@ -79,28 +77,6 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center justify-end gap-2 flex-1">
-          <button
-            type="button"
-            onClick={() => setIsProModalOpen(true)}
-            className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-              isProUser
-                ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20'
-                : 'bg-gradient-to-r from-amber-500/15 via-indigo-500/15 to-purple-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-300 hover:opacity-90 shadow-2xs hover:shadow-xs'
-            }`}
-            title={isProUser ? t('nav.proActive') : t('nav.unlockPro')}
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
-            <span className="font-semibold text-xs whitespace-nowrap">
-              {isProUser ? (
-                t('nav.proActive')
-              ) : (
-                <>
-                  <span className="hidden sm:inline">{language === 'ru' ? 'Разблокировать ' : 'Unlock '}</span>
-                  <span>PRO</span>
-                </>
-              )}
-            </span>
-          </button>
           <LanguageToggle />
           <ThemeToggle />
           <button
