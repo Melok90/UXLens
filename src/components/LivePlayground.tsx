@@ -110,7 +110,7 @@ export default function LivePlayground() {
             <button
               type="button"
               onClick={() => setIsProUser(false)}
-              className="px-2.5 py-1 text-[11px] font-mono text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors cursor-pointer"
+              className="px-2.5 py-1 text-[11px] font-mono text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-800 rounded-lg transition-colors cursor-pointer"
               title="Переключить на бесплатный режим"
             >
               {t('playground.disableDemo')}
@@ -121,7 +121,7 @@ export default function LivePlayground() {
               onClick={() => setIsProModalOpen(true)}
               className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-amber-500 to-indigo-600 text-white rounded-lg transition-all hover:opacity-90 flex items-center gap-1.5 cursor-pointer shadow-xs"
             >
-              <Sparkles className="w-3 h-3 text-white" />
+              <Sparkles className="w-3 h-3 text-white" aria-hidden="true" />
               <span>PRO</span>
             </button>
           )}
@@ -131,17 +131,19 @@ export default function LivePlayground() {
               onClick={resetPlayground}
               className="px-2.5 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-rose-600 dark:hover:text-rose-400 border border-zinc-200 dark:border-zinc-800 hover:border-rose-300 dark:hover:border-rose-800 rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-3 h-3" aria-hidden="true" />
               <span>{t('playground.reset')}</span>
             </button>
           )}
 
           <button
+            type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-md transition-colors cursor-pointer"
+            aria-label={isOpen ? 'Свернуть панель / Collapse' : 'Развернуть панель / Expand'}
+            className="p-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-white rounded-md transition-colors cursor-pointer min-w-[32px] min-h-[32px] flex items-center justify-center"
             title={isOpen ? 'Collapse' : 'Expand'}
           >
-            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {isOpen ? <ChevronUp className="w-4 h-4" aria-hidden="true" /> : <ChevronDown className="w-4 h-4" aria-hidden="true" />}
           </button>
         </div>
       </div>
@@ -257,46 +259,51 @@ export default function LivePlayground() {
                   </div>
 
                   {/* RTL Direction Toggle */}
-                  <div className="inline-flex bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-0.5 shrink-0">
+                  <div className="inline-flex bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl p-0.5 shrink-0" role="group" aria-label="Text direction">
                     <button
                       type="button"
                       disabled={!isProUser}
                       onClick={() => setIsRtl(false)}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                      aria-pressed={!isRtl}
+                      aria-label="Left-to-right (LTR)"
+                      className={`p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg transition-all cursor-pointer ${
                         !isRtl
                           ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-2xs'
-                          : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
                       }`}
                       title="LTR (Left-to-Right)"
                     >
-                      <AlignLeft className="w-3.5 h-3.5" />
+                      <AlignLeft className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                     <button
                       type="button"
                       disabled={!isProUser}
                       onClick={() => setIsRtl(true)}
-                      className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                      aria-pressed={isRtl}
+                      aria-label="Right-to-left (RTL)"
+                      className={`p-1.5 min-w-[32px] min-h-[32px] flex items-center justify-center rounded-lg transition-all cursor-pointer ${
                         isRtl
                           ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-2xs'
-                          : 'text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                          : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-white'
                       }`}
                       title="RTL (Right-to-Left)"
                     >
-                      <AlignRight className="w-3.5 h-3.5" />
+                      <AlignRight className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                   </div>
                 </div>
 
                 {/* Swatches Row */}
                 <div className="flex items-center gap-1.5 pt-0.5 overflow-x-auto">
-                  <span className="text-[10px] text-zinc-400 font-mono">{t('playground.brandPresets')}:</span>
+                  <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono">{t('playground.brandPresets')}:</span>
                   {BRAND_SWATCHES.map((swatch) => (
                     <button
                       key={swatch.name}
                       type="button"
                       disabled={!isProUser}
                       onClick={() => setCustomBrandColor(swatch.color)}
-                      className={`w-4.5 h-4.5 rounded-full border transition-transform cursor-pointer shrink-0 ${
+                      aria-label={`${swatch.name} (${swatch.color})`}
+                      className={`w-5 h-5 rounded-full border transition-transform cursor-pointer shrink-0 ${
                         customBrandColor === swatch.color
                           ? 'ring-2 ring-zinc-900 dark:ring-white scale-110'
                           : 'border-black/15 dark:border-white/20 hover:scale-110'

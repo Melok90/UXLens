@@ -127,7 +127,12 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm overflow-y-auto">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="inspector-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm overflow-y-auto"
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -139,11 +144,11 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
         <div className="px-5 py-3.5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/90 dark:bg-[#111216] shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[#5e6ad2]/10 flex items-center justify-center text-[#5e6ad2] font-bold">
-              <Maximize2 className="w-4 h-4" />
+              <Maximize2 className="w-4 h-4" aria-hidden="true" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white leading-tight capitalize tracking-tight">
+                <h2 id="inspector-modal-title" className="text-sm sm:text-base font-bold text-zinc-950 dark:text-white leading-tight capitalize tracking-tight">
                   {activeComponent}
                 </h2>
                 <span className="text-[10px] font-mono font-medium bg-zinc-200/60 dark:bg-zinc-800 px-2 py-0.5 rounded text-zinc-700 dark:text-zinc-300">
@@ -153,7 +158,7 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
                   {activeState}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
                 {language === 'ru'
                   ? 'Глубокий анализ параметров, отступов и сравнение с другими дизайн-системами'
                   : 'Deep inspection of geometry, box model, tokens, and 1-on-1 comparator'}
@@ -163,37 +168,45 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
 
           {/* Tab Switcher & Close */}
           <div className="flex items-center gap-3">
-            <div className="flex bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <div role="tablist" aria-label={language === 'ru' ? 'Режим инспектора' : 'Inspector mode'} className="flex bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
               <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'anatomy'}
                 onClick={() => setActiveTab('anatomy')}
                 className={`px-3 py-1 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'anatomy'
                     ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-2xs'
-                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
-                <Ruler className="w-3.5 h-3.5 text-[#5e6ad2]" />
+                <Ruler className="w-3.5 h-3.5 text-[#5e6ad2]" aria-hidden="true" />
                 <span>{language === 'ru' ? 'Анатомия и метрики' : 'Anatomy & Metrics'}</span>
               </button>
               <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'compare'}
                 onClick={() => setActiveTab('compare')}
                 className={`px-3 py-1 text-xs font-semibold rounded-md flex items-center gap-1.5 transition-all cursor-pointer ${
                   activeTab === 'compare'
                     ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white shadow-2xs'
-                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
-                <ArrowLeftRight className="w-3.5 h-3.5 text-indigo-400" />
+                <ArrowLeftRight className="w-3.5 h-3.5 text-indigo-400" aria-hidden="true" />
                 <span>{language === 'ru' ? 'Сравнение 1-на-1' : '1-on-1 Side-by-Side'}</span>
               </button>
             </div>
 
             <button
+              type="button"
               onClick={onClose}
-              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+              className="p-2 min-w-[44px] min-h-[44px] rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors flex items-center justify-center cursor-pointer"
               title={language === 'ru' ? 'Закрыть (Esc)' : 'Close (Esc)'}
+              aria-label={language === 'ru' ? 'Закрыть окно инспектора' : 'Close inspector modal'}
             >
-              <X className="w-4.5 h-4.5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -206,13 +219,16 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
             /* ============================================================ */
             <div className="space-y-6">
               {/* System selector pill row */}
-              <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500 shrink-0 mr-1">
+              <div role="radiogroup" aria-label={language === 'ru' ? 'Выбор дизайн-системы' : 'Design system selection'} className="flex items-center gap-1.5 overflow-x-auto pb-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 shrink-0 mr-1">
                   {language === 'ru' ? 'Система:' : 'System:'}
                 </span>
                 {availableSystems.map((sys) => (
                   <button
                     key={sys}
+                    type="button"
+                    role="radio"
+                    aria-checked={selectedSystem === sys}
                     onClick={() => setSelectedSystem(sys)}
                     className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                       selectedSystem === sys

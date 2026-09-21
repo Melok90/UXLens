@@ -165,46 +165,56 @@ export default function SystemsPage() {
       </div>
 
       <div className="flex items-center justify-between flex-wrap gap-4">
-        <div className="inline-flex p-0.5 bg-zinc-100/90 dark:bg-zinc-900/90 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs">
+        <div 
+          role="tablist" 
+          aria-label={t('systems.title')}
+          className="inline-flex p-0.5 bg-zinc-100/90 dark:bg-zinc-900/90 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+        >
           <button
             type="button"
+            role="tab"
+            aria-selected={selectedPlatform === 'all'}
             onClick={() => setSelectedPlatform('all')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md transition-all cursor-pointer ${
               selectedPlatform === 'all'
                 ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
-            <Layers className="w-3.5 h-3.5" />
+            <Layers className="w-3.5 h-3.5" aria-hidden="true" />
             {t('systems.platform.all')}
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={selectedPlatform === 'web'}
             onClick={() => setSelectedPlatform('web')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md transition-all cursor-pointer ${
               selectedPlatform === 'web'
                 ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
-            <Globe className="w-3.5 h-3.5" />
+            <Globe className="w-3.5 h-3.5" aria-hidden="true" />
             {t('systems.platform.web')}
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={selectedPlatform === 'mobile'}
             onClick={() => setSelectedPlatform('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1 text-xs rounded-md transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md transition-all cursor-pointer ${
               selectedPlatform === 'mobile'
                 ? 'bg-white dark:bg-zinc-800 text-zinc-950 dark:text-white font-semibold shadow-2xs'
-                : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
             }`}
           >
-            <Smartphone className="w-3.5 h-3.5" />
+            <Smartphone className="w-3.5 h-3.5" aria-hidden="true" />
             {t('systems.platform.mobile')}
           </button>
         </div>
 
-        <span className="text-xs font-mono text-zinc-400 dark:text-zinc-500">
+        <span className="text-xs font-mono text-zinc-600 dark:text-zinc-400">
           {filteredSystems.length} {t('context.systemsCount')}
         </span>
       </div>
@@ -225,21 +235,22 @@ export default function SystemsPage() {
                 href={system.link} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="p-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
+                aria-label={`${t('systems.gotodocs')}: ${system.name}`}
+                className="p-1.5 min-w-[36px] min-h-[36px] flex items-center justify-center hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-md transition-colors text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                 title={t('systems.gotodocs')}
               >
-                <ExternalLink className="w-4 h-4" />
+                <ExternalLink className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-base font-bold text-zinc-900 dark:text-white tracking-tight">{system.name}</h3>
-                <span className="text-[10px] font-mono font-medium px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-zinc-600 dark:text-zinc-300">
+                <span className="text-[10px] font-mono font-medium px-2 py-0.5 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded text-zinc-700 dark:text-zinc-300">
                   {system.creator}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed line-clamp-3">
+              <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed line-clamp-3">
                 {t(`systems.${system.id}.desc`)}
               </p>
             </div>
@@ -249,7 +260,7 @@ export default function SystemsPage() {
               {system.platforms.map((plat) => (
                 <span
                   key={plat}
-                  className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400"
+                  className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/60 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300"
                 >
                   {plat}
                 </span>
@@ -264,7 +275,7 @@ export default function SystemsPage() {
                   rel="noopener noreferrer"
                   className="text-xs font-semibold text-[#5e6ad2] dark:text-[#828cf5] hover:underline flex items-center gap-1"
                 >
-                  {t('systems.docs')} <ExternalLink className="w-3 h-3" />
+                  {t('systems.docs')} <ExternalLink className="w-3 h-3" aria-hidden="true" />
                 </a>
 
                 {system.figmaLink && (
@@ -272,9 +283,9 @@ export default function SystemsPage() {
                     href={system.figmaLink} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:underline flex items-center gap-1"
+                    className="text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white hover:underline flex items-center gap-1"
                   >
-                    <Figma className="w-3 h-3" /> {t('systems.figma')}
+                    <Figma className="w-3 h-3" aria-hidden="true" /> {t('systems.figma')}
                   </a>
                 )}
               </div>
@@ -283,8 +294,9 @@ export default function SystemsPage() {
                 <div 
                   className="w-2 h-2 rounded-full" 
                   style={{ backgroundColor: system.color }} 
+                  aria-hidden="true"
                 />
-                <span className="text-[9px] uppercase tracking-wider font-bold text-zinc-400 dark:text-zinc-500 font-mono">
+                <span className="text-[9px] uppercase tracking-wider font-bold text-zinc-500 dark:text-zinc-400 font-mono">
                   Design System
                 </span>
               </div>

@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="w-5 h-5 rounded bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-black font-bold text-[10px]">
             UX
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-500">
+          <p className="text-xs text-zinc-600 dark:text-zinc-400">
             {t('footer.rights')}
           </p>
         </div>
@@ -26,7 +26,7 @@ export default function Footer() {
 
 function FooterLink({ href, label }: { href: string; label: string }) {
   return (
-    <a href={href} className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
+    <a href={href} className="text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors">
       {label}
     </a>
   );

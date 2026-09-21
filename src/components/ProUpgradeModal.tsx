@@ -25,6 +25,17 @@ export default function ProUpgradeModal() {
   const [previewColor, setPreviewColor] = useState('#5E6AD2');
   const [activatedSuccess, setActivatedSuccess] = useState(false);
 
+  // Keyboard Escape listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isProModalOpen) {
+        setIsProModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isProModalOpen, setIsProModalOpen]);
+
   if (!isProModalOpen) return null;
 
   const handleActivate = () => {
@@ -67,6 +78,9 @@ export default function ProUpgradeModal() {
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs overflow-y-auto">
         <motion.div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pro-upgrade-title"
           initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -77,14 +91,15 @@ export default function ProUpgradeModal() {
           <div className="relative p-5 sm:p-6 pb-4 bg-gradient-to-b from-indigo-500/10 via-purple-500/5 to-transparent border-b border-zinc-100 dark:border-zinc-850 shrink-0">
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
+              aria-label={language === 'ru' ? 'Закрыть окно' : 'Close modal'}
+              className="absolute top-4 right-4 p-2 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-purple-500/20 border border-amber-500/40 text-amber-600 dark:text-amber-300">
-                <Sparkles className="w-3 h-3 text-amber-500" />
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500/20 via-indigo-500/20 to-purple-500/20 border border-amber-500/40 text-amber-700 dark:text-amber-300">
+                <Sparkles className="w-3 h-3 text-amber-500" aria-hidden="true" />
                 {t('proModal.badge')}
               </span>
               {isProUser && (
@@ -94,10 +109,10 @@ export default function ProUpgradeModal() {
               )}
             </div>
 
-            <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white tracking-tight">
+            <h3 id="pro-upgrade-title" className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white tracking-tight">
               {t('proModal.title')}
             </h3>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5 leading-relaxed">
+            <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1.5 leading-relaxed">
               {t('proModal.subtitle')}
             </p>
           </div>
@@ -140,6 +155,7 @@ export default function ProUpgradeModal() {
                         type="button"
                         onClick={() => setPreviewColor(col.hex)}
                         title={col.label}
+                        aria-label={col.label}
                         className={`w-6 h-6 rounded-full border-2 transition-all cursor-pointer ${
                           previewColor === col.hex
                             ? 'scale-110 border-zinc-900 dark:border-white shadow-xs'

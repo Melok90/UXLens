@@ -71,7 +71,7 @@ export default function CompareTable() {
     // ширину страницы наружу на мобильных экранах.
     <div className="flex flex-col gap-3 min-w-0">
       <div className="flex justify-end">
-        <label className="flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer select-none">
+        <label className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white cursor-pointer select-none">
           <input
             type="checkbox"
             checked={onlyDiffering}
@@ -129,7 +129,7 @@ export default function CompareTable() {
       </div>
 
       {onlyDiffering && visibleRows.length === 0 && (
-        <p className="text-center text-xs text-zinc-500 py-4 font-mono">{t('table.identical')}</p>
+        <p className="text-center text-xs text-zinc-600 dark:text-zinc-400 py-4 font-mono">{t('table.identical')}</p>
       )}
     </div>
   );

@@ -196,7 +196,7 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
     errorOutlined = '!text-[#ff4d4f] !border-[#ff4d4f] !ring-3 !ring-[#ff4d4f]/20 ';
 
     if (variant === 'primary' || variant === 'default') {
-      base += 'bg-[#1677ff] border border-transparent text-white ';
+      base += 'bg-[#1668dc] border border-transparent text-white ';
       hover = 'hover:bg-[#4096ff] ';
       active = 'active:bg-[#0958d9] ';
     } else if (variant === 'secondary') {
@@ -204,7 +204,7 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
       hover = 'hover:text-[#4096ff] hover:border-[#4096ff] ';
       active = 'active:text-[#0958d9] active:border-[#0958d9] ';
     } else if (variant === 'tertiary') {
-      base += 'text-[#1677ff] bg-transparent shadow-none ';
+      base += 'text-[#1668dc] bg-transparent shadow-none ';
       hover = 'hover:bg-[#0000000a] ';
       active = 'active:bg-[#00000014] ';
     } else if (variant === 'destructive') {
@@ -220,12 +220,12 @@ export const InteractiveButton: React.FC<InteractiveButtonProps> = ({
     base += 'rounded-[12px] font-semibold text-sm tracking-tight ';
     base += variant === 'icon' ? 'w-10 h-10 p-0 rounded-full ' : 'px-5 py-2.5 min-h-[44px] ';
     disabled += '!bg-[#7676801f] !text-[#7676805c] ';
-    focus = '!ring-3 !ring-[#007AFF]/40 !ring-offset-2 ';
+    focus = '!ring-3 !ring-[#0071E3]/40 !ring-offset-2 ';
     errorFilled = '!bg-[#FF3B30] !text-white !ring-2 !ring-[#FF3B30] ';
     errorOutlined = '!text-[#FF3B30] !border-[#FF3B30] !ring-2 !ring-[#FF3B30]/30 ';
 
     if (variant === 'primary' || variant === 'default') {
-      base += 'bg-[#007AFF] text-white shadow-xs ';
+      base += 'bg-[#0071E3] text-white shadow-xs ';
       hover = 'hover:bg-[#0066d6] ';
       active = 'active:scale-95 active:brightness-90 ';
     } else if (variant === 'secondary') {

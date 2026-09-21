@@ -102,6 +102,9 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs overflow-y-auto">
       <motion.div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ai-advisor-title"
         initial={{ opacity: 0, scale: 0.95, y: 15 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 15 }}
@@ -111,19 +114,19 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
         {/* Modal Top Bar */}
         <div className="px-5 py-4 border-b border-[#cfc4c5] dark:border-neutral-700 flex items-center justify-between bg-surface-container-low dark:bg-neutral-900 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-accent-blue to-purple-600 flex items-center justify-center text-white shadow-md">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-accent-blue to-purple-600 flex items-center justify-center text-white shadow-md" aria-hidden="true">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base font-bold text-black dark:text-white leading-tight">
+                <h2 id="ai-advisor-title" className="text-base font-bold text-black dark:text-white leading-tight">
                   {language === 'ru' ? 'AI UX Советник' : 'AI Design System Advisor'}
                 </h2>
                 <span className="text-[10px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded-full">
                   Gemini GenAI
                 </span>
               </div>
-              <p className="text-xs text-[#5d5f5f] dark:text-neutral-400">
+              <p className="text-xs text-zinc-600 dark:text-zinc-400">
                 {language === 'ru'
                   ? 'Интеллектуальный подбор дизайн-системы под стек и задачи вашего продукта'
                   : 'Tailored architectural design system matching powered by Google Gemini'}
@@ -134,17 +137,19 @@ export const AiAdvisorModal: React.FC<AiAdvisorModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowSettings(!showSettings)}
-              className="p-1.5 rounded-lg text-neutral-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+              aria-label={language === 'ru' ? 'Настройки API ключа' : 'API Key Settings'}
+              className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-zinc-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
               title={language === 'ru' ? 'Настройки API ключа' : 'API Key Settings'}
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-4 h-4" aria-hidden="true" />
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-neutral-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+              aria-label={language === 'ru' ? 'Закрыть (Esc)' : 'Close (Esc)'}
+              className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-lg text-zinc-500 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
               title={language === 'ru' ? 'Закрыть (Esc)' : 'Close (Esc)'}
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>

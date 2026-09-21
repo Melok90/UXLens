@@ -99,13 +99,16 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
         <div className="flex items-center gap-1.5 shrink-0 ml-2">
           {/* View Switcher: UI / Code / Tokens */}
-          <div className="flex bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-md border border-zinc-200 dark:border-zinc-800">
+          <div role="tablist" aria-label={`${title} view`} className="flex bg-zinc-100 dark:bg-zinc-900 p-0.5 rounded-md border border-zinc-200 dark:border-zinc-800">
             <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'preview'}
               onClick={() => setView('preview')}
               className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                 view === 'preview'
                   ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
-                  : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                  : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
               }`}
             >
               {t('grid.tabUi')}
@@ -113,11 +116,14 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
             {codeContent && (
               <button
+                type="button"
+                role="tab"
+                aria-selected={view === 'code'}
                 onClick={() => setView('code')}
                 className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                   view === 'code'
                     ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
-                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabCode')}
@@ -126,11 +132,14 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
 
             {designTokens && (
               <button
+                type="button"
+                role="tab"
+                aria-selected={view === 'tokens'}
                 onClick={() => setView('tokens')}
                 className={`px-2 py-0.5 text-[11px] rounded transition-all cursor-pointer ${
                   view === 'tokens'
                     ? 'bg-white dark:bg-zinc-800 shadow-2xs text-zinc-950 dark:text-white font-semibold'
-                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
+                    : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
                 }`}
               >
                 {t('grid.tabTokens')}
@@ -141,11 +150,13 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
           {/* Deep-Dive Inspect Button */}
           {onInspect && (
             <button
+              type="button"
               onClick={onInspect}
+              aria-label={`${t('grid.inspect')}: ${title}`}
               className="px-2 py-1 bg-white dark:bg-zinc-800/80 hover:bg-zinc-100 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-800 rounded-md text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors flex items-center gap-1 text-[11px] font-medium cursor-pointer"
               title={t('grid.inspect')}
             >
-              <Maximize2 className="w-3 h-3 text-[#5e6ad2]" />
+              <Maximize2 className="w-3 h-3 text-[#5e6ad2]" aria-hidden="true" />
               <span className="hidden lg:inline">{t('grid.inspect')}</span>
             </button>
           )}
@@ -155,10 +166,13 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
       {/* Sub-header for Token format switcher */}
       {view === 'tokens' && (
         <div className="bg-[#0c0d0e] px-3 py-1.5 border-b border-zinc-800/80 flex items-center justify-between">
-          <div className="flex items-center gap-1">
+          <div role="tablist" aria-label="Token format" className="flex items-center gap-1">
             {(['json', 'css', 'tailwind'] as TokenFormat[]).map((fmt) => (
               <button
                 key={fmt}
+                type="button"
+                role="tab"
+                aria-selected={tokenFormat === fmt}
                 onClick={() => setTokenFormat(fmt)}
                 className={`px-2 py-0.5 text-[10px] uppercase tracking-wider rounded font-mono transition-colors cursor-pointer ${
                   tokenFormat === fmt
@@ -171,14 +185,16 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             ))}
           </div>
           <button
+            type="button"
             onClick={handleCopyTokens}
+            aria-label={t('grid.copyJson')}
             className="flex items-center gap-1 text-[11px] text-zinc-300 hover:text-white transition-colors p-1 cursor-pointer"
             title={t('grid.copyJson')}
           >
             {copied ? (
-              <Check className="w-3.5 h-3.5 text-emerald-400" />
+              <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
             ) : (
-              <Copy className="w-3.5 h-3.5" />
+              <Copy className="w-3.5 h-3.5" aria-hidden="true" />
             )}
             <span className="hidden sm:inline font-mono text-[10px]">{t('grid.copyJson')}</span>
           </button>
@@ -199,16 +215,18 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
         ) : view === 'code' ? (
           <div className="p-4 w-full h-full bg-[#0c0d0e] text-zinc-300 font-mono text-[12px] overflow-auto relative">
             <button
+              type="button"
               onClick={handleCopyCode}
+              aria-label={t('grid.copyCode')}
               className="absolute top-3 right-3 p-1.5 bg-white/10 hover:bg-white/20 text-white rounded transition-colors flex items-center gap-1.5 z-10 cursor-pointer"
               title={t('grid.copyCode')}
             >
               {copied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
               ) : (
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
               )}
-              <span className="text-[10px] hidden sm:inline">{t('grid.copyCode')}</span>
+              <span className="text-[10px] hidden sm:inline font-mono">{t('grid.copyCode')}</span>
             </button>
             <pre className="!m-0 p-0 !bg-transparent text-[#9cdcfe] leading-relaxed">
               <code>{codeContent}</code>

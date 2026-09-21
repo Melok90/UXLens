@@ -2641,18 +2641,19 @@ export default function ComparisonGrid() {
   return (
     <section id="comparison-grid" className="flex flex-col gap-6 min-w-0">
       {/* Quick Action Toolbar */}
-      <div className="flex items-center justify-between gap-4 flex-wrap pb-2 border-b border-[#cfc4c5]/60">
+      <div className="flex items-center justify-between gap-4 flex-wrap pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400">
             {filteredCards.length} {t('context.systemsCount')}
           </span>
         </div>
 
         <button
+          type="button"
           onClick={() => setInspectSystem(filteredCards[0]?.title || 'Material Design 3')}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 bg-surface-container-low hover:bg-surface-container border border-[#cfc4c5] rounded-full text-xs font-semibold text-black transition-all shadow-xs cursor-pointer"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 min-h-[36px] bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-full text-xs font-semibold text-zinc-900 dark:text-zinc-100 transition-all shadow-xs cursor-pointer"
         >
-          <ArrowLeftRight className="w-3.5 h-3.5 text-accent-blue" />
+          <ArrowLeftRight className="w-3.5 h-3.5 text-[#5e6ad2] dark:text-[#828cf5]" aria-hidden="true" />
           <span>{t('grid.compareSideBySide')}</span>
         </button>
       </div>

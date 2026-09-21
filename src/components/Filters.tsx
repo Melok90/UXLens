@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ComponentType, ComponentState, ComponentVariant } from '../App';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -50,7 +50,7 @@ const COMPONENT_ICONS: Record<ComponentType, React.FC<{ className?: string }>> =
 };
 
 export default function Filters() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const activeComponent = useStore((state) => state.activeComponent);
   const activeState = useStore((state) => state.activeState);
@@ -64,6 +64,16 @@ export default function Filters() {
   // Mobile Bottom Sheet state
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [bottomSheetSearch, setBottomSheetSearch] = useState('');
+  const selectorBtnRef = useRef<HTMLButtonElement>(null);
+  const wasSheetOpenRef = useRef(false);
+
+  // Restore focus to trigger button when bottom sheet closes
+  useEffect(() => {
+    if (wasSheetOpenRef.current && !isBottomSheetOpen) {
+      selectorBtnRef.current?.focus();
+    }
+    wasSheetOpenRef.current = isBottomSheetOpen;
+  }, [isBottomSheetOpen]);
 
   // Prevent background scroll when bottom sheet is open
   useEffect(() => {
@@ -157,9 +167,11 @@ export default function Filters() {
             <Smartphone className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
             <span>{t('filters.platform')}</span>
           </div>
-          <div className="inline-flex p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xs">
+          <div role="tablist" aria-label={t('filters.platform')} className="inline-flex p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xs">
             <button
               type="button"
+              role="tab"
+              aria-selected={platformFilter === 'all'}
               onClick={() => setPlatformFilter('all')}
               className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
                 platformFilter === 'all'
@@ -167,11 +179,13 @@ export default function Filters() {
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
               }`}
             >
-              <Layers className="w-3.5 h-3.5" />
+              <Layers className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t('filters.platform.all')}</span>
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={platformFilter === 'web'}
               onClick={() => setPlatformFilter('web')}
               className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
                 platformFilter === 'web'
@@ -179,11 +193,13 @@ export default function Filters() {
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
               }`}
             >
-              <Globe className="w-3.5 h-3.5" />
+              <Globe className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t('filters.platform.web')}</span>
             </button>
             <button
               type="button"
+              role="tab"
+              aria-selected={platformFilter === 'mobile'}
               onClick={() => setPlatformFilter('mobile')}
               className={`flex items-center gap-2 px-4 py-1.5 text-xs rounded-lg transition-all cursor-pointer ${
                 platformFilter === 'mobile'
@@ -191,7 +207,7 @@ export default function Filters() {
                   : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
               }`}
             >
-              <Smartphone className="w-3.5 h-3.5" />
+              <Smartphone className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t('filters.platform.mobile')}</span>
             </button>
           </div>
@@ -200,10 +216,10 @@ export default function Filters() {
         {/* Row 2: Component Pills (Direct horizontal selection) */}
         <div className="flex items-center flex-wrap gap-3 sm:gap-4">
           <div className="w-24 sm:w-28 shrink-0 flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400">
-            <LayoutGrid className="w-4 h-4 text-zinc-400 dark:text-zinc-500" />
+            <LayoutGrid className="w-4 h-4 text-zinc-400 dark:text-zinc-500" aria-hidden="true" />
             <span>{t('filters.component')}</span>
           </div>
-          <div className="flex items-center flex-wrap gap-2">
+          <div role="radiogroup" aria-label={t('filters.component')} className="flex items-center flex-wrap gap-2">
             {COMPONENT_TYPES.map((type) => {
               const Icon = COMPONENT_ICONS[type];
               const isActive = activeComponent === type;
@@ -211,6 +227,8 @@ export default function Filters() {
                 <button
                   key={type}
                   type="button"
+                  role="radio"
+                  aria-checked={isActive}
                   onClick={() => onComponentChange(type)}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs transition-all cursor-pointer ${
                     isActive
@@ -218,7 +236,7 @@ export default function Filters() {
                       : 'border-zinc-200/90 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 text-zinc-700 dark:text-zinc-300 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-850 font-medium shadow-2xs'
                   }`}
                 >
-                  {Icon && <Icon className="w-3.5 h-3.5 shrink-0" />}
+                  {Icon && <Icon className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />}
                   <span>{t(COMPONENT_LABEL_KEYS[type])}</span>
                 </button>
               );
@@ -238,6 +256,7 @@ export default function Filters() {
                 value={activeVariant}
                 onChange={(val) => setActiveVariant(val as ComponentVariant)}
                 options={variantOptions}
+                ariaLabel={t('filters.type')}
                 className="min-w-[150px] sm:min-w-[170px]"
               />
             </div>
@@ -253,6 +272,7 @@ export default function Filters() {
                 value={activeState}
                 onChange={(val) => setActiveState(val as ComponentState)}
                 options={stateOptions}
+                ariaLabel={t('filters.state')}
                 className="min-w-[150px] sm:min-w-[170px]"
               />
             </div>
@@ -288,48 +308,55 @@ export default function Filters() {
           <Link
             to="/systems"
             title={t('filters.openDocs')}
-            className="p-2.5 rounded-xl border border-zinc-200/90 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors shrink-0 shadow-2xs"
+            aria-label={t('filters.openDocs')}
+            className="p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl border border-zinc-200/90 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors shrink-0 shadow-2xs"
           >
-            <BookOpen className="w-4 h-4" />
+            <BookOpen className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
 
         {/* Mobile Segmented Control: Платформа */}
-        <div className="grid grid-cols-3 p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xs">
+        <div role="tablist" aria-label={t('filters.platform')} className="grid grid-cols-3 p-1 bg-zinc-100/90 dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-2xs">
           <button
             type="button"
+            role="tab"
+            aria-selected={platformFilter === 'all'}
             onClick={() => setPlatformFilter('all')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-1 text-xs rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center justify-center gap-1.5 py-2.5 px-1 min-h-[40px] text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'all'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
-            <Layers className="w-3.5 h-3.5 shrink-0" />
+            <Layers className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             <span className="truncate">{t('filters.platform.all')}</span>
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={platformFilter === 'web'}
             onClick={() => setPlatformFilter('web')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-1 text-xs rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center justify-center gap-1.5 py-2.5 px-1 min-h-[40px] text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'web'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
-            <Globe className="w-3.5 h-3.5 shrink-0" />
+            <Globe className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             <span className="truncate">{t('filters.platform.web')}</span>
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={platformFilter === 'mobile'}
             onClick={() => setPlatformFilter('mobile')}
-            className={`flex items-center justify-center gap-1.5 py-2 px-1 text-xs rounded-lg transition-all cursor-pointer ${
+            className={`flex items-center justify-center gap-1.5 py-2.5 px-1 min-h-[40px] text-xs rounded-lg transition-all cursor-pointer ${
               platformFilter === 'mobile'
                 ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
                 : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white font-medium'
             }`}
           >
-            <Smartphone className="w-3.5 h-3.5 shrink-0" />
+            <Smartphone className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
             <span className="truncate">{t('filters.platform.mobile')}</span>
           </button>
         </div>
@@ -337,20 +364,24 @@ export default function Filters() {
         {/* Mobile Field 1: Компонент (Tap triggers Bottom Sheet) */}
         <div>
           <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
-            <LayoutGrid className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+            <LayoutGrid className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
             <span>{t('filters.component')}</span>
           </div>
           <button
+            ref={selectorBtnRef}
             id="mobile-component-selector"
             type="button"
+            aria-haspopup="dialog"
+            aria-expanded={isBottomSheetOpen}
+            aria-label={`${t('filters.component')}: ${t(COMPONENT_LABEL_KEYS[activeComponent])}`}
             onClick={() => setIsBottomSheetOpen(true)}
-            className="w-full flex items-center justify-between border border-zinc-200/90 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 sm:py-3 bg-white dark:bg-zinc-900 font-medium text-sm text-zinc-900 dark:text-zinc-100 shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors cursor-pointer"
+            className="w-full min-h-[44px] flex items-center justify-between border border-zinc-200/90 dark:border-zinc-800 rounded-xl px-3.5 py-2.5 sm:py-3 bg-white dark:bg-zinc-900 font-medium text-sm text-zinc-900 dark:text-zinc-100 shadow-2xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-3 truncate">
-              <ActiveComponentIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-300 shrink-0" />
+              <ActiveComponentIcon className="w-4 h-4 text-zinc-700 dark:text-zinc-300 shrink-0" aria-hidden="true" />
               <span className="truncate">{t(COMPONENT_LABEL_KEYS[activeComponent])}</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0 ml-2" />
+            <ChevronDown className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0 ml-2" aria-hidden="true" />
           </button>
         </div>
 
@@ -358,7 +389,7 @@ export default function Filters() {
         {variantOptions.length > 0 && (
           <div>
             <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
-              <Layers className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+              <Layers className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
               <span>{t('filters.type')}</span>
             </div>
             <CustomSelect
@@ -366,6 +397,7 @@ export default function Filters() {
               value={activeVariant}
               onChange={(val) => setActiveVariant(val as ComponentVariant)}
               options={variantOptions}
+              ariaLabel={t('filters.type')}
               className="w-full"
             />
           </div>
@@ -375,7 +407,7 @@ export default function Filters() {
         {stateOptions.length > 0 && (
           <div>
             <div className="flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
-              <SlidersHorizontal className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+              <SlidersHorizontal className="w-4 h-4 text-zinc-400 dark:text-zinc-500 shrink-0" aria-hidden="true" />
               <span>{t('filters.state')}</span>
             </div>
             <CustomSelect
@@ -383,6 +415,7 @@ export default function Filters() {
               value={activeState}
               onChange={(val) => setActiveState(val as ComponentState)}
               options={stateOptions}
+              ariaLabel={t('filters.state')}
               className="w-full"
             />
           </div>
@@ -393,19 +426,19 @@ export default function Filters() {
           <button
             type="button"
             onClick={scrollToGrid}
-            className="w-full py-3.5 px-4 bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-[0.99] transition-all rounded-xl font-semibold text-sm flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
+            className="w-full py-3.5 px-4 min-h-[44px] bg-zinc-950 text-white dark:bg-white dark:text-zinc-950 hover:bg-zinc-800 dark:hover:bg-zinc-200 active:scale-[0.99] transition-all rounded-xl font-semibold text-sm flex items-center justify-center gap-1.5 shadow-sm cursor-pointer"
           >
             <span>{t('filters.show')}</span>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
           </button>
 
           <div className="flex items-center justify-center pt-0.5 text-xs">
             <button
               type="button"
               onClick={resetFilters}
-              className="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors flex items-center gap-1.5 cursor-pointer py-1"
+              className="text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-colors flex items-center gap-1.5 cursor-pointer py-2 px-3 min-h-[44px]"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t('filters.reset')}</span>
             </button>
           </div>
@@ -424,6 +457,7 @@ export default function Filters() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
+              aria-hidden="true"
               onClick={() => {
                 setIsBottomSheetOpen(false);
                 setBottomSheetSearch('');
@@ -437,14 +471,17 @@ export default function Filters() {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="sheet-modal-title"
               className="relative z-10 w-full bg-white dark:bg-[#101114] border-t border-zinc-200 dark:border-zinc-800 rounded-t-[28px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh]"
             >
               {/* Top Drag Handle */}
-              <div className="w-12 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full mx-auto mt-3 mb-1 shrink-0" />
+              <div className="w-12 h-1 bg-zinc-300 dark:bg-zinc-700 rounded-full mx-auto mt-3 mb-1 shrink-0" aria-hidden="true" />
 
               {/* Sheet Header */}
               <div className="flex items-center justify-between px-5 pt-2 pb-3 shrink-0">
-                <h3 className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
+                <h3 id="sheet-modal-title" className="text-lg font-bold text-zinc-950 dark:text-white tracking-tight">
                   {t('filters.selectComponent')}
                 </h3>
                 <button
@@ -453,19 +490,20 @@ export default function Filters() {
                     setIsBottomSheetOpen(false);
                     setBottomSheetSearch('');
                   }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer"
-                  aria-label="Close"
+                  className="w-10 h-10 min-w-[40px] min-h-[40px] rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/80 transition-colors cursor-pointer"
+                  aria-label={language === 'ru' ? 'Закрыть панель выбора' : 'Close component selector'}
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
 
               {/* Search Field */}
               <div className="px-5 pb-3 shrink-0">
                 <div className="relative">
-                  <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Search className="w-4 h-4 text-zinc-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" aria-hidden="true" />
                   <input
                     type="text"
+                    aria-label={t('filters.searchComponents')}
                     value={bottomSheetSearch}
                     onChange={(e) => setBottomSheetSearch(e.target.value)}
                     placeholder={t('filters.searchComponents')}
@@ -474,17 +512,18 @@ export default function Filters() {
                   {bottomSheetSearch && (
                     <button
                       type="button"
+                      aria-label={language === 'ru' ? 'Очистить поиск компонентов' : 'Clear component search'}
                       onClick={() => setBottomSheetSearch('')}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
                     >
-                      <X className="w-3.5 h-3.5" />
+                      <X className="w-3.5 h-3.5" aria-hidden="true" />
                     </button>
                   )}
                 </div>
               </div>
 
               {/* Component Items List */}
-              <div className="overflow-y-auto px-5 pb-8 pt-1 space-y-2 flex-1 overscroll-contain">
+              <div role="listbox" aria-label={t('filters.selectComponent')} className="overflow-y-auto px-5 pb-8 pt-1 space-y-2 flex-1 overscroll-contain">
                 {filteredComponentTypes.length === 0 ? (
                   <div className="text-center py-8 text-xs text-zinc-400">
                     {t('filters.noComponentsFound')}
@@ -497,13 +536,15 @@ export default function Filters() {
                       <button
                         key={type}
                         type="button"
+                        role="option"
+                        aria-selected={isSelected}
                         data-sheet-item={type}
                         onClick={() => {
                           onComponentChange(type);
                           setIsBottomSheetOpen(false);
                           setBottomSheetSearch('');
                         }}
-                        className={`w-full flex items-center justify-between p-3.5 rounded-xl transition-all cursor-pointer text-left active:scale-[0.99] ${
+                        className={`w-full flex items-center justify-between p-3.5 min-h-[48px] rounded-xl transition-all cursor-pointer text-left active:scale-[0.99] ${
                           isSelected
                             ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 font-semibold shadow-2xs'
                             : 'border border-zinc-200/80 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-850 text-zinc-800 dark:text-zinc-200 font-medium'
@@ -512,6 +553,7 @@ export default function Filters() {
                         <div className="flex items-center gap-3 truncate">
                           {Icon && (
                             <Icon
+                              aria-hidden="true"
                               className={`w-4 h-4 shrink-0 ${
                                 isSelected
                                   ? 'text-white dark:text-zinc-950'
@@ -525,9 +567,9 @@ export default function Filters() {
                         </div>
 
                         {isSelected ? (
-                          <Check className="w-4 h-4 shrink-0 text-white dark:text-zinc-950 ml-2" />
+                          <Check className="w-4 h-4 shrink-0 text-white dark:text-zinc-950 ml-2" aria-hidden="true" />
                         ) : (
-                          <ChevronRight className="w-4 h-4 shrink-0 text-zinc-400 dark:text-zinc-500 ml-2" />
+                          <ChevronRight className="w-4 h-4 shrink-0 text-zinc-400 dark:text-zinc-500 ml-2" aria-hidden="true" />
                         )}
                       </button>
                     );
