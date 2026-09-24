@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
 import ComparisonCard from './ComparisonCard';
-import { ComponentInspectorModal } from './ComponentInspectorModal';
+const ComponentInspectorModal = React.lazy(() => import('./ComponentInspectorModal'));
 import { ComponentState, ComponentType, ComponentVariant } from '../App';
 import {
   InteractiveButton,
@@ -2708,18 +2708,22 @@ export default function ComparisonGrid() {
       )}
 
       {/* Component Deep-Dive & Side-by-Side Modal */}
-      <ComponentInspectorModal
-        isOpen={!!inspectSystem}
-        onClose={() => setInspectSystem(null)}
-        initialSystem={inspectSystem || 'Material Design 3'}
-        activeComponent={activeComponent}
-        activeVariant={activeVariant}
-        activeState={activeState}
-        allCards={allCards.map((c) => ({
-          ...c,
-          designTokens: tokensFor(c.title),
-        }))}
-      />
+      {inspectSystem && (
+        <React.Suspense fallback={null}>
+          <ComponentInspectorModal
+            isOpen={true}
+            onClose={() => setInspectSystem(null)}
+            initialSystem={inspectSystem}
+            activeComponent={activeComponent}
+            activeVariant={activeVariant}
+            activeState={activeState}
+            allCards={allCards.map((c) => ({
+              ...c,
+              designTokens: tokensFor(c.title),
+            }))}
+          />
+        </React.Suspense>
+      )}
     </section>
   );
 }

@@ -725,3 +725,5 @@ export const ComponentInspectorModal: React.FC<ComponentInspectorModalProps> = (
     </div>
   );
 };
+
+export default ComponentInspectorModal;
