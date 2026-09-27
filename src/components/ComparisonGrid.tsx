@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight, ArrowLeftRight } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, Check, X, Calendar, ChevronLeft, ChevronRight, ArrowLeftRight, AlertCircle } from 'lucide-react';
 import ComparisonCard from './ComparisonCard';
 const ComponentInspectorModal = React.lazy(() => import('./ComponentInspectorModal'));
 import { ComponentState, ComponentType, ComponentVariant } from '../App';
@@ -1092,34 +1092,43 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Material Design 3", e)}
             className={getInputStateClasses(
-              openSystem === "Material Design 3" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "px-4 py-3 rounded-t-[4px] border-b border-[#49454F] bg-[#E7E0EC] flex items-center justify-between cursor-pointer",
-              "",
+              openSystem === "Material Design 3" || activeState === 'open' ? 'open' : activeState,
+              "px-4 py-3 rounded-t-[4px] border-b border-[#49454F] dark:border-[#938F99] bg-[#E7E0EC] dark:bg-[#2B2930] flex items-center justify-between cursor-pointer transition-colors",
+              "bg-[#DED8E4] dark:bg-[#36343B] border-[#1D1B20] dark:border-[#E6E1E5]",
               "bg-[#EBE4EF] border-[#1D1B20]",
-              "border-[#6750A4] border-b-2",
+              "border-[#6750A4] border-b-2 ring-1 ring-[#6750A4]",
               "opacity-50 cursor-not-allowed",
-              "border-[#B3261E] border-b-2"
+              "border-[#B3261E] dark:border-[#F2B8B5] border-b-2"
             )}
           >
             <div className="flex flex-wrap gap-1">
-              <span className="bg-[#6750A4] text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1">
-                Выбор 1 <X className="w-2 h-2" />
+              <span className="bg-[#6750A4] text-white text-[10px] px-2 py-0.5 rounded-full flex items-center gap-1 font-medium">
+                {t('preview.select.choice1')} <X className="w-3 h-3" />
               </span>
-              <span className="text-[#1D1B20] text-sm italic">...еще 5</span>
+              <span className="text-zinc-800 dark:text-zinc-200 text-xs italic">{t('preview.select.more5')}</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-[#49454F]" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#B3261E] dark:text-[#F2B8B5]" />}
+              <ChevronDown className="w-4 h-4 text-[#49454F] dark:text-[#938F99]" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Material Design 3" || activeState === 'open') && (
-            <div className="absolute z-10 w-[240px] mt-1 bg-white shadow-xl rounded-md border border-[#cfc4c5] overflow-hidden" onClick={e => e.stopPropagation()}>
-               <div className="p-2 border-b border-[#cfc4c5] flex items-center gap-2">
-                 <Search className="w-3 h-3 text-gray-400" />
-                 <input className="text-xs outline-none w-full" placeholder={tText('Поиск в 500+ элементах...')} />
+            <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-[#18191d] shadow-xl rounded-md border border-zinc-200 dark:border-zinc-800 overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
+               <div className="p-2 border-b border-zinc-200 dark:border-zinc-800 flex items-center gap-2">
+                 <Search className="w-3.5 h-3.5 text-zinc-400 dark:text-zinc-500" />
+                 <input className="text-xs outline-none w-full bg-transparent text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500" placeholder={t('preview.select.search500')} />
                </div>
                <div className="max-h-[120px] overflow-y-auto">
                  {[1,2,3,4,5,6,7,8].map(i => (
-                   <div key={i} className="px-4 py-2 text-xs hover:bg-gray-100 flex items-center justify-between">
-                     Элемент {i}
-                     {i === 1 && <Check className="w-3 h-3 text-accent-blue" />}
+                   <div key={i} className="px-4 py-2 text-xs text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 flex items-center justify-between transition-colors cursor-pointer">
+                     <span>{t('preview.select.item')} {i}</span>
+                     {i === 1 && <Check className="w-3.5 h-3.5 text-accent-blue" />}
                    </div>
                  ))}
                </div>
@@ -1127,7 +1136,7 @@ export default function ComparisonGrid() {
           )}
         </div>
       ),
-      codeContent: `<Select\n  multiple\n  label="Выбор"\n  ${activeState === 'error' ? 'error' : ''}\n>\n  {largeList.map(item => (\n    <Option key={item.id}>{item.label}</Option>\n  ))}\n</Select>`,
+      codeContent: `<Select\n  multiple\n  label="${t('preview.input.label')}"\n  ${activeState === 'error' ? 'error' : ''}\n>\n  {largeList.map(item => (\n    <Option key={item.id}>{item.label}</Option>\n  ))}\n</Select>`,
       logicTitle: "Multi-select с чипсами",
       logicDescription: "M3 использует 'Assist Chips' внутри поля. При большом количестве элементов (500+) рекомендуется виртуализация списка и встроенный поиск.",
       accessibilityText: "Роль listbox и aria-multiselectable. Каждое изменение озвучивается через aria-live.",
@@ -1146,27 +1155,36 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Fluent UI", e)}
             className={getInputStateClasses(
-              openSystem === "Fluent UI" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-1.5 rounded-[2px] border border-[#605E5C] flex items-center justify-between cursor-pointer",
-              "",
+              openSystem === "Fluent UI" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-1.5 rounded-[2px] border border-[#8A8886] dark:border-[#505050] bg-white dark:bg-[#202020] text-zinc-900 dark:text-zinc-100 flex items-center justify-between cursor-pointer transition-colors",
+              "border-[#323130] dark:border-[#D1D1D1]",
               "border-[#323130]",
-              "border-[#0078D4] ring-1 ring-[#0078D4]",
-              "bg-[#F3F2F1] opacity-50",
-              "border-[#A4262C] ring-1 ring-[#A4262C]"
+              "border-[#0078D4] dark:border-[#2886DE] ring-1 ring-[#0078D4] dark:ring-[#2886DE]",
+              "bg-[#F3F2F1] dark:bg-[#292827] opacity-50",
+              "border-[#A4262C] dark:border-[#F1707B] ring-1 ring-[#A4262C] dark:ring-[#F1707B]"
             )}
           >
-            <span className="text-sm truncate">Выбор 1, Выбор 2, Выбор 3...</span>
-            <ChevronDown className="w-4 h-4" />
+            <span className="text-sm truncate text-zinc-900 dark:text-zinc-100 font-medium">{t('preview.select.multiSummary')}</span>
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#A4262C] dark:text-[#F1707B]" />}
+              <ChevronDown className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Fluent UI" || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-1 bg-white border border-[#cfc4c5] shadow-lg" onClick={e => e.stopPropagation()}>
+             <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-[#202020] border border-zinc-200 dark:border-zinc-700 shadow-lg text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="max-h-[150px] overflow-y-auto scrollbar-thin">
                    {[1,2,3,4].map(i => (
-                     <div key={i} className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-gray-50">
-                        <div className="w-4 h-4 border border-gray-400 rounded-sm flex items-center justify-center">
+                     <div key={i} className="px-3 py-2 text-sm flex items-center gap-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors text-zinc-900 dark:text-zinc-100">
+                        <div className="w-4 h-4 border border-zinc-400 dark:border-zinc-500 rounded-xs flex items-center justify-center">
                           {i < 3 && <div className="w-2 h-2 bg-[#0078D4]" />}
                         </div>
-                        Вариант {i}
+                        <span>{t('preview.select.variant')} {i}</span>
                      </div>
                    ))}
                 </div>
@@ -1174,7 +1192,7 @@ export default function ComparisonGrid() {
           )}
         </div>
       ),
-      codeContent: `<Dropdown\n  placeholder={tText('Выберите системы')}\n  multiselect\n  ${activeState === 'error' ? 'state="error"' : ''}\n/>`,
+      codeContent: `<Dropdown\n  placeholder="${t('preview.select.multiSummary')}"\n  multiselect\n  ${activeState === 'error' ? 'state="error"' : ''}\n/>`,
       logicTitle: "Список с запятыми",
       logicDescription: "В Fluent UI multi-select часто отображает выбранное текстом через запятую. Большие списки управляются через комбобокс с фильтрацией.",
       accessibilityText: "Поддержка High Contrast mode. Фокус на чекбоксы внутри выпадающего меню.",
@@ -1193,31 +1211,40 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Atlassian", e)}
             className={getInputStateClasses(
-              openSystem === "Atlassian" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[3px] bg-[#F4F5F7] border-2 border-transparent flex items-center justify-between cursor-pointer",
-              "",
+              openSystem === "Atlassian" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[3px] bg-[#FAFBFC] dark:bg-[#1C2128] border-2 border-[#DFE1E6] dark:border-[#30363D] flex items-center justify-between cursor-pointer transition-colors",
+              "bg-[#EBECF0] dark:bg-[#262C36] border-[#C1C7D0] dark:border-[#444C56]",
               "bg-[#EBECF0]",
-              "bg-white border-[#4C90FF]",
+              "bg-white dark:bg-[#161B22] border-[#0052CC] ring-2 ring-[#4C90FF]/30",
               "bg-[#FAFBFC] opacity-50",
-              "bg-white border-[#DE350B]"
+              "bg-white dark:bg-[#161B22] border-[#DE350B] ring-2 ring-[#DE350B]/30"
             )}
           >
             <div className="flex gap-1 overflow-hidden">
-               <span className="bg-[#DFE1E6] text-[#42526E] text-[10px] px-2 py-0.5 rounded sm">Tag 1</span>
-               <span className="bg-[#DFE1E6] text-[#42526E] text-[10px] px-2 py-0.5 rounded sm">Tag 2</span>
+               <span className="bg-[#DFE1E6] dark:bg-[#30363D] text-[#172B4D] dark:text-[#C7D1DB] text-[10px] px-2 py-0.5 rounded-xs font-semibold">Tag 1</span>
+               <span className="bg-[#DFE1E6] dark:bg-[#30363D] text-[#172B4D] dark:text-[#C7D1DB] text-[10px] px-2 py-0.5 rounded-xs font-semibold">Tag 2</span>
             </div>
-            <ChevronDown className="w-4 h-4" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#DE350B]" />}
+              <ChevronDown className="w-4 h-4 text-zinc-600 dark:text-zinc-400" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Atlassian" || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-1 bg-white shadow-2xl border border-[#cfc4c5] rounded sm overflow-hidden" onClick={e => e.stopPropagation()}>
-                <div className="p-2 bg-gray-50 text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                  Всего 528 элементов
+             <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-[#1C2128] shadow-2xl border border-zinc-200 dark:border-zinc-700 rounded-xs overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
+                <div className="p-2 bg-zinc-50 dark:bg-zinc-800 text-[10px] font-bold text-zinc-600 dark:text-zinc-300 uppercase tracking-widest border-b border-zinc-200 dark:border-zinc-700">
+                  {t('preview.select.total528')}
                 </div>
                 <div className="max-h-[140px] overflow-y-auto">
                    {[1,2,3,4,5].map(i => (
-                     <div key={i} className="px-3 py-2 text-sm flex items-center justify-between hover:bg-blue-50">
-                        Пользователь {i}
-                        <Check className="w-3 h-3 text-[#0052CC]" />
+                     <div key={i} className="px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 flex items-center justify-between hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer transition-colors">
+                        <span>{t('preview.select.user')} {i}</span>
+                        <Check className="w-3.5 h-3.5 text-[#0052CC]" />
                      </div>
                    ))}
                 </div>
@@ -1244,28 +1271,35 @@ export default function ComparisonGrid() {
            <div 
             onClick={(e) => handleToggle("IBM Carbon", e)}
             className={getInputStateClasses(
-              openSystem === "IBM Carbon" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-4 py-3 bg-[#f4f4f4] border-b border-[#8D8D8D] flex items-center justify-between cursor-pointer",
-              "",
+              openSystem === "IBM Carbon" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-4 py-3 bg-[#F4F4F4] dark:bg-[#262626] border-b border-[#8D8D8D] dark:border-[#6F6F6F] flex items-center justify-between cursor-pointer transition-colors",
+              "bg-[#E5E5E5] dark:bg-[#353535] border-b-[#161616] dark:border-b-[#F4F4F4]",
               "bg-[#E5E5E5]",
               "outline outline-2 outline-[#0F62FE] outline-offset-[-2px] border-b-[#0F62FE]",
               "opacity-50",
               "outline outline-2 outline-[#DA1E28] outline-offset-[-2px] border-b-[#DA1E28]"
             )}
            >
-            <span className="text-sm">3 выбрано</span>
-            <div className="flex gap-2">
-               <span className="w-5 h-5 bg-[#0F62FE] text-white text-[10px] flex items-center justify-center rounded-full">3</span>
-               <ChevronDown className="w-4 h-4 ml-2" />
+            <span className="text-sm text-zinc-900 dark:text-zinc-100 font-medium">{t('preview.select.selectedCount')}</span>
+            <div className="flex items-center gap-2">
+               {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#DA1E28]" />}
+               <span className="w-5 h-5 bg-[#0F62FE] text-white text-[10px] flex items-center justify-center font-bold">3</span>
+               <ChevronDown className="w-4 h-4 text-zinc-600 dark:text-zinc-400 ml-1" />
             </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "IBM Carbon" || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-px bg-[#f4f4f4] border-t border-gray-200" onClick={e => e.stopPropagation()}>
+             <div className="absolute z-10 w-[240px] mt-px bg-[#F4F4F4] dark:bg-[#262626] border-t border-zinc-300 dark:border-zinc-700 shadow-md text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="max-h-[140px] overflow-y-auto">
                    {[1,2,3,4,5].map(i => (
-                     <div key={i} className="px-4 py-3 text-sm flex items-center gap-3 border-b border-gray-100 hover:bg-[#e5e5e5]">
-                        <input type="checkbox" checked={i<4} className="accent-[#0F62FE]" />
-                        Опция {i}
+                     <div key={i} className="px-4 py-3 text-sm flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-700 hover:bg-[#E5E5E5] dark:hover:bg-[#353535] cursor-pointer text-zinc-900 dark:text-zinc-100">
+                        <input type="checkbox" checked={i<4} readOnly className="accent-[#0F62FE]" />
+                        <span>{t('preview.select.option')} {i}</span>
                      </div>
                    ))}
                 </div>
@@ -1292,33 +1326,42 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Shopify Polaris", e)}
             className={getInputStateClasses(
-              openSystem === "Shopify Polaris" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[8px] border border-[#8C9196] shadow-sm flex items-center justify-between cursor-pointer transition-all",
-              "",
+              openSystem === "Shopify Polaris" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[8px] border border-[#8C9196] dark:border-[#5C5F62] bg-white dark:bg-[#202123] shadow-xs flex items-center justify-between cursor-pointer transition-all",
+              "border-[#5C5F62] dark:border-[#8C9196]",
               "border-[#5C5F52]",
               "border-[#008060] ring-2 ring-[#008060]/[0.2]",
               "bg-[#F1F2F3] opacity-50",
-              "border-[#D82C0D] bg-[#FFF4F4]"
+              "border-[#D82C0D] ring-2 ring-red-500/20"
             )}
           >
             <div className="flex flex-wrap gap-1">
-               <span className="bg-gray-100 border border-gray-300 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1">
-                 Товар <X className="w-2 h-2 text-gray-500" />
+               <span className="bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 text-[10px] px-2 py-0.5 rounded-md flex items-center gap-1 font-medium">
+                 {t('preview.select.product')} <X className="w-3 h-3 text-zinc-500" />
                </span>
             </div>
-            <ChevronDown className="w-4 h-4 text-gray-400" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#D82C0D]" />}
+              <ChevronDown className="w-4 h-4 text-zinc-500" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Shopify Polaris" || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-2 bg-white shadow-2xl border border-gray-200 rounded-xl overflow-hidden p-2" onClick={e => e.stopPropagation()}>
+             <div className="absolute z-10 w-[240px] mt-2 bg-white dark:bg-[#202123] shadow-2xl border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden p-2 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="relative mb-2">
-                   <Search className="absolute left-2 top-2 w-3 h-3 text-gray-400" />
-                   <input className="w-full pl-7 pr-2 py-1 text-xs border border-gray-200 rounded-md outline-none" placeholder={tText('Поиск товаров...')} />
+                   <Search className="absolute left-2 top-2 w-3.5 h-3.5 text-zinc-400" />
+                   <input className="w-full pl-7 pr-2 py-1 text-xs border border-zinc-200 dark:border-zinc-700 bg-transparent rounded-md outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400" placeholder={t('preview.select.searchProducts')} />
                 </div>
                 <div className="max-h-[120px] overflow-y-auto">
                    {[1,2,3,4,5].map(i => (
-                     <div key={i} className="px-2 py-1.5 text-xs rounded-md hover:bg-emerald-50 flex items-center gap-2">
-                        <div className="w-3 h-3 border rounded border-gray-300" />
-                        Вариант товара {i}
+                     <div key={i} className="px-2 py-1.5 text-xs rounded-md hover:bg-emerald-50 dark:hover:bg-emerald-950/30 flex items-center gap-2 cursor-pointer transition-colors text-zinc-900 dark:text-zinc-100">
+                        <div className="w-3 h-3 border rounded-xs border-zinc-300 dark:border-zinc-600" />
+                        <span>{t('preview.select.product')} {i}</span>
                      </div>
                    ))}
                 </div>
@@ -1345,33 +1388,42 @@ export default function ComparisonGrid() {
            <div 
             onClick={(e) => handleToggle("Ant Design", e)}
             className={getInputStateClasses(
-              openSystem === "Ant Design" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[6px] border border-[#D9D9D9] flex items-center justify-between cursor-pointer transition-all",
-              "",
+              openSystem === "Ant Design" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[6px] border border-[#D9D9D9] dark:border-[#424242] bg-white dark:bg-[#141414] flex items-center justify-between cursor-pointer transition-all",
               "border-[#4096FF]",
-              "border-[#1677FF] ring-4 ring-[#1677FF]/[0.1]",
+              "border-[#4096FF]",
+              "border-[#1677FF] ring-2 ring-[#1677FF]/20",
               "bg-[#F5F5F5] opacity-50",
-              "border-[#FF4D4F] ring-4 ring-[#FF4D4F]/[0.1]"
+              "border-[#FF4D4F] ring-2 ring-[#FF4D4F]/20"
             )}
            >
-            <div className="flex gap-1">
-               <span className="bg-gray-100 border border-gray-200 text-[10px] px-2 py-0.5 rounded flex items-center gap-1">Выбор <X className="w-2 h-2" /></span>
-               <span className="bg-gray-100 border border-gray-200 text-[10px] px-2 py-0.5 rounded">+2</span>
+            <div className="flex gap-1 items-center">
+               <span className="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[10px] text-zinc-900 dark:text-zinc-100 px-2 py-0.5 rounded-xs flex items-center gap-1 font-medium">{t('preview.select.choice1')} <X className="w-3 h-3 text-zinc-500" /></span>
+               <span className="bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[10px] text-zinc-600 dark:text-zinc-300 px-2 py-0.5 rounded-xs">+2</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-gray-300" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#FF4D4F]" />}
+              <ChevronDown className="w-4 h-4 text-zinc-400" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Ant Design" || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-1 bg-white border border-[#D9D9D9] shadow-xl rounded-md overflow-hidden" onClick={e => e.stopPropagation()}>
+             <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-[#141414] border border-zinc-200 dark:border-zinc-700 shadow-xl rounded-md overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="p-2">
-                   <div className="flex items-center gap-2 border-b border-gray-100 px-2 py-1 mb-1">
-                      <Search className="w-3 h-3 text-blue-500" />
-                      <span className="text-xs text-blue-500 underline">Поиск</span>
+                   <div className="flex items-center gap-2 border-b border-zinc-100 dark:border-zinc-800 px-2 py-1 mb-1">
+                      <Search className="w-3.5 h-3.5 text-blue-500" />
+                      <span className="text-xs text-blue-500 underline">{t('preview.select.searchProducts')}</span>
                    </div>
                    <div className="max-h-[120px] overflow-y-auto">
                       {[1,2,3,4,5,6].map(i => (
-                        <div key={i} className={`px-2 py-1.5 text-xs flex items-center justify-between hover:bg-gray-50 ${i<3 ? 'bg-blue-50 font-semibold' : ''}`}>
-                           Элемент {i}
-                           {i<3 && <Check className="w-3 h-3 text-blue-600" />}
+                        <div key={i} className={`px-2 py-1.5 text-xs flex items-center justify-between hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer transition-colors text-zinc-900 dark:text-zinc-100 ${i<3 ? 'bg-blue-50 dark:bg-blue-950/40 font-semibold' : ''}`}>
+                           <span>{t('preview.select.item')} {i}</span>
+                           {i<3 && <Check className="w-3.5 h-3.5 text-blue-600" />}
                         </div>
                       ))}
                    </div>
@@ -1399,30 +1451,39 @@ export default function ComparisonGrid() {
           <div
             onClick={(e) => handleToggle("Apple iOS HIG", e)}
             className={getInputStateClasses(
-              openSystem === "Apple iOS HIG" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "px-3.5 py-2.5 rounded-xl border border-gray-300 dark:border-neutral-700 bg-[#767680]/10 flex items-center justify-between cursor-pointer",
-              "hover:bg-[#767680]/15",
+              openSystem === "Apple iOS HIG" || activeState === 'open' ? 'open' : activeState,
+              "px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-[#767680]/10 dark:bg-[#767680]/20 flex items-center justify-between cursor-pointer transition-all",
+              "hover:bg-[#767680]/15 dark:hover:bg-[#767680]/25 border-[#8E8E93] dark:border-[#636366]",
               "bg-[#767680]/20",
-              "border-[#007AFF] ring-2 ring-[#007AFF]/25",
+              "border-[#007AFF] ring-2 ring-[#007AFF]/25 bg-white dark:bg-[#1C1C1E]",
               "opacity-50 cursor-not-allowed",
               "border-[#FF3B30] ring-2 ring-[#FF3B30]/30"
             )}
           >
             <div className="flex items-center gap-1.5">
-              <span className="bg-[#007AFF]/15 text-[#007AFF] text-xs px-2.5 py-0.5 rounded-full font-semibold">
-                Опция 1
+              <span className="bg-[#007AFF]/15 text-[#007AFF] dark:text-[#3894FF] text-xs px-2.5 py-0.5 rounded-full font-semibold">
+                {t('preview.select.option')} 1
               </span>
-              <span className="text-xs text-gray-500">+ 2</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">+ 2</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-[#007AFF]" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#FF3B30]" />}
+              <ChevronDown className="w-4 h-4 text-[#007AFF] dark:text-[#3894FF]" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Apple iOS HIG" || activeState === 'open') && (
-            <div className="absolute z-10 w-[240px] mt-1 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md shadow-xl rounded-2xl border border-gray-200 dark:border-neutral-700 overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="absolute z-10 w-[240px] mt-1 bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md shadow-xl rounded-2xl border border-zinc-200 dark:border-zinc-700 overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
               <div className="max-h-[140px] overflow-y-auto p-1">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="px-3 py-2 text-xs rounded-lg hover:bg-[#007AFF]/10 flex items-center justify-between cursor-pointer">
-                    <span>Параметр {i}</span>
-                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#007AFF]" />}
+                  <div key={i} className="px-3 py-2 text-xs rounded-lg hover:bg-[#007AFF]/10 flex items-center justify-between cursor-pointer transition-colors text-zinc-900 dark:text-zinc-100">
+                    <span>{t('preview.select.variant')} {i}</span>
+                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#007AFF] dark:text-[#3894FF]" />}
                   </div>
                 ))}
               </div>
@@ -1449,9 +1510,9 @@ export default function ComparisonGrid() {
           <div
             onClick={(e) => handleToggle("Samsung One UI", e)}
             className={getInputStateClasses(
-              openSystem === "Samsung One UI" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "px-4 py-2.5 rounded-2xl border border-[#DFE2E6] dark:border-neutral-700 bg-[#F2F4F7] dark:bg-neutral-800 flex items-center justify-between cursor-pointer",
-              "hover:border-[#034EA2]/50",
+              openSystem === "Samsung One UI" || activeState === 'open' ? 'open' : activeState,
+              "px-4 py-2.5 rounded-2xl border border-[#DFE2E6] dark:border-zinc-700 bg-[#F2F4F7] dark:bg-[#1E2024] flex items-center justify-between cursor-pointer transition-all",
+              "hover:border-[#034EA2]/60 dark:hover:border-[#528AE4]/60 bg-[#E8EBF0] dark:bg-[#25282E]",
               "bg-[#E8EDF5]",
               "border-[#034EA2] ring-2 ring-[#034EA2]/25",
               "opacity-50 cursor-not-allowed",
@@ -1460,19 +1521,28 @@ export default function ComparisonGrid() {
           >
             <div className="flex items-center gap-1.5">
               <span className="bg-[#034EA2] text-white text-xs px-2.5 py-0.5 rounded-full font-bold">
-                Выбор 1
+                {t('preview.select.choice1')}
               </span>
-              <span className="text-xs text-gray-500">+ 3</span>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">+ 3</span>
             </div>
-            <ChevronDown className="w-4 h-4 text-[#034EA2]" />
+            <div className="flex items-center gap-1">
+              {activeState === 'error' && <AlertCircle className="w-4 h-4 text-[#E53935]" />}
+              <ChevronDown className="w-4 h-4 text-[#034EA2] dark:text-[#528AE4]" />
+            </div>
           </div>
+          {activeState === 'error' && (
+            <div className="flex items-center gap-1 mt-1 text-[11px] font-medium text-red-600 dark:text-red-400">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span>{t('preview.select.errorRequired')}</span>
+            </div>
+          )}
           {(openSystem === "Samsung One UI" || activeState === 'open') && (
-            <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-neutral-800 shadow-xl rounded-2xl border border-[#DFE2E6] dark:border-neutral-700 overflow-hidden" onClick={e => e.stopPropagation()}>
+            <div className="absolute z-10 w-[240px] mt-1 bg-white dark:bg-[#1E2024] shadow-xl rounded-2xl border border-[#DFE2E6] dark:border-zinc-700 overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
               <div className="max-h-[140px] overflow-y-auto p-1">
                 {[1, 2, 3, 4].map(i => (
-                  <div key={i} className="px-3.5 py-2 text-xs rounded-xl hover:bg-[#034EA2]/10 flex items-center justify-between cursor-pointer">
-                    <span className="font-medium">Элемент One UI {i}</span>
-                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#034EA2]" />}
+                  <div key={i} className="px-3.5 py-2 text-xs rounded-xl hover:bg-[#034EA2]/10 dark:hover:bg-[#034EA2]/20 flex items-center justify-between cursor-pointer transition-colors text-zinc-900 dark:text-zinc-100">
+                    <span className="font-medium">{t('preview.select.item')} {i}</span>
+                    {i === 1 && <Check className="w-3.5 h-3.5 text-[#034EA2] dark:text-[#528AE4]" />}
                   </div>
                 ))}
               </div>
@@ -1492,6 +1562,11 @@ export default function ComparisonGrid() {
     }
   ];
 
+  const formattedDate = language === 'ru' ? `${selectedDay} мая 2026` : `May ${selectedDay}, 2026`;
+  const formattedMonth = language === 'ru' ? 'Май 2026' : 'May 2026';
+  const weekDaysMon = language === 'ru' ? ['П', 'В', 'С', 'Ч', 'П', 'С', 'В'] : ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const weekDaysSun = language === 'ru' ? ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'] : ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
   const datepickerCards: CardData[] = [
     {
       title: "Material Design 3",
@@ -1502,29 +1577,29 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Material Design 3 DP", e)}
             className={getInputStateClasses(
-              openSystem === "Material Design 3 DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "px-4 py-2 border border-[#49454F] rounded-[4px] flex items-center justify-between cursor-pointer",
-              "",
-              "border-[#1D1B20]",
-              "border-[#6750A4] ring-1 ring-[#6750A4]",
+              openSystem === "Material Design 3 DP" || activeState === 'open' ? 'open' : activeState,
+              "px-4 py-2 border border-[#49454F] dark:border-zinc-600 rounded-[4px] bg-transparent flex items-center justify-between cursor-pointer",
+              "hover:border-[#1D1B20] dark:hover:border-zinc-300",
+              "border-[#1D1B20] dark:border-zinc-300",
+              "border-[#6750A4] ring-2 ring-[#6750A4]/30",
               "opacity-50 grayscale",
               "border-[#B3261E] ring-1 ring-[#B3261E]"
             )}
           >
-            <span className="text-sm">{selectedDay} мая 2026</span>
-            <Calendar className="w-4 h-4 text-[#49454F]" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{formattedDate}</span>
+            <Calendar className="w-4 h-4 text-[#49454F] dark:text-zinc-400" />
           </div>
-          {(openSystem === "Material Design 3 DP" || activeState === 'focus' || activeState === 'open') && (
-            <div className="absolute z-10 w-[280px] mt-2 bg-[#F7F2FA] shadow-xl rounded-2xl p-4 border border-[#cfc4c5]" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Material Design 3 DP" || activeState === 'open') && (
+            <div className="absolute z-10 w-[280px] mt-2 bg-[#F7F2FA] dark:bg-[#25232a] shadow-xl rounded-2xl p-4 border border-[#cfc4c5] dark:border-zinc-700 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                <div className="flex justify-between items-center mb-4">
-                  <span className="font-semibold text-sm">Май 2026</span>
-                  <div className="flex gap-2 text-[#49454F]">
-                    <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-gray-200 rounded-full p-0.5" />
-                    <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-gray-200 rounded-full p-0.5" />
+                  <span className="font-semibold text-sm">{formattedMonth}</span>
+                  <div className="flex gap-2 text-[#49454F] dark:text-zinc-300">
+                    <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full p-0.5" />
+                    <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-gray-200 dark:hover:bg-zinc-700 rounded-full p-0.5" />
                   </div>
                </div>
                <div className="grid grid-cols-7 gap-1 text-center">
-                  {['П', 'В', 'С', 'Ч', 'П', 'С', 'В'].map(d => <span key={d} className="text-[10px] text-gray-500 font-medium">{d}</span>)}
+                  {weekDaysMon.map((d, idx) => <span key={idx} className="text-[10px] text-gray-500 dark:text-zinc-400 font-medium">{d}</span>)}
                   {Array.from({length: 31}).map((_, i) => {
                     const day = i + 1;
                     const isSelected = selectedDay === day;
@@ -1536,7 +1611,7 @@ export default function ComparisonGrid() {
                         onMouseLeave={() => setHoveredDay(null)}
                         className={`w-8 h-8 flex items-center justify-center text-xs rounded-full cursor-pointer transition-all ${
                           isSelected ? 'bg-[#6750A4] text-white shadow-md' : 
-                          hoveredDay === day ? 'bg-[#EADDFF] text-[#21005D]' : 'hover:bg-[#EBE4EF]'
+                          hoveredDay === day ? 'bg-[#EADDFF] text-[#21005D] dark:bg-[#4f378b] dark:text-white' : 'hover:bg-[#EBE4EF] dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200'
                         }`}
                       >
                         {day}
@@ -1567,31 +1642,31 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Fluent UI DP", e)}
             className={getInputStateClasses(
-              openSystem === "Fluent UI DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-1.5 rounded-[2px] border border-[#605E5C] flex items-center justify-between cursor-pointer",
-              "",
-              "border-[#323130]",
-              "border-[#0078D4] ring-1 ring-[#0078D4]",
-              "bg-[#F3F2F1] opacity-50",
+              openSystem === "Fluent UI DP" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-1.5 rounded-[2px] border border-[#605E5C] dark:border-zinc-600 bg-transparent flex items-center justify-between cursor-pointer",
+              "hover:border-[#323130] dark:hover:border-zinc-300",
+              "border-[#323130] dark:border-zinc-300",
+              "border-[#0078D4] ring-2 ring-[#0078D4]/30",
+              "bg-[#F3F2F1] dark:bg-zinc-800 opacity-50",
               "border-[#A4262C] ring-1 ring-[#A4262C]"
             )}
           >
-            <span className="text-sm">{rangeStart}.05 - {rangeEnd}.05.2026</span>
-            <Calendar className="w-4 h-4" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{rangeStart}.05 - {rangeEnd}.05.2026</span>
+            <Calendar className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
           </div>
-          {(openSystem === "Fluent UI DP" || activeState === 'focus' || activeState === 'open') && (
-             <div className="absolute z-10 w-[300px] mt-1 bg-white border border-[#cfc4c5] shadow-lg p-3" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Fluent UI DP" || activeState === 'open') && (
+             <div className="absolute z-10 w-[300px] mt-1 bg-white dark:bg-[#1f1f23] border border-[#cfc4c5] dark:border-zinc-700 shadow-lg p-3 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="flex gap-4">
                    <div className="flex-1">
                       <div className="flex justify-between items-center mb-4">
-                        <div className="text-xs font-bold">Май 2026</div>
-                        <div className="flex gap-1">
-                           <ChevronLeft className="w-4 h-4 cursor-pointer hover:bg-gray-100 p-0.5" />
-                           <ChevronRight className="w-4 h-4 cursor-pointer hover:bg-gray-100 p-0.5" />
+                        <div className="text-xs font-bold">{formattedMonth}</div>
+                        <div className="flex gap-1 text-zinc-600 dark:text-zinc-300">
+                           <ChevronLeft className="w-4 h-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 p-0.5 rounded" />
+                           <ChevronRight className="w-4 h-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700 p-0.5 rounded" />
                         </div>
                       </div>
                       <div className="grid grid-cols-7 gap-0.5 text-center text-[10px]">
-                         {['П','В','С','Ч','П','С','В'].map(d => <div key={d} className="text-gray-400 p-1">{d}</div>)}
+                         {weekDaysMon.map((d, idx) => <div key={idx} className="text-gray-400 dark:text-zinc-400 p-1">{d}</div>)}
                          {Array.from({length: 31}).map((_, i) => {
                            const d = i + 1;
                            const isInRange = d >= Math.min(rangeStart, rangeEnd) && d <= Math.max(rangeStart, rangeEnd);
@@ -1610,7 +1685,7 @@ export default function ComparisonGrid() {
                                }}
                                className={`p-1.5 cursor-pointer transition-colors ${
                                  isStart || isEnd ? 'bg-[#0078D4] text-white font-bold' : 
-                                 isInRange ? 'bg-[#DFF6DD] text-[#107C10]' : 'hover:bg-gray-100'
+                                 isInRange ? 'bg-[#DFF6DD] dark:bg-emerald-950/40 text-[#107C10] dark:text-emerald-400' : 'hover:bg-gray-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200'
                                }`}
                              >
                                {d}
@@ -1643,28 +1718,28 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Atlassian DP", e)}
             className={getInputStateClasses(
-              openSystem === "Atlassian DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[3px] bg-[#F4F5F7] border-2 border-transparent flex items-center justify-between cursor-pointer",
-              "",
-              "bg-[#EBECF0]",
-              "bg-white border-[#4C90FF]",
-              "bg-[#FAFBFC] opacity-50",
-              "bg-white border-[#DE350B]"
+              openSystem === "Atlassian DP" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[3px] bg-[#F4F5F7] dark:bg-zinc-800 border-2 border-transparent flex items-center justify-between cursor-pointer",
+              "hover:bg-[#EBECF0] dark:hover:bg-zinc-700",
+              "bg-[#EBECF0] dark:bg-zinc-700",
+              "bg-white dark:bg-zinc-900 border-[#4C90FF] ring-2 ring-[#4C90FF]/30",
+              "bg-[#FAFBFC] dark:bg-zinc-900 opacity-50",
+              "bg-white dark:bg-zinc-900 border-[#DE350B]"
             )}
           >
-            <span className="text-sm">May {selectedDay}, 2026</span>
-            <Calendar className="w-4 h-4 text-gray-500" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{formattedDate}</span>
+            <Calendar className="w-4 h-4 text-gray-500 dark:text-zinc-400" />
           </div>
-          {(openSystem === "Atlassian DP" || activeState === 'focus' || activeState === 'open') && (
-             <div className="absolute z-10 w-[280px] mt-1 bg-white shadow-2xl border border-[#cfc4c5] rounded-sm overflow-hidden" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Atlassian DP" || activeState === 'open') && (
+             <div className="absolute z-10 w-[280px] mt-1 bg-white dark:bg-[#18191d] shadow-2xl border border-[#cfc4c5] dark:border-zinc-700 rounded-sm overflow-hidden text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="p-4">
                    <div className="grid grid-cols-7 gap-1 text-[11px] text-center">
-                      {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => <div key={d} className="text-gray-400 font-bold mb-1">{d}</div>)}
+                      {weekDaysMon.map((d, idx) => <div key={idx} className="text-gray-400 dark:text-zinc-400 font-bold mb-1">{d}</div>)}
                       {Array.from({length: 31}).map((_, i) => (
                         <div 
                           key={i} 
                           onClick={() => setSelectedDay(i + 1)}
-                          className={`p-2 rounded-sm cursor-pointer transition-colors ${i + 1 === selectedDay ? 'bg-[#0052CC] text-white' : 'hover:bg-blue-50 text-[#42526E]'}`}
+                          className={`p-2 rounded-sm cursor-pointer transition-colors ${i + 1 === selectedDay ? 'bg-[#0052CC] text-white' : 'hover:bg-blue-50 dark:hover:bg-blue-950/40 text-[#42526E] dark:text-zinc-200'}`}
                         >
                           {i + 1}
                         </div>
@@ -1694,27 +1769,27 @@ export default function ComparisonGrid() {
            <div 
             onClick={(e) => handleToggle("IBM Carbon DP", e)}
             className={getInputStateClasses(
-              openSystem === "IBM Carbon DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-4 py-3 bg-[#f4f4f4] border-b border-[#8D8D8D] flex items-center justify-between cursor-pointer",
-              "",
-              "bg-[#E5E5E5]",
+              openSystem === "IBM Carbon DP" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-4 py-3 bg-[#f4f4f4] dark:bg-zinc-800 border-b border-[#8D8D8D] dark:border-zinc-600 flex items-center justify-between cursor-pointer",
+              "hover:bg-[#E5E5E5] dark:hover:bg-zinc-700",
+              "bg-[#E5E5E5] dark:bg-zinc-700",
               "outline outline-2 outline-[#0F62FE] outline-offset-[-2px] border-b-[#0F62FE]",
               "opacity-50",
               "outline outline-2 outline-[#DA1E28] outline-offset-[-2px] border-b-[#DA1E28]"
             )}
            >
-            <span className="text-sm">{selectedDay}/05/2026</span>
-            <Calendar className="w-4 h-4" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{selectedDay.toString().padStart(2, '0')}/05/2026</span>
+            <Calendar className="w-4 h-4 text-zinc-600 dark:text-zinc-300" />
           </div>
-          {(openSystem === "IBM Carbon DP" || activeState === 'focus' || activeState === 'open') && (
-             <div className="absolute z-10 w-[240px] mt-px bg-[#f4f4f4] shadow-md border-t border-gray-200" onClick={e => e.stopPropagation()}>
+          {(openSystem === "IBM Carbon DP" || activeState === 'open') && (
+             <div className="absolute z-10 w-[240px] mt-px bg-[#f4f4f4] dark:bg-[#1e1e24] shadow-md border border-gray-200 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="grid grid-cols-7 gap-0 text-center">
-                   {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d} className="p-2 text-[10px] font-bold border-b border-gray-200">{d}</div>)}
+                   {weekDaysSun.map((d, idx) => <div key={idx} className="p-2 text-[10px] font-bold border-b border-gray-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400">{d}</div>)}
                    {Array.from({length: 28}).map((_, i) => (
                      <div 
                         key={i} 
                         onClick={() => setSelectedDay(i + 1)}
-                        className={`p-2 text-xs border border-transparent cursor-pointer transition-all hover:border-[#0F62FE] ${i + 1 === selectedDay ? 'bg-[#0F62FE] text-white' : ''}`}
+                        className={`p-2 text-xs border border-transparent cursor-pointer transition-all hover:border-[#0F62FE] ${i + 1 === selectedDay ? 'bg-[#0F62FE] text-white' : 'dark:hover:bg-zinc-800'}`}
                      >
                        {i + 1}
                      </div>
@@ -1743,35 +1818,35 @@ export default function ComparisonGrid() {
           <div 
             onClick={(e) => handleToggle("Shopify Polaris DP", e)}
             className={getInputStateClasses(
-              openSystem === "Shopify Polaris DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[8px] border border-[#8C9196] shadow-sm flex items-center justify-between cursor-pointer",
-              "",
-              "border-[#5C5F62]",
+              openSystem === "Shopify Polaris DP" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[8px] border border-[#8C9196] dark:border-zinc-600 bg-white dark:bg-zinc-800 shadow-sm flex items-center justify-between cursor-pointer",
+              "hover:border-[#5C5F62] dark:hover:border-zinc-400",
+              "border-[#5C5F62] dark:border-zinc-400",
               "border-[#008060] ring-2 ring-[#008060]/[0.2]",
-              "bg-[#F1F2F3] opacity-50",
-              "border-[#D82C0D] bg-[#FFF4F4]"
+              "bg-[#F1F2F3] dark:bg-zinc-900 opacity-50",
+              "border-[#D82C0D] bg-[#FFF4F4] dark:bg-red-950/20"
             )}
           >
-            <span className="text-sm">May {selectedDay}, 2026</span>
-            <Calendar className="w-4 h-4 text-gray-400" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{formattedDate}</span>
+            <Calendar className="w-4 h-4 text-gray-400 dark:text-zinc-400" />
           </div>
-          {(openSystem === "Shopify Polaris DP" || activeState === 'focus' || activeState === 'open') && (
-             <div className="absolute z-10 w-[260px] mt-2 bg-white shadow-2xl border border-gray-200 rounded-xl overflow-hidden p-4" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Shopify Polaris DP" || activeState === 'open') && (
+             <div className="absolute z-10 w-[260px] mt-2 bg-white dark:bg-[#18191d] shadow-2xl border border-gray-200 dark:border-zinc-700 rounded-xl overflow-hidden p-4 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
                 <div className="flex flex-col gap-4">
                    <div className="flex justify-between items-center">
-                      <div className="text-sm font-semibold">Май 2026</div>
+                      <div className="text-sm font-semibold">{formattedMonth}</div>
                       <div className="flex gap-1">
-                        <ChevronLeft className="w-4 h-4 cursor-pointer text-gray-500 hover:bg-gray-100 rounded" />
-                        <ChevronRight className="w-4 h-4 cursor-pointer text-gray-500 hover:bg-gray-100 rounded" />
+                        <ChevronLeft className="w-4 h-4 cursor-pointer text-gray-500 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded" />
+                        <ChevronRight className="w-4 h-4 cursor-pointer text-gray-500 dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded" />
                       </div>
                    </div>
                    <div className="grid grid-cols-7 gap-2">
-                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d} className="text-center text-[10px] text-gray-400">{d}</div>)}
+                      {weekDaysSun.map((d, idx) => <div key={idx} className="text-center text-[10px] text-gray-400 dark:text-zinc-400">{d}</div>)}
                       {Array.from({length: 31}).map((_, i) => (
                         <div 
                           key={i} 
                           onClick={() => setSelectedDay(i + 1)}
-                          className={`w-7 h-7 flex items-center justify-center text-xs rounded-md cursor-pointer transition-colors ${i + 1 === selectedDay ? 'bg-[#008060] text-white scale-110' : 'hover:bg-emerald-50'}`}
+                          className={`w-7 h-7 flex items-center justify-center text-xs rounded-md cursor-pointer transition-colors ${i + 1 === selectedDay ? 'bg-[#008060] text-white scale-110' : 'hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-zinc-800 dark:text-zinc-200'}`}
                         >
                           {i + 1}
                         </div>
@@ -1801,32 +1876,32 @@ export default function ComparisonGrid() {
            <div 
             onClick={(e) => handleToggle("Ant Design DP", e)}
             className={getInputStateClasses(
-              openSystem === "Ant Design DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
-              "w-full px-3 py-2 rounded-[6px] border border-[#D9D9D9] flex items-center justify-between cursor-pointer transition-all",
-              "",
+              openSystem === "Ant Design DP" || activeState === 'open' ? 'open' : activeState,
+              "w-full px-3 py-2 rounded-[6px] border border-[#D9D9D9] dark:border-zinc-600 bg-white dark:bg-zinc-800 flex items-center justify-between cursor-pointer transition-all",
+              "hover:border-[#4096FF]",
               "border-[#4096FF]",
               "border-[#1677FF] ring-4 ring-[#1677FF]/[0.1]",
-              "bg-[#F5F5F5] opacity-50",
+              "bg-[#F5F5F5] dark:bg-zinc-900 opacity-50",
               "border-[#FF4D4F] ring-4 ring-[#FF4D4F]/[0.1]"
             )}
            >
-            <span className="text-sm">2026-05-{selectedDay.toString().padStart(2, '0')}</span>
-            <Calendar className="w-4 h-4 text-gray-300" />
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">2026-05-{selectedDay.toString().padStart(2, '0')}</span>
+            <Calendar className="w-4 h-4 text-gray-400 dark:text-zinc-400" />
           </div>
-          {(openSystem === "Ant Design DP" || activeState === 'focus' || activeState === 'open') && (
-             <div className="absolute z-10 min-w-[280px] mt-1 bg-white border border-[#D9D9D9] shadow-xl rounded-md overflow-hidden p-2" onClick={e => e.stopPropagation()}>
-                <div className="flex border-b border-gray-100 pb-2 mb-2 justify-between items-center px-2">
-                   <ChevronLeft className="w-4 h-4 text-gray-400 cursor-pointer hover:text-blue-500" />
-                   <span className="text-xs font-bold">2026-05</span>
-                   <ChevronRight className="w-4 h-4 text-gray-400 cursor-pointer hover:text-blue-500" />
+          {(openSystem === "Ant Design DP" || activeState === 'open') && (
+             <div className="absolute z-10 min-w-[280px] mt-1 bg-white dark:bg-[#18191d] border border-[#D9D9D9] dark:border-zinc-700 shadow-xl rounded-md overflow-hidden p-2 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
+                <div className="flex border-b border-gray-100 dark:border-zinc-800 pb-2 mb-2 justify-between items-center px-2">
+                   <ChevronLeft className="w-4 h-4 text-gray-400 dark:text-zinc-400 cursor-pointer hover:text-blue-500" />
+                   <span className="text-xs font-bold">{formattedMonth}</span>
+                   <ChevronRight className="w-4 h-4 text-gray-400 dark:text-zinc-400 cursor-pointer hover:text-blue-500" />
                 </div>
                 <div className="grid grid-cols-7 gap-0 text-center">
-                   {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => <div key={d} className="p-1 text-[10px] text-gray-400">{d}</div>)}
+                   {weekDaysMon.map((d, idx) => <div key={idx} className="p-1 text-[10px] text-gray-400 dark:text-zinc-400">{d}</div>)}
                    {Array.from({length: 31}).map((_, i) => (
                      <div 
                         key={i} 
                         onClick={() => setSelectedDay(i + 1)}
-                        className={`p-2 text-xs cursor-pointer transition-all hover:bg-blue-50 ${i + 1 === selectedDay ? 'bg-[#1677ff] text-white rounded-sm ring-2 ring-[#1677ff]/[0.2]' : ''}`}
+                        className={`p-2 text-xs cursor-pointer transition-all hover:bg-blue-50 dark:hover:bg-zinc-800 ${i + 1 === selectedDay ? 'bg-[#1677ff] text-white rounded-sm ring-2 ring-[#1677ff]/[0.2]' : 'text-zinc-800 dark:text-zinc-200'}`}
                      >
                        {i + 1}
                      </div>
@@ -1855,7 +1930,7 @@ export default function ComparisonGrid() {
           <div
             onClick={(e) => handleToggle("Apple iOS HIG DP", e)}
             className={getInputStateClasses(
-              openSystem === "Apple iOS HIG DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              openSystem === "Apple iOS HIG DP" || activeState === 'open' ? 'open' : activeState,
               "px-3.5 py-2 border border-gray-300 dark:border-neutral-700 rounded-xl bg-[#767680]/10 flex items-center justify-between cursor-pointer",
               "hover:bg-[#767680]/15",
               "border-[#007AFF]",
@@ -1864,20 +1939,20 @@ export default function ComparisonGrid() {
               "border-[#FF3B30] ring-2 ring-[#FF3B30]/30"
             )}
           >
-            <span className="text-sm font-medium">{selectedDay} мая 2026</span>
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{formattedDate}</span>
             <Calendar className="w-4 h-4 text-[#007AFF]" />
           </div>
-          {(openSystem === "Apple iOS HIG DP" || activeState === 'focus' || activeState === 'open') && (
-            <div className="absolute z-10 w-[280px] mt-2 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md shadow-2xl rounded-2xl p-4 border border-gray-200 dark:border-neutral-700" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Apple iOS HIG DP" || activeState === 'open') && (
+            <div className="absolute z-10 w-[280px] mt-2 bg-white/95 dark:bg-neutral-800/95 backdrop-blur-md shadow-2xl rounded-2xl p-4 border border-gray-200 dark:border-neutral-700 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center mb-3">
-                <span className="font-semibold text-sm">Май 2026</span>
+                <span className="font-semibold text-sm">{formattedMonth}</span>
                 <div className="flex gap-1 text-[#007AFF]">
                   <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full p-0.5" />
                   <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full p-0.5" />
                 </div>
               </div>
               <div className="grid grid-cols-7 gap-1 text-center">
-                {['П', 'В', 'С', 'Ч', 'П', 'С', 'В'].map(d => <span key={d} className="text-[10px] text-gray-400 font-semibold">{d}</span>)}
+                {weekDaysMon.map((d, idx) => <span key={idx} className="text-[10px] text-gray-400 dark:text-neutral-400 font-semibold">{d}</span>)}
                 {Array.from({length: 31}).map((_, i) => {
                   const day = i + 1;
                   const isSelected = selectedDay === day;
@@ -1886,7 +1961,7 @@ export default function ComparisonGrid() {
                       key={i}
                       onClick={() => setSelectedDay(day)}
                       className={`w-8 h-8 flex items-center justify-center text-xs rounded-full cursor-pointer transition-all ${
-                        isSelected ? 'bg-[#007AFF] text-white font-bold shadow-xs' : 'hover:bg-[#007AFF]/10'
+                        isSelected ? 'bg-[#007AFF] text-white font-bold shadow-xs' : 'hover:bg-[#007AFF]/10 text-neutral-800 dark:text-neutral-200'
                       }`}
                     >
                       {day}
@@ -1917,7 +1992,7 @@ export default function ComparisonGrid() {
           <div
             onClick={(e) => handleToggle("Samsung One UI DP", e)}
             className={getInputStateClasses(
-              openSystem === "Samsung One UI DP" || activeState === 'open' || activeState === 'focus' ? 'focus' : activeState,
+              openSystem === "Samsung One UI DP" || activeState === 'open' ? 'open' : activeState,
               "px-4 py-2 border border-[#DFE2E6] dark:border-neutral-700 rounded-2xl bg-[#F2F4F7] dark:bg-neutral-800 flex items-center justify-between cursor-pointer",
               "hover:border-[#034EA2]/50",
               "border-[#034EA2]",
@@ -1926,20 +2001,20 @@ export default function ComparisonGrid() {
               "border-[#E53935] ring-2 ring-[#E53935]/30"
             )}
           >
-            <span className="text-sm font-semibold">{selectedDay} мая 2026</span>
+            <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{formattedDate}</span>
             <Calendar className="w-4 h-4 text-[#034EA2]" />
           </div>
-          {(openSystem === "Samsung One UI DP" || activeState === 'focus' || activeState === 'open') && (
-            <div className="absolute z-10 w-[280px] mt-2 bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl p-4 border border-[#DFE2E6] dark:border-neutral-700" onClick={e => e.stopPropagation()}>
+          {(openSystem === "Samsung One UI DP" || activeState === 'open') && (
+            <div className="absolute z-10 w-[280px] mt-2 bg-white dark:bg-neutral-800 shadow-2xl rounded-3xl p-4 border border-[#DFE2E6] dark:border-neutral-700 text-zinc-900 dark:text-zinc-100" onClick={e => e.stopPropagation()}>
               <div className="flex justify-between items-center mb-3">
-                <span className="font-bold text-sm text-[#034EA2]">Май 2026</span>
+                <span className="font-bold text-sm text-[#034EA2] dark:text-blue-400">{formattedMonth}</span>
                 <div className="flex gap-1 text-[#034EA2]">
                   <ChevronLeft className="w-5 h-5 cursor-pointer hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-full p-0.5" />
                   <ChevronRight className="w-5 h-5 cursor-pointer hover:bg-blue-50 dark:hover:bg-neutral-700 rounded-full p-0.5" />
                 </div>
               </div>
               <div className="grid grid-cols-7 gap-1 text-center">
-                {['П', 'В', 'С', 'Ч', 'П', 'С', 'В'].map(d => <span key={d} className="text-[10px] text-gray-500 font-bold">{d}</span>)}
+                {weekDaysMon.map((d, idx) => <span key={idx} className="text-[10px] text-gray-500 dark:text-neutral-400 font-bold">{d}</span>)}
                 {Array.from({length: 31}).map((_, i) => {
                   const day = i + 1;
                   const isSelected = selectedDay === day;
@@ -1948,7 +2023,7 @@ export default function ComparisonGrid() {
                       key={i}
                       onClick={() => setSelectedDay(day)}
                       className={`w-8 h-8 flex items-center justify-center text-xs rounded-2xl cursor-pointer transition-all ${
-                        isSelected ? 'bg-[#034EA2] text-white font-bold shadow-md' : 'hover:bg-[#034EA2]/10'
+                        isSelected ? 'bg-[#034EA2] text-white font-bold shadow-md' : 'hover:bg-[#034EA2]/10 text-neutral-800 dark:text-neutral-200'
                       }`}
                     >
                       {day}
@@ -1978,31 +2053,31 @@ export default function ComparisonGrid() {
       icon: logos.material,
       previewType: "button",
       previewContent: (
-        <div className={`bg-[#ECE6F0] rounded-[28px] p-6 w-full max-w-[280px] shadow-sm transform transition-all translate-y-0 `}>
+        <div className={`bg-[#ECE6F0] dark:bg-[#2b2930] text-zinc-900 dark:text-zinc-100 rounded-[28px] p-6 w-full max-w-[280px] shadow-sm transform transition-all translate-y-0 `}>
           {activeVariant === 'transactional' ? (
             <>
-               <div className="text-xl mb-4 text-[#1D1B20]">Новый проект</div>
-               <input className="w-full bg-[#E7E0EC] border-b border-[#49454F] p-3 rounded-t-md mb-6 outline-none text-sm" placeholder={tText('Название проекта')} />
+               <div className="text-xl mb-4 text-[#1D1B20] dark:text-zinc-100 font-medium">{t('preview.modal.newProject')}</div>
+               <input className="w-full bg-[#E7E0EC] dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 border-b border-[#49454F] dark:border-zinc-500 p-3 rounded-t-md mb-6 outline-none text-sm placeholder:text-zinc-500 dark:placeholder:text-zinc-400" placeholder={t('preview.modal.projectName')} />
                <div className="flex justify-end gap-2 text-sm font-medium">
-                   <button className="text-[#6750A4] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 rounded-full">Отмена</button>
-                   <button className="bg-[#6750A4] text-white px-4 py-2 cursor-pointer transition-colors hover:bg-opacity-90 rounded-full">Создать</button>
+                   <button className="text-[#6750A4] dark:text-[#D0BCFF] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-full">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#6750A4] text-white px-4 py-2 cursor-pointer transition-colors hover:bg-opacity-90 rounded-full">{t('preview.modal.create')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
             <>
-               <div className="text-xl mb-4 text-[#1D1B20]">Обновление завершено</div>
-               <div className="text-sm text-[#49454F] mb-6">Ваша система успешно обновлена до последней версии.</div>
+               <div className="text-xl mb-4 text-[#1D1B20] dark:text-zinc-100 font-medium">{t('preview.modal.updateDone')}</div>
+               <div className="text-sm text-[#49454F] dark:text-zinc-300 mb-6">{t('preview.modal.updateDoneDesc')}</div>
                <div className="flex justify-end text-sm font-medium">
-                   <button className="text-[#6750A4] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 rounded-full">Понятно</button>
+                   <button className="text-[#6750A4] dark:text-[#D0BCFF] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-full">{t('preview.modal.understood')}</button>
                </div>
             </>
           ) : (
             <>
-               <div className="text-xl mb-4 text-[#1D1B20]">Удалить данные?</div>
-               <div className="text-sm text-[#49454F] mb-6">Это действие нельзя отменить. Вы уверены, что хотите продолжить?</div>
+               <div className="text-xl mb-4 text-[#1D1B20] dark:text-zinc-100 font-medium">{t('preview.modal.deleteData')}</div>
+               <div className="text-sm text-[#49454F] dark:text-zinc-300 mb-6">{t('preview.modal.deleteDataDesc')}</div>
                <div className="flex justify-end gap-2 text-sm font-medium">
-                   <button className="text-[#6750A4] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 rounded-full">Отмена</button>
-                   <button className="text-[#B3261E] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 rounded-full">Удалить</button>
+                   <button className="text-[#6750A4] dark:text-[#D0BCFF] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-full">{t('preview.modal.cancel')}</button>
+                   <button className="text-[#B3261E] dark:text-[#F2B8B5] px-3 py-2 cursor-pointer transition-colors hover:bg-black/5 dark:hover:bg-white/5 rounded-full">{t('preview.modal.delete')}</button>
                </div>
             </>
           )}
@@ -2023,34 +2098,34 @@ export default function ComparisonGrid() {
       icon: logos.fluent,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white border rounded-[8px] p-5 w-full max-w-[280px] shadow-lg transform transition-all `}>
+        <div className={`bg-white dark:bg-[#202020] border border-gray-200 dark:border-neutral-700 text-zinc-900 dark:text-zinc-100 rounded-[8px] p-5 w-full max-w-[280px] shadow-lg transform transition-all `}>
           {activeVariant === 'transactional' ? (
             <>
-               <div className="text-lg font-semibold mb-4">Настройки доступа</div>
-               <select className="w-full border border-gray-300 p-2 rounded-[4px] text-sm mb-6 outline-none">
-                 <option>Только чтение</option>
-                 <option>Редактирование</option>
+               <div className="text-lg font-semibold mb-4">{t('preview.modal.accessSettings')}</div>
+               <select className="w-full border border-gray-300 dark:border-neutral-600 bg-white dark:bg-[#2b2b2b] text-zinc-900 dark:text-zinc-100 p-2 rounded-[4px] text-sm mb-6 outline-none">
+                 <option>{t('preview.modal.readOnly')}</option>
+                 <option>{t('preview.modal.editing')}</option>
                </select>
                <div className="flex justify-end gap-2">
-                   <button className="bg-[#0078D4] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#005A9E]">Сохранить</button>
-                   <button className="border border-gray-300 px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-gray-50">Отмена</button>
+                   <button className="bg-[#0078D4] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#005A9E]">{t('preview.modal.save')}</button>
+                   <button className="border border-gray-300 dark:border-neutral-600 px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-neutral-700">{t('preview.modal.cancel')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
             <>
-               <div className="text-lg font-semibold mb-2">Настройки сохранены</div>
-               <div className="text-sm text-gray-600 mb-6">Все изменения были успешно применены к вашему профилю.</div>
+               <div className="text-lg font-semibold mb-2">{t('preview.modal.saved')}</div>
+               <div className="text-sm text-gray-600 dark:text-zinc-400 mb-6">{t('preview.modal.savedDesc')}</div>
                <div className="flex justify-end">
-                   <button className="bg-[#0078D4] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#005A9E]">ОК</button>
+                   <button className="bg-[#0078D4] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#005A9E]">{t('preview.modal.ok')}</button>
                </div>
             </>
           ) : (
             <>
-               <div className="text-lg font-semibold mb-2">Удалить файл?</div>
-               <div className="text-sm text-gray-600 mb-6">Действительно удалить этот файл навсегда?</div>
+               <div className="text-lg font-semibold mb-2">{t('preview.modal.deleteFile')}</div>
+               <div className="text-sm text-gray-600 dark:text-zinc-400 mb-6">{t('preview.modal.deleteFileDesc')}</div>
                <div className="flex justify-end gap-2">
-                   <button className="bg-[#A4262C] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#8E1F24]">Удалить</button>
-                   <button className="border border-gray-300 px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-gray-50">Отмена</button>
+                   <button className="bg-[#A4262C] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-[#8E1F24]">{t('preview.modal.delete')}</button>
+                   <button className="border border-gray-300 dark:border-neutral-600 px-4 py-1.5 rounded-[4px] text-sm font-medium cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-neutral-700">{t('preview.modal.cancel')}</button>
                </div>
             </>
           )}
@@ -2071,37 +2146,37 @@ export default function ComparisonGrid() {
       icon: logos.atlassian,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white rounded-[3px] p-6 w-full max-w-[280px] shadow-2xl transform transition-all `}>
+        <div className={`bg-white dark:bg-[#1c2025] border border-gray-200 dark:border-neutral-800 rounded-[3px] p-6 w-full max-w-[280px] shadow-2xl transform transition-all text-zinc-900 dark:text-zinc-100 `}>
           {activeVariant === 'transactional' ? (
             <>
-               <div className="text-xl font-medium text-[#172B4D] mb-4">Создать задачу</div>
-               <input className="w-full border-2 border-[#DFE1E6] hover:bg-[#EBECF0] focus:border-[#4C90FF] focus:bg-white p-2 rounded-[3px] mb-6 outline-none text-sm transition-colors" placeholder={tText('Краткое описание')} />
+               <div className="text-xl font-medium text-[#172B4D] dark:text-zinc-100 mb-4">{t('preview.modal.createIssue')}</div>
+               <input className="w-full border-2 border-[#DFE1E6] dark:border-neutral-700 bg-white dark:bg-zinc-800 hover:bg-[#EBECF0] dark:hover:bg-zinc-700 focus:border-[#4C90FF] focus:bg-white dark:focus:bg-zinc-900 p-2 rounded-[3px] mb-6 outline-none text-sm transition-colors text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400" placeholder={t('preview.modal.issueSummary')} />
                <div className="flex justify-end gap-2">
-                   <button className="text-[#5e6c84] hover:bg-gray-100 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">Отмена</button>
-                   <button className="bg-[#0052CC] text-white px-4 py-1.5 rounded-[3px] text-sm font-medium transition-all hover:bg-[#0065FF]">Создать</button>
+                   <button className="text-[#5e6c84] dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-700 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#0052CC] text-white px-4 py-1.5 rounded-[3px] text-sm font-medium transition-all hover:bg-[#0065FF]">{t('preview.modal.create')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
             <>
                <div className="flex items-center gap-2 mb-4 text-[#36B37E]">
                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                 <div className="text-xl font-medium text-[#172B4D]">Успешно опубликовано</div>
+                 <div className="text-xl font-medium text-[#172B4D] dark:text-zinc-100">{t('preview.modal.published')}</div>
                </div>
-               <div className="text-sm text-[#5E6C84] mb-6">Ваша страница теперь доступна всем пользователям рабочего пространства.</div>
+               <div className="text-sm text-[#5E6C84] dark:text-zinc-400 mb-6">{t('preview.modal.publishedDesc')}</div>
                <div className="flex justify-end">
-                   <button className="text-[#5e6c84] hover:bg-gray-100 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">Закрыть</button>
+                   <button className="text-[#5e6c84] dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-700 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">{t('preview.modal.close')}</button>
                </div>
             </>
           ) : (
             <>
                <div className="flex items-center gap-2 mb-4 text-[#DE350B]">
                  <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                 <div className="text-xl font-medium text-[#172B4D]">Удалить репозиторий?</div>
+                 <div className="text-xl font-medium text-[#172B4D] dark:text-zinc-100">{t('preview.modal.deleteRepo')}</div>
                </div>
-               <div className="text-sm text-[#5E6C84] mb-6">Безвозвратное удаление. Все данные будут потеряны.</div>
+               <div className="text-sm text-[#5E6C84] dark:text-zinc-400 mb-6">{t('preview.modal.deleteRepoDesc')}</div>
                <div className="flex justify-end gap-2">
-                   <button className="text-[#5e6c84] hover:bg-gray-100 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">Отмена</button>
-                   <button className="bg-[#DE350B] text-white px-4 py-1.5 rounded-[3px] text-sm font-medium transition-all hover:bg-[#BF2600]">Удалить</button>
+                   <button className="text-[#5e6c84] dark:text-zinc-400 hover:bg-gray-100 dark:hover:bg-zinc-700 px-3 py-1.5 rounded-[3px] text-sm font-medium transition-all">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#DE350B] text-white px-4 py-1.5 rounded-[3px] text-sm font-medium transition-all hover:bg-[#BF2600]">{t('preview.modal.delete')}</button>
                </div>
             </>
           )}
@@ -2122,40 +2197,40 @@ export default function ComparisonGrid() {
       icon: logos.carbon,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white border-t-4 ${activeVariant === 'alert' ? 'border-[#da1e28]' : 'border-[#0f62fe]'} w-full max-w-[280px] shadow-lg flex flex-col transform transition-all `}>
+        <div className={`bg-white dark:bg-[#1e1e24] border-t-4 ${activeVariant === 'alert' ? 'border-[#da1e28]' : 'border-[#0f62fe]'} w-full max-w-[280px] shadow-lg flex flex-col transform transition-all text-zinc-900 dark:text-zinc-100`}>
           {activeVariant === 'transactional' ? (
             <>
                <div className="p-4 flex-1">
-                 <div className="text-xl mb-4 text-[#161616]">Новый ресурс</div>
+                 <div className="text-xl mb-4 text-[#161616] dark:text-zinc-100 font-medium">{t('preview.modal.newResource')}</div>
                  <div className="mb-2">
-                    <label className="text-[12px] text-[#525252] mb-1 block">Имя ресурса</label>
-                    <input className="w-full bg-[#f4f4f4] border-b border-[#8D8D8D] hover:bg-[#e5e5e5] focus:outline focus:outline-2 focus:outline-[#0f62fe] focus:outline-offset-[-2px] p-2 text-sm outline-none" placeholder={tText('Введите имя')} />
+                    <label className="text-[12px] text-[#525252] dark:text-zinc-400 mb-1 block">{t('preview.modal.resourceName')}</label>
+                    <input className="w-full bg-[#f4f4f4] dark:bg-zinc-800 border-b border-[#8D8D8D] dark:border-zinc-600 hover:bg-[#e5e5e5] dark:hover:bg-zinc-700 focus:outline focus:outline-2 focus:outline-[#0f62fe] focus:outline-offset-[-2px] p-2 text-sm outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-500" placeholder={t('preview.modal.enterName')} />
                  </div>
                </div>
-               <div className="flex w-full mt-4 border-t border-gray-100">
-                   <button className="flex-1 bg-[#393939] text-white py-3 text-sm font-medium hover:bg-[#4c4c4c] transition-all cursor-pointer">Отмена</button>
-                   <button className="flex-1 bg-[#0f62fe] text-white py-3 text-sm font-medium hover:bg-[#0353e9] transition-all cursor-pointer">Добавить</button>
+               <div className="flex w-full mt-4 border-t border-gray-100 dark:border-zinc-800">
+                   <button className="flex-1 bg-[#393939] text-white py-3 text-sm font-medium hover:bg-[#4c4c4c] transition-all cursor-pointer">{t('preview.modal.cancel')}</button>
+                   <button className="flex-1 bg-[#0f62fe] text-white py-3 text-sm font-medium hover:bg-[#0353e9] transition-all cursor-pointer">{t('preview.modal.add')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
             <>
                <div className="p-4 flex-1">
-                 <div className="text-xl mb-2 text-[#161616]">Сервис добавлен</div>
-                 <div className="text-sm text-[#525252]">Сервис аналитики успешно подключен к вашему аккаунту и готов к использованию.</div>
+                 <div className="text-xl mb-2 text-[#161616] dark:text-zinc-100 font-medium">{t('preview.modal.serviceAdded')}</div>
+                 <div className="text-sm text-[#525252] dark:text-zinc-300">{t('preview.modal.serviceAddedDesc')}</div>
                </div>
-               <div className="flex w-full mt-4 border-t border-gray-100">
-                   <button className="w-full bg-[#0f62fe] text-white py-3 text-sm font-medium hover:bg-[#0353e9] transition-all cursor-pointer">Закрыть</button>
+               <div className="flex w-full mt-4 border-t border-gray-100 dark:border-zinc-800">
+                   <button className="w-full bg-[#0f62fe] text-white py-3 text-sm font-medium hover:bg-[#0353e9] transition-all cursor-pointer">{t('preview.modal.close')}</button>
                </div>
             </>
           ) : (
             <>
                <div className="p-4 flex-1">
-                 <div className="text-xl mb-2 text-[#161616]">Удаление сервиса</div>
-                 <div className="text-sm text-[#525252]">Вы точно хотите удалить этот сервис? Это повлияет на зависимые базы данных.</div>
+                 <div className="text-xl mb-2 text-[#161616] dark:text-zinc-100 font-medium">{t('preview.modal.deleteService')}</div>
+                 <div className="text-sm text-[#525252] dark:text-zinc-300">{t('preview.modal.deleteServiceDesc')}</div>
                </div>
-               <div className="flex w-full mt-4 border-t border-gray-100">
-                   <button className="flex-1 bg-white text-[#161616] py-3 text-sm font-medium hover:bg-[#e5e5e5] transition-all cursor-pointer">Отмена</button>
-                   <button className="flex-1 bg-[#da1e28] text-white py-3 text-sm font-medium hover:bg-[#ba1b23] transition-all cursor-pointer">Удалить</button>
+               <div className="flex w-full mt-4 border-t border-gray-100 dark:border-zinc-800">
+                   <button className="flex-1 bg-white dark:bg-zinc-800 text-[#161616] dark:text-zinc-100 py-3 text-sm font-medium hover:bg-[#e5e5e5] dark:hover:bg-zinc-700 transition-all cursor-pointer">{t('preview.modal.cancel')}</button>
+                   <button className="flex-1 bg-[#da1e28] text-white py-3 text-sm font-medium hover:bg-[#ba1b23] transition-all cursor-pointer">{t('preview.modal.delete')}</button>
                </div>
             </>
           )}
@@ -2176,37 +2251,37 @@ export default function ComparisonGrid() {
       icon: logos.polaris,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white rounded-xl overflow-hidden w-full max-w-[280px] shadow-2xl transform transition-all `}>
+        <div className={`bg-white dark:bg-[#1e1e24] border border-gray-200 dark:border-zinc-800 rounded-xl overflow-hidden w-full max-w-[280px] shadow-2xl transform transition-all text-zinc-900 dark:text-zinc-100`}>
           {activeVariant === 'transactional' ? (
             <>
-               <div className="px-4 py-3 border-b border-gray-200 text-[#202223] font-semibold">Добавить теги</div>
+               <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800 text-[#202223] dark:text-zinc-100 font-semibold">{t('preview.modal.addTags')}</div>
                <div className="p-4">
-                 <input className="w-full border border-gray-300 p-2 rounded-[4px] text-sm outline-none hover:border-gray-400 focus:border-[#008060] focus:ring-1 focus:ring-[#008060]" placeholder="Например, 'летняя_коллекция'" />
+                 <input className="w-full border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 p-2 rounded-[4px] text-sm outline-none hover:border-gray-400 focus:border-[#008060] focus:ring-1 focus:ring-[#008060]" placeholder={t('preview.modal.addTagsPlaceholder')} />
                </div>
-               <div className="px-4 py-3 border-t border-gray-200 flex justify-end gap-2 bg-gray-50">
-                   <button className="border border-gray-300 bg-white text-[#202223] px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 transition-all shadow-sm cursor-pointer">Отмена</button>
-                   <button className="bg-[#008060] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-[#006e52] transition-all shadow-sm cursor-pointer">Сохранить</button>
+               <div className="px-4 py-3 border-t border-gray-200 dark:border-zinc-800 flex justify-end gap-2 bg-gray-50 dark:bg-zinc-900">
+                   <button className="border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#202223] dark:text-zinc-100 px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all shadow-sm cursor-pointer">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#008060] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-[#006e52] transition-all shadow-sm cursor-pointer">{t('preview.modal.save')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
             <>
-               <div className="px-4 py-3 border-b border-gray-200 text-[#202223] font-semibold">Экспорт запущен</div>
-               <div className="p-4 text-sm text-[#6D7175]">
-                 Мы отправим файл с экспортом ваших заказов на email администратора в течение 5 минут.
+               <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800 text-[#202223] dark:text-zinc-100 font-semibold">{t('preview.modal.exportStarted')}</div>
+               <div className="p-4 text-sm text-[#6D7175] dark:text-zinc-400">
+                 {t('preview.modal.exportStartedDesc')}
                </div>
-               <div className="px-4 py-3 border-t border-gray-200 flex justify-end gap-2 bg-gray-50">
-                   <button className="bg-white border border-gray-300 text-[#202223] px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 transition-all shadow-sm cursor-pointer">Закрыть</button>
+               <div className="px-4 py-3 border-t border-gray-200 dark:border-zinc-800 flex justify-end gap-2 bg-gray-50 dark:bg-zinc-900">
+                   <button className="bg-white dark:bg-zinc-800 border border-gray-300 dark:border-zinc-700 text-[#202223] dark:text-zinc-100 px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all shadow-sm cursor-pointer">{t('preview.modal.close')}</button>
                </div>
             </>
           ) : (
             <>
-               <div className="px-4 py-3 border-b border-gray-200 text-[#202223] font-semibold">Удалить товар?</div>
-               <div className="p-4 text-sm text-[#6D7175]">
-                 Товар "Кофейник" будет навсегда удален из вашего магазина.
+               <div className="px-4 py-3 border-b border-gray-200 dark:border-zinc-800 text-[#202223] dark:text-zinc-100 font-semibold">{t('preview.modal.deleteProduct')}</div>
+               <div className="p-4 text-sm text-[#6D7175] dark:text-zinc-400">
+                 {t('preview.modal.deleteProductDesc')}
                </div>
-               <div className="px-4 py-3 border-t border-gray-200 flex justify-end gap-2 bg-gray-50">
-                   <button className="border border-gray-300 bg-white text-[#202223] px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 transition-all shadow-sm cursor-pointer">Отмена</button>
-                   <button className="bg-[#D82C0D] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-[#B3240A] transition-all shadow-sm cursor-pointer">Удалить</button>
+               <div className="px-4 py-3 border-t border-gray-200 dark:border-zinc-800 flex justify-end gap-2 bg-gray-50 dark:bg-zinc-900">
+                   <button className="border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-[#202223] dark:text-zinc-100 px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all shadow-sm cursor-pointer">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#D82C0D] text-white px-4 py-1.5 rounded-[4px] text-sm font-medium hover:bg-[#B3240A] transition-all shadow-sm cursor-pointer">{t('preview.modal.delete')}</button>
                </div>
             </>
           )}
@@ -2227,14 +2302,14 @@ export default function ComparisonGrid() {
       icon: logos.ant,
       previewType: "button",
       previewContent: (
-        <div className={`bg-white rounded-[8px] p-5 w-full max-w-[280px] shadow-lg transform transition-all `}>
+        <div className={`bg-white dark:bg-[#1f1f23] border border-gray-200 dark:border-zinc-800 rounded-[8px] p-5 w-full max-w-[280px] shadow-lg transform transition-all text-zinc-900 dark:text-zinc-100`}>
           {activeVariant === 'transactional' ? (
             <>
-               <div className="text-[16px] font-semibold text-[#000000a6] mb-4 leading-tight">Отправить приглашение</div>
-               <input className="w-full border border-[#d9d9d9] hover:border-[#4096ff] focus:border-[#4096ff] p-2 rounded-[6px] text-sm outline-none mb-6 transition-all" placeholder={tText('Email адрес')} />
+               <div className="text-[16px] font-semibold text-[#000000a6] dark:text-zinc-100 mb-4 leading-tight">{t('preview.modal.sendInvite')}</div>
+               <input className="w-full border border-[#d9d9d9] dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:border-[#4096ff] focus:border-[#4096ff] p-2 rounded-[6px] text-sm outline-none mb-6 transition-all placeholder:text-zinc-400" placeholder={t('preview.modal.emailAddress')} />
                <div className="flex justify-end gap-2">
-                   <button className="border border-[#d9d9d9] text-[#000000a6] hover:text-[#1677ff] hover:border-[#1677ff] px-4 py-1 rounded-[6px] text-sm transition-all cursor-pointer">Отмена</button>
-                   <button className="bg-[#1677ff] text-white px-4 py-1 rounded-[6px] text-sm hover:bg-[#4096ff] transition-all cursor-pointer shadow-sm">Отправить</button>
+                   <button className="border border-[#d9d9d9] dark:border-zinc-700 text-[#000000a6] dark:text-zinc-300 hover:text-[#1677ff] hover:border-[#1677ff] px-4 py-1 rounded-[6px] text-sm transition-all cursor-pointer">{t('preview.modal.cancel')}</button>
+                   <button className="bg-[#1677ff] text-white px-4 py-1 rounded-[6px] text-sm hover:bg-[#4096ff] transition-all cursor-pointer shadow-sm">{t('preview.modal.send')}</button>
                </div>
             </>
           ) : activeVariant === 'acknowledgment' ? (
@@ -2244,8 +2319,8 @@ export default function ComparisonGrid() {
                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                  </div>
                  <div>
-                   <div className="text-[16px] font-semibold text-[#000000a6] mb-2 leading-tight">Операция успешна</div>
-                   <div className="text-[14px] text-[#00000073]">Все настройки были применены.</div>
+                   <div className="text-[16px] font-semibold text-[#000000a6] dark:text-zinc-100 mb-2 leading-tight">{t('preview.modal.operationSuccess')}</div>
+                   <div className="text-[14px] text-[#00000073] dark:text-zinc-400">{t('preview.modal.operationSuccessDesc')}</div>
                  </div>
                </div>
                <div className="flex justify-end mt-4">
@@ -2259,12 +2334,12 @@ export default function ComparisonGrid() {
                    <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
                  </div>
                  <div>
-                   <div className="text-[16px] font-semibold text-[#000000a6] mb-2 leading-tight">Удалить эту задачу?</div>
-                   <div className="text-[14px] text-[#00000073]">Некоторые данные могут быть утеряны навсегда.</div>
+                   <div className="text-[16px] font-semibold text-[#000000a6] dark:text-zinc-100 mb-2 leading-tight">{t('preview.modal.deleteTask')}</div>
+                   <div className="text-[14px] text-[#00000073] dark:text-zinc-400">{t('preview.modal.deleteTaskDesc')}</div>
                  </div>
                </div>
                <div className="flex justify-end gap-2 mt-4">
-                   <button className="border border-[#d9d9d9] text-[#000000a6] hover:text-[#1677ff] hover:border-[#1677ff] px-4 py-1 rounded-[6px] text-sm transition-all cursor-pointer">Отмена</button>
+                   <button className="border border-[#d9d9d9] dark:border-zinc-700 text-[#000000a6] dark:text-zinc-300 hover:text-[#1677ff] hover:border-[#1677ff] px-4 py-1 rounded-[6px] text-sm transition-all cursor-pointer">{t('preview.modal.cancel')}</button>
                    <button className="bg-[#ff4d4f] text-white px-4 py-1 rounded-[6px] text-sm hover:bg-[#ff7875] transition-all cursor-pointer shadow-sm">OK</button>
                </div>
             </>
@@ -2287,11 +2362,11 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[260px] bg-white/95 dark:bg-neutral-800/95 backdrop-blur-xl border border-gray-200/80 dark:border-neutral-700 rounded-[20px] shadow-2xl p-4 text-center">
-          <h4 className="font-semibold text-sm text-gray-900 dark:text-white">Подтверждение действия</h4>
-          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">Это действие нельзя будет отменить. Продолжить?</p>
+          <h4 className="font-semibold text-sm text-gray-900 dark:text-white">{t('preview.modal.confirmAction')}</h4>
+          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1">{t('preview.modal.confirmActionDesc')}</p>
           <div className="flex border-t border-gray-200 dark:border-neutral-700 mt-4 pt-2 -mx-4 -mb-2 divide-x divide-gray-200 dark:divide-neutral-700">
-            <button className="flex-1 py-2 text-xs font-normal text-[#007AFF] hover:bg-gray-50 dark:hover:bg-neutral-700">Отмена</button>
-            <button className="flex-1 py-2 text-xs font-semibold text-[#FF3B30] hover:bg-gray-50 dark:hover:bg-neutral-700">Удалить</button>
+            <button className="flex-1 py-2 text-xs font-normal text-[#007AFF] hover:bg-gray-50 dark:hover:bg-neutral-700 cursor-pointer">{t('preview.modal.cancel')}</button>
+            <button className="flex-1 py-2 text-xs font-semibold text-[#FF3B30] hover:bg-gray-50 dark:hover:bg-neutral-700 cursor-pointer">{t('preview.modal.delete')}</button>
           </div>
         </div>
       ),
@@ -2311,11 +2386,11 @@ export default function ComparisonGrid() {
       previewType: "button",
       previewContent: (
         <div className="w-full max-w-[260px] bg-white dark:bg-neutral-800 border border-[#DFE2E6] dark:border-neutral-700 rounded-[26px] shadow-2xl p-4 text-left">
-          <h4 className="font-bold text-sm text-gray-900 dark:text-white">Удалить элемент?</h4>
-          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1.5">Элемент будет перемещен в корзину на 30 дней.</p>
+          <h4 className="font-bold text-sm text-gray-900 dark:text-white">{t('preview.modal.deleteItem')}</h4>
+          <p className="text-xs text-gray-500 dark:text-neutral-400 mt-1.5">{t('preview.modal.deleteItemDesc')}</p>
           <div className="flex justify-end gap-2 mt-4">
-            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold text-gray-600 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-700">Отмена</button>
-            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#E53935] text-white shadow-xs">Удалить</button>
+            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold text-gray-600 dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-700 cursor-pointer">{t('preview.modal.cancel')}</button>
+            <button className="px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#E53935] text-white shadow-xs cursor-pointer">{t('preview.modal.delete')}</button>
           </div>
         </div>
       ),

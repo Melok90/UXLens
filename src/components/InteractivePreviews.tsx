@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Search, Check, X, RotateCcw, Calendar, CheckCircle2 } from 'lucide-react';
 import { ComponentState, ComponentVariant } from '../App';
 import { useStore } from '../store/useStore';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface InteractiveButtonProps {
   system: string;
@@ -352,7 +354,13 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
   const isRtl = useStore((s) => s.isRtl);
   const effectiveBrandColor = isProUser ? customBrandColor : null;
   const effectiveRtl = isProUser ? isRtl : false;
+  const { t, language } = useLanguage();
+  const { effectiveTheme } = useTheme();
+  const isDark = effectiveTheme === 'dark';
+
   const isDisabled = state === 'disabled';
+  const isHoveredState = state === 'hover';
+  const isFocusedState = state === 'focus';
 
   const toggle = () => {
     if (isDisabled) return;
@@ -368,9 +376,11 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: checked ? 24 : 16,
           translateX: checked ? 22 : 2,
           activeBg: '#6750a4',
-          inactiveBg: '#e7e0ec',
-          border: checked ? 'border-none' : 'border-2 border-[#79747e]',
-          thumbColor: checked ? '#ffffff' : '#79747e',
+          inactiveBg: isDark ? '#36343b' : '#e7e0ec',
+          inactiveHoverBg: isDark ? '#43404a' : '#ded8e4',
+          border: checked ? 'border-none' : isDark ? 'border-2 border-[#938f99]' : 'border-2 border-[#79747e]',
+          borderHover: checked ? 'border-none' : isDark ? 'border-2 border-[#cac4d0]' : 'border-2 border-[#49454f]',
+          thumbColor: checked ? '#ffffff' : isDark ? '#cac4d0' : '#79747e',
           rounded: 'rounded-full',
         };
       case 'Fluent UI':
@@ -380,9 +390,11 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 14,
           translateX: checked ? 22 : 2,
           activeBg: '#0078d4',
-          inactiveBg: '#f3f2f1',
-          border: checked ? 'border border-[#0078d4]' : 'border border-[#8a8886]',
-          thumbColor: checked ? '#ffffff' : '#605e5c',
+          inactiveBg: isDark ? '#292827' : '#f3f2f1',
+          inactiveHoverBg: isDark ? '#3b3a39' : '#edebe9',
+          border: checked ? 'border border-[#0078d4]' : isDark ? 'border border-[#797775]' : 'border border-[#8a8886]',
+          borderHover: checked ? 'border border-[#106ebe]' : isDark ? 'border border-[#a19f9d]' : 'border border-[#323130]',
+          thumbColor: checked ? '#ffffff' : isDark ? '#d1d1d1' : '#605e5c',
           rounded: 'rounded-full',
         };
       case 'Atlassian':
@@ -392,8 +404,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 16,
           translateX: checked ? 21 : 2,
           activeBg: '#0052cc',
-          inactiveBg: '#091e4224',
+          inactiveBg: isDark ? 'rgba(255,255,255,0.16)' : '#091e4224',
+          inactiveHoverBg: isDark ? 'rgba(255,255,255,0.24)' : '#091e4236',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -404,8 +418,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 18,
           translateX: checked ? 26 : 2,
           activeBg: '#0f62fe',
-          inactiveBg: '#8d8d8d',
+          inactiveBg: isDark ? '#525252' : '#8d8d8d',
+          inactiveHoverBg: isDark ? '#6f6f6f' : '#757575',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -416,8 +432,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 20,
           translateX: checked ? 21 : 2,
           activeBg: '#008060',
-          inactiveBg: '#c9cccf',
+          inactiveBg: isDark ? '#44474a' : '#c9cccf',
+          inactiveHoverBg: isDark ? '#5c5f62' : '#b2b5b8',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -428,8 +446,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 27,
           translateX: checked ? 22 : 2,
           activeBg: '#34C759',
-          inactiveBg: '#E9E9EB',
+          inactiveBg: isDark ? '#39393d' : '#E9E9EB',
+          inactiveHoverBg: isDark ? '#48484a' : '#dededf',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -440,8 +460,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 24,
           translateX: checked ? 24 : 2,
           activeBg: '#034EA2',
-          inactiveBg: '#DFE2E6',
+          inactiveBg: isDark ? '#3a3d42' : '#DFE2E6',
+          inactiveHoverBg: isDark ? '#4b5057' : '#cfd3d8',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -453,8 +475,10 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
           thumbSize: 18,
           translateX: checked ? 23 : 2,
           activeBg: '#1677ff',
-          inactiveBg: '#00000040',
+          inactiveBg: isDark ? 'rgba(255,255,255,0.25)' : '#00000040',
+          inactiveHoverBg: isDark ? 'rgba(255,255,255,0.35)' : '#00000055',
           border: 'border-none',
+          borderHover: 'border-none',
           thumbColor: '#ffffff',
           rounded: 'rounded-full',
         };
@@ -464,17 +488,37 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
   const cfg = getSystemConfig();
   const activeBgColor = (effectiveBrandColor && !isDisabled) ? effectiveBrandColor : cfg.activeBg;
 
+  const currentBg = checked 
+    ? activeBgColor 
+    : (isHoveredState ? cfg.inactiveHoverBg : cfg.inactiveBg);
+
+  const currentBorder = isHoveredState ? cfg.borderHover : cfg.border;
+
   return (
     <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col items-center gap-2">
       <div
+        role="switch"
+        aria-checked={checked}
+        aria-label={`${system} Switch`}
+        tabIndex={isDisabled ? -1 : 0}
         onClick={toggle}
-        className={`relative flex items-center transition-colors duration-200 ${cfg.rounded} ${cfg.border} ${
-          isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+        onKeyDown={(e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            toggle();
+          }
+        }}
+        className={`relative flex items-center transition-all duration-200 outline-none select-none ${cfg.rounded} ${currentBorder} ${
+          isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:brightness-105'
+        } ${
+          isHoveredState ? 'brightness-105 scale-[1.02]' : ''
+        } ${
+          isFocusedState ? 'ring-2 ring-accent-blue ring-offset-2 dark:ring-offset-zinc-900 shadow-sm' : 'focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900'
         }`}
         style={{
           width: `${cfg.trackW}px`,
           height: `${cfg.trackH}px`,
-          backgroundColor: checked ? activeBgColor : cfg.inactiveBg,
+          backgroundColor: currentBg,
         }}
       >
         <motion.div
@@ -485,15 +529,15 @@ export const InteractiveSwitch: React.FC<InteractiveSwitchProps> = ({ system, st
             backgroundColor: cfg.thumbColor,
           }}
           transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          className={`${cfg.rounded} shadow-sm flex items-center justify-center`}
+          className={`${cfg.rounded} shadow-sm flex items-center justify-center transition-colors`}
         >
           {system === 'Material Design 3' && checked && (
             <Check className="w-3 h-3" style={{ color: activeBgColor }} strokeWidth={3} />
           )}
         </motion.div>
       </div>
-      <span className="text-[10px] text-[#8e8e93] select-none font-medium">
-        {checked ? 'ON / Вкл' : 'OFF / Выкл'}
+      <span className="text-[10px] text-zinc-500 dark:text-zinc-400 select-none font-medium">
+        {checked ? t('preview.switch.on') : t('preview.switch.off')}
       </span>
     </div>
   );
@@ -509,24 +553,31 @@ interface InteractiveInputProps {
 export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   system,
   state,
-  placeholder = 'Введите текст',
-  label = 'Метка',
+  placeholder,
+  label,
 }) => {
   const isProUser = useStore((s) => s.isProUser);
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+  const { t, language } = useLanguage();
+
+  const effectivePlaceholder = placeholder || t('preview.input.placeholder');
+  const effectiveLabel = label || t('preview.input.label');
+  const clearTitle = t('preview.input.clear');
 
   const effectiveText = isProUser ? customText : '';
   const effectiveBrandColor = isProUser ? customBrandColor : null;
   const effectiveRtl = isProUser ? isRtl : false;
 
   const [userTyped, setUserTyped] = useState<string | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const isDisabled = state === 'disabled';
   const isError = state === 'error';
+  const isHovered = state === 'hover';
+  const isFocused = state === 'focus' || isInputFocused;
 
-  const currentValue = userTyped !== null ? userTyped : (effectiveText.trim() ? effectiveText : placeholder);
+  const currentValue = userTyped !== null ? userTyped : (effectiveText.trim() ? effectiveText : '');
 
   const clear = () => {
     if (isDisabled) return;
@@ -535,55 +586,67 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
 
   if (system === 'Material Design 3') {
     const m3Border = isError
-      ? 'border-[#B3261E] border-b-2'
-      : isFocused || state === 'focus'
-      ? 'border-accent-blue border-b-2 bg-[#ece6f0]'
-      : 'border-[#49454F]';
+      ? 'border-[#B3261E] dark:border-[#F2B8B5] border-b-2'
+      : isFocused
+      ? 'border-accent-blue border-b-2'
+      : isHovered
+      ? 'border-[#1D1B20] dark:border-[#E6E1E5] border-b-2 hover:border-[#1D1B20] dark:hover:border-[#E6E1E5]'
+      : 'border-[#49454F] dark:border-[#938F99] border-b hover:border-b-2 hover:border-[#1D1B20] dark:hover:border-[#E6E1E5]';
+
+    const m3Bg = isError
+      ? 'bg-[#E7E0EC] dark:bg-[#2B2930]'
+      : isFocused
+      ? 'bg-[#ECE6F0] dark:bg-[#36343B]'
+      : isHovered
+      ? 'bg-[#DED8E4] dark:bg-[#36343B]'
+      : 'bg-[#E7E0EC] dark:bg-[#2B2930] hover:bg-[#DED8E4] dark:hover:bg-[#36343B]';
 
     const m3Style: React.CSSProperties = {};
-    if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+    if (effectiveBrandColor && isFocused && !isError) {
       m3Style.borderBottomColor = effectiveBrandColor;
     }
 
     const m3LabelStyle: React.CSSProperties = {};
-    if (effectiveBrandColor && (isFocused || currentValue.length > 0 || state === 'focus') && !isError) {
+    if (effectiveBrandColor && (isFocused || currentValue.length > 0) && !isError) {
       m3LabelStyle.color = effectiveBrandColor;
     }
 
     return (
       <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] flex flex-col gap-1 text-left relative">
         <div
-          className={`px-4 pt-4 pb-2 rounded-t-[4px] transition-all border-b bg-[#E7E0EC] relative ${m3Border} ${
-            isDisabled ? 'opacity-50 cursor-not-allowed' : ''
+          className={`px-4 pt-4 pb-2 rounded-t-[4px] transition-all relative ${m3Bg} ${m3Border} ${
+            isDisabled ? 'opacity-50 cursor-not-allowed !bg-black/5 dark:!bg-white/5' : 'cursor-text'
           }`}
           style={m3Style}
         >
           <span
-            className={`absolute transition-all duration-150 text-[11px] ${
-              isFocused || currentValue.length > 0 || state === 'focus'
-                ? 'top-1.5 text-accent-blue font-medium'
-                : 'top-3.5 text-sm text-[#49454F]'
-            } ${isError ? '!text-[#B3261E]' : ''}`}
+            className={`absolute transition-all duration-150 text-[11px] pointer-events-none select-none ${
+              isFocused || currentValue.length > 0
+                ? 'top-1.5 text-accent-blue dark:text-blue-400 font-medium'
+                : 'top-3.5 text-sm text-[#49454F] dark:text-[#CAC4D0]'
+            } ${isError ? '!text-[#B3261E] dark:!text-[#F2B8B5]' : ''}`}
             style={m3LabelStyle}
           >
-            {label}
+            {effectiveLabel}
           </span>
           <div className="flex items-center justify-between mt-1">
             <input
               type="text"
               value={currentValue}
               onChange={(e) => setUserTyped(e.target.value)}
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setIsInputFocused(false)}
               disabled={isDisabled}
-              className="bg-transparent border-none outline-none w-full text-[#1D1B20] text-sm pt-1"
+              placeholder={isFocused && currentValue.length === 0 ? effectivePlaceholder : ''}
+              className="bg-transparent border-none outline-none w-full text-[#1D1B20] dark:text-[#E6E1E5] text-sm pt-1 placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
             />
             {currentValue.length > 0 && !isDisabled && (
               <button
                 type="button"
                 onClick={clear}
-                className="text-[#49454F] hover:text-black p-0.5 cursor-pointer"
-                title="Очистить"
+                className="text-[#49454F] hover:text-black dark:text-[#CAC4D0] dark:hover:text-white p-0.5 cursor-pointer"
+                title={clearTitle}
+                aria-label={clearTitle}
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -596,13 +659,15 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
 
   if (system === 'Fluent UI') {
     const fluentBorder = isError
-      ? 'border-[#A4262C] ring-1 ring-[#A4262C]'
-      : isFocused || state === 'focus'
-      ? 'border-[#0078D4] ring-1 ring-[#0078D4]'
-      : 'border-[#605E5C] hover:border-[#323130]';
+      ? 'border-[#A4262C] dark:border-[#F1707B] ring-1 ring-[#A4262C] dark:ring-[#F1707B]'
+      : isFocused
+      ? 'border-[#0078D4] dark:border-[#2886DE] ring-1 ring-[#0078D4] dark:ring-[#2886DE]'
+      : isHovered
+      ? 'border-[#323130] dark:border-[#D1D1D1]'
+      : 'border-[#8A8886] dark:border-[#505050] hover:border-[#323130] dark:hover:border-[#D1D1D1]';
 
     const fluentStyle: React.CSSProperties = {};
-    if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+    if (effectiveBrandColor && isFocused && !isError) {
       fluentStyle.borderColor = effectiveBrandColor;
       fluentStyle.boxShadow = `0 0 0 1px ${effectiveBrandColor}`;
     }
@@ -610,8 +675,8 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
     return (
       <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
         <div
-          className={`flex items-center px-3 py-1.5 rounded-[2px] bg-white border transition-all ${fluentBorder} ${
-            isDisabled ? 'bg-[#f3f2f1] text-[#a19f9d] opacity-60 cursor-not-allowed' : ''
+          className={`flex items-center px-3 py-1.5 rounded-[2px] bg-white dark:bg-[#202020] border transition-all ${fluentBorder} ${
+            isDisabled ? '!bg-[#F3F2F1] dark:!bg-[#292827] text-[#A19F9D] opacity-60 cursor-not-allowed' : ''
           }`}
           style={fluentStyle}
         >
@@ -619,14 +684,20 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
             type="text"
             value={currentValue}
             onChange={(e) => setUserTyped(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
             disabled={isDisabled}
-            className="w-full bg-transparent border-none outline-none text-xs text-[#323130]"
-            placeholder={placeholder}
+            className="w-full bg-transparent border-none outline-none text-xs text-[#242424] dark:text-[#F3F2F1] placeholder:text-[#797775] dark:placeholder:text-[#979593]"
+            placeholder={effectivePlaceholder}
           />
           {currentValue.length > 0 && !isDisabled && (
-            <button type="button" onClick={clear} className="text-gray-400 hover:text-black cursor-pointer">
+            <button
+              type="button"
+              onClick={clear}
+              className="text-[#797775] hover:text-black dark:text-[#979593] dark:hover:text-white cursor-pointer ml-1"
+              title={clearTitle}
+              aria-label={clearTitle}
+            >
               <X className="w-3.5 h-3.5" />
             </button>
           )}
@@ -635,39 +706,58 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
     );
   }
 
-  // Generic fallback for Ant Design, Carbon, Polaris, Atlassian, Apple, Samsung
-  const getBorderClasses = () => {
+  // Generic fallback for Apple iOS, Samsung One UI, IBM Carbon, Atlassian, Shopify Polaris, Ant Design
+  const getSystemContainerClasses = () => {
     if (system === 'Apple iOS HIG') {
-      if (isError) return 'border-[#FF3B30] ring-2 ring-[#FF3B30]/30';
-      if (isFocused || state === 'focus') return 'border-[#007AFF] ring-2 ring-[#007AFF]/30';
-      return 'border-[#d1d1d6] hover:border-[#8e8e93] bg-[#767680]/10';
+      const radius = 'rounded-xl';
+      if (isError) return `${radius} border border-[#FF3B30] ring-2 ring-[#FF3B30]/30 bg-[#767680]/10 dark:bg-[#767680]/20`;
+      if (isFocused) return `${radius} border border-[#007AFF] ring-2 ring-[#007AFF]/30 bg-white dark:bg-[#1C1C1E]`;
+      if (isHovered) return `${radius} border border-[#8E8E93] dark:border-[#636366] bg-[#767680]/15 dark:bg-[#767680]/25`;
+      return `${radius} border border-[#D1D1D6] dark:border-[#3A3A3C] hover:border-[#8E8E93] dark:hover:border-[#636366] bg-[#767680]/10 dark:bg-[#767680]/20 hover:bg-[#767680]/15 dark:hover:bg-[#767680]/25`;
     }
-    if (system === 'Samsung One UI') {
-      if (isError) return 'border-[#E53935] ring-2 ring-[#E53935]/30';
-      if (isFocused || state === 'focus') return 'border-[#034EA2] ring-2 ring-[#034EA2]/30';
-      return 'border-[#DFE2E6] hover:border-[#034EA2]/50 bg-[#F2F4F7]';
-    }
-    if (isError) return 'border-red-500 ring-1 ring-red-500';
-    if (isFocused || state === 'focus') {
-      if (system === 'Shopify Polaris') return 'border-[#008060] ring-2 ring-[#008060]/20';
-      if (system === 'Atlassian') return 'border-[#0052CC] ring-2 ring-[#4C90FF]/30';
-      if (system === 'IBM Carbon') return 'border-[#0f62fe] border-b-2';
-      return 'border-[#1677ff] ring-2 ring-[#1677ff]/20';
-    }
-    return 'border-gray-300 hover:border-gray-400';
-  };
 
-  const getRadius = () => {
-    if (system === 'Apple iOS HIG') return 'rounded-xl';
-    if (system === 'Samsung One UI') return 'rounded-2xl';
-    if (system === 'IBM Carbon') return 'rounded-none';
-    if (system === 'Shopify Polaris') return 'rounded-lg';
-    if (system === 'Atlassian') return 'rounded-[3px]';
-    return 'rounded-md';
+    if (system === 'Samsung One UI') {
+      const radius = 'rounded-2xl';
+      if (isError) return `${radius} border border-[#E53935] ring-2 ring-[#E53935]/30 bg-[#F2F4F7] dark:bg-[#1E2024]`;
+      if (isFocused) return `${radius} border border-[#034EA2] dark:border-[#528AE4] ring-2 ring-[#034EA2]/30 dark:ring-[#528AE4]/30 bg-[#F2F4F7] dark:bg-[#1E2024]`;
+      if (isHovered) return `${radius} border border-[#034EA2]/60 dark:border-[#528AE4]/60 bg-[#E8EBF0] dark:bg-[#25282E] shadow-2xs`;
+      return `${radius} border border-[#DFE2E6] dark:border-[#383B40] hover:border-[#034EA2]/60 dark:hover:border-[#528AE4]/60 bg-[#F2F4F7] dark:bg-[#1E2024] hover:bg-[#E8EBF0] dark:hover:bg-[#25282E]`;
+    }
+
+    if (system === 'IBM Carbon') {
+      const radius = 'rounded-none';
+      if (isError) return `${radius} bg-[#F4F4F4] dark:bg-[#262626] border-b-2 border-[#DA1E28] outline outline-2 outline-[#DA1E28] outline-offset-[-2px]`;
+      if (isFocused) return `${radius} bg-[#F4F4F4] dark:bg-[#262626] border-b-2 border-[#0F62FE] outline outline-2 outline-[#0F62FE] outline-offset-[-2px]`;
+      if (isHovered) return `${radius} bg-[#E5E5E5] dark:bg-[#353535] border-b-2 border-[#161616] dark:border-[#F4F4F4]`;
+      return `${radius} bg-[#F4F4F4] dark:bg-[#262626] hover:bg-[#E5E5E5] dark:hover:bg-[#353535] border-b border-[#8D8D8D] dark:border-[#6F6F6F] hover:border-b-2 hover:border-[#161616] dark:hover:border-[#F4F4F4]`;
+    }
+
+    if (system === 'Atlassian') {
+      const radius = 'rounded-[3px]';
+      if (isError) return `${radius} bg-white dark:bg-[#161B22] border-2 border-[#DE350B] ring-2 ring-[#DE350B]/30`;
+      if (isFocused) return `${radius} bg-white dark:bg-[#161B22] border-2 border-[#0052CC] ring-2 ring-[#4C90FF]/30`;
+      if (isHovered) return `${radius} bg-[#EBECF0] dark:bg-[#262C36] border-2 border-[#C1C7D0] dark:border-[#444C56]`;
+      return `${radius} bg-[#FAFBFC] dark:bg-[#1C2128] hover:bg-[#EBECF0] dark:hover:bg-[#262C36] border-2 border-[#DFE1E6] dark:border-[#30363D] hover:border-[#C1C7D0] dark:hover:border-[#444C56]`;
+    }
+
+    if (system === 'Shopify Polaris') {
+      const radius = 'rounded-lg';
+      if (isError) return `${radius} bg-white dark:bg-[#202123] border border-red-500 ring-2 ring-red-500/20`;
+      if (isFocused) return `${radius} bg-white dark:bg-[#202123] border border-[#008060] ring-2 ring-[#008060]/20`;
+      if (isHovered) return `${radius} bg-white dark:bg-[#202123] border border-[#5C5F62] dark:border-[#8C9196] shadow-2xs`;
+      return `${radius} bg-white dark:bg-[#202123] border border-[#8C9196] dark:border-[#5C5F62] hover:border-[#5C5F62] dark:hover:border-[#8C9196]`;
+    }
+
+    // Ant Design / Default
+    const radius = 'rounded-md';
+    if (isError) return `${radius} bg-white dark:bg-[#141414] border border-[#FF4D4F] ring-2 ring-[#FF4D4F]/20`;
+    if (isFocused) return `${radius} bg-white dark:bg-[#141414] border border-[#1677FF] ring-2 ring-[#1677FF]/20`;
+    if (isHovered) return `${radius} bg-white dark:bg-[#141414] border border-[#4096FF] dark:border-[#1677FF] shadow-2xs`;
+    return `${radius} bg-white dark:bg-[#141414] border border-[#D9D9D9] dark:border-[#424242] hover:border-[#4096FF] dark:hover:border-[#1677FF]`;
   };
 
   const genericStyle: React.CSSProperties = {};
-  if (effectiveBrandColor && (isFocused || state === 'focus') && !isError) {
+  if (effectiveBrandColor && isFocused && !isError) {
     genericStyle.borderColor = effectiveBrandColor;
     genericStyle.boxShadow = `0 0 0 2px ${effectiveBrandColor}33`;
   }
@@ -675,8 +765,8 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
   return (
     <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="w-full max-w-[240px] text-left">
       <div
-        className={`flex items-center px-3 py-1.5 bg-white border transition-all ${getRadius()} ${getBorderClasses()} ${
-          isDisabled ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''
+        className={`flex items-center px-3 py-1.5 transition-all ${getSystemContainerClasses()} ${
+          isDisabled ? 'opacity-50 cursor-not-allowed !bg-gray-100 dark:!bg-zinc-800' : ''
         }`}
         style={genericStyle}
       >
@@ -684,14 +774,20 @@ export const InteractiveInput: React.FC<InteractiveInputProps> = ({
           type="text"
           value={currentValue}
           onChange={(e) => setUserTyped(e.target.value)}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
           disabled={isDisabled}
-          className="w-full bg-transparent border-none outline-none text-xs text-gray-800"
-          placeholder={placeholder}
+          className="w-full bg-transparent border-none outline-none text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+          placeholder={effectivePlaceholder}
         />
         {currentValue.length > 0 && !isDisabled && (
-          <button type="button" onClick={clear} className="text-gray-400 hover:text-black cursor-pointer">
+          <button
+            type="button"
+            onClick={clear}
+            className="text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-100 cursor-pointer ml-1"
+            title={clearTitle}
+            aria-label={clearTitle}
+          >
             <X className="w-3.5 h-3.5" />
           </button>
         )}
@@ -712,11 +808,14 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+  const { t, language } = useLanguage();
 
   const effectiveText = isProUser ? customText : '';
   const effectiveBrandColor = isProUser ? customBrandColor : null;
   const effectiveRtl = isProUser ? isRtl : false;
   const isDisabled = state === 'disabled';
+  const isHovered = state === 'hover';
+  const isFocused = state === 'focus';
 
   const getColor = () => {
     switch (system) {
@@ -741,21 +840,46 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
   };
 
   const color = (effectiveBrandColor && !isDisabled) ? effectiveBrandColor : getColor();
-  const opt1Label = effectiveText.trim() ? effectiveText : tText('Основная опция');
+  const opt1Label = effectiveText.trim() ? effectiveText : t('preview.radio.primary');
+  const opt2Label = t('preview.radio.secondary');
 
   return (
-    <div dir={effectiveRtl ? 'rtl' : 'ltr'} className="flex flex-col gap-2.5 text-left select-none max-w-full">
+    <div
+      dir={effectiveRtl ? 'rtl' : 'ltr'}
+      role="radiogroup"
+      aria-label={`${system} Radio Options`}
+      className="flex flex-col gap-2.5 text-left select-none max-w-full"
+    >
       {[1, 2].map((opt) => {
         const isOptSelected = selected === opt;
         return (
           <div
             key={opt}
+            role="radio"
+            aria-checked={isOptSelected}
+            tabIndex={isDisabled ? -1 : 0}
             onClick={() => !isDisabled && setSelected(opt)}
-            className={`flex items-center gap-2.5 ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+            onKeyDown={(e) => {
+              if (!isDisabled && (e.key === ' ' || e.key === 'Enter')) {
+                e.preventDefault();
+                setSelected(opt);
+              }
+            }}
+            className={`flex items-center gap-2.5 transition-all rounded p-0.5 outline-none ${
+              isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            } ${
+              isFocused ? 'ring-2 ring-accent-blue ring-offset-2 dark:ring-offset-zinc-900' : 'focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-900'
+            }`}
           >
             <div
-              className="w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center transition-all bg-white shrink-0"
-              style={{ borderColor: isOptSelected ? color : '#8A8886' }}
+              className={`w-4.5 h-4.5 rounded-full border-2 flex items-center justify-center transition-all bg-white dark:bg-zinc-800 shrink-0 ${
+                isHovered && !isDisabled ? 'scale-105 shadow-xs' : 'hover:scale-105'
+              }`}
+              style={{
+                borderColor: isOptSelected 
+                  ? color 
+                  : (isHovered ? (effectiveBrandColor || color) : '#8A8886'),
+              }}
             >
               {isOptSelected && (
                 <motion.div
@@ -767,8 +891,8 @@ export const InteractiveRadio: React.FC<InteractiveRadioProps> = ({ system, stat
                 />
               )}
             </div>
-            <span className="text-xs font-medium text-gray-800 truncate max-w-[200px]">
-              {opt === 1 ? opt1Label : tText('Вторичная опция')}
+            <span className="text-xs font-medium text-zinc-900 dark:text-zinc-100 truncate max-w-[200px]">
+              {opt === 1 ? opt1Label : opt2Label}
             </span>
           </div>
         );
@@ -789,13 +913,16 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
   const customText = useStore((s) => s.customText);
   const customBrandColor = useStore((s) => s.customBrandColor);
   const isRtl = useStore((s) => s.isRtl);
+  const { t, language } = useLanguage();
 
   const effectiveText = isProUser ? customText : '';
   const effectiveBrandColor = isProUser ? customBrandColor : null;
   const effectiveRtl = isProUser ? isRtl : false;
   const isDisabled = state === 'disabled';
+  const isHovered = state === 'hover';
+  const isFocused = state === 'focus';
 
-  const tagLabel = effectiveText.trim() ? effectiveText : tText('Активный тег');
+  const tagLabel = effectiveText.trim() ? effectiveText : t('preview.tag.active');
 
   const customStyle: React.CSSProperties = (effectiveBrandColor && !isDisabled) ? {
     backgroundColor: `${effectiveBrandColor}18`,
@@ -806,22 +933,22 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
   const getSystemClasses = () => {
     switch (system) {
       case 'Apple iOS HIG':
-        return 'rounded-full bg-[#007AFF]/12 text-[#007AFF] border border-[#007AFF]/25 px-3 py-1 text-xs font-semibold';
+        return 'rounded-full bg-[#007AFF]/12 dark:bg-[#007AFF]/25 text-[#007AFF] dark:text-[#3894FF] border border-[#007AFF]/25 dark:border-[#007AFF]/40 px-3 py-1 text-xs font-semibold';
       case 'Samsung One UI':
-        return 'rounded-xl bg-[#034EA2]/10 text-[#034EA2] border border-[#034EA2]/25 px-3 py-1 text-xs font-bold';
+        return 'rounded-xl bg-[#034EA2]/10 dark:bg-[#034EA2]/30 text-[#034EA2] dark:text-[#528AE4] border border-[#034EA2]/25 dark:border-[#034EA2]/40 px-3 py-1 text-xs font-bold';
       case 'Material Design 3':
-        return 'rounded-lg bg-[#E8DEF8] text-[#1D192B] border border-[#79747E]/20 px-3 py-1 text-xs font-medium';
+        return 'rounded-lg bg-[#E8DEF8] dark:bg-[#4A4458] text-[#1D192B] dark:text-[#E8DEF8] border border-[#79747E]/20 px-3 py-1 text-xs font-medium';
       case 'Fluent UI':
-        return 'rounded-full bg-[#f3f2f1] text-[#242424] border border-[#e1dfdd] px-2.5 py-0.5 text-xs';
+        return 'rounded-full bg-[#f3f2f1] dark:bg-[#292827] text-[#242424] dark:text-[#F3F2F1] border border-[#e1dfdd] dark:border-[#484644] px-2.5 py-0.5 text-xs';
       case 'Atlassian':
-        return 'rounded-[3px] bg-[#091E420F] text-[#172B4D] px-2 py-0.5 text-xs font-semibold';
+        return 'rounded-[3px] bg-[#091E420F] dark:bg-[#22272B] text-[#172B4D] dark:text-[#B6C2CF] border border-transparent dark:border-[#38414A] px-2 py-0.5 text-xs font-semibold';
       case 'IBM Carbon':
-        return 'rounded-none bg-[#e0e0e0] text-[#161616] px-2 py-1 text-xs font-mono';
+        return 'rounded-none bg-[#e0e0e0] dark:bg-[#393939] text-[#161616] dark:text-[#F4F4F4] border border-transparent px-2 py-1 text-xs font-mono';
       case 'Shopify Polaris':
-        return 'rounded-full bg-[#e4e5e7] text-[#202223] px-2.5 py-1 text-xs font-medium';
+        return 'rounded-full bg-[#e4e5e7] dark:bg-[#303030] text-[#202223] dark:text-[#E3E5E7] border border-transparent px-2.5 py-1 text-xs font-medium';
       case 'Ant Design':
       default:
-        return 'rounded-[2px] bg-[#fafafa] text-[#000000d9] border border-[#d9d9d9] px-2 py-0.5 text-xs';
+        return 'rounded-[2px] bg-[#fafafa] dark:bg-[#1f1f1f] text-zinc-900 dark:text-zinc-100 border border-[#d9d9d9] dark:border-[#424242] px-2 py-0.5 text-xs';
     }
   };
 
@@ -835,8 +962,13 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
             style={customStyle}
-            className={`flex items-center gap-1.5 shadow-xs ${getSystemClasses()} ${
-              isDisabled ? 'opacity-50 cursor-not-allowed' : ''
+            tabIndex={isDisabled ? -1 : 0}
+            className={`flex items-center gap-1.5 shadow-xs transition-all outline-none ${getSystemClasses()} ${
+              isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-default'
+            } ${
+              isHovered && !isDisabled ? 'brightness-95 dark:brightness-110 shadow-sm' : 'hover:brightness-95 dark:hover:brightness-110'
+            } ${
+              isFocused ? 'ring-2 ring-accent-blue ring-offset-1 dark:ring-offset-zinc-900' : 'focus-visible:ring-2 focus-visible:ring-accent-blue focus-visible:ring-offset-1 dark:focus-visible:ring-offset-zinc-900'
             }`}
           >
             <span className="truncate max-w-[200px]">{tagLabel}</span>
@@ -844,10 +976,11 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
               <button
                 type="button"
                 onClick={() => setVisible(false)}
-                className="hover:opacity-70 p-0.5 rounded-full cursor-pointer"
-                title="Удалить тег"
+                className="hover:opacity-70 p-0.5 rounded-full cursor-pointer ml-0.5"
+                title={t('preview.tag.remove')}
+                aria-label={t('preview.tag.remove')}
               >
-                <X className="w-3 h-3" />
+                <X className="w-3.5 h-3.5" />
               </button>
             )}
           </motion.div>
@@ -857,9 +990,9 @@ export const InteractiveTag: React.FC<InteractiveTagProps> = ({ system, state, t
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             onClick={() => setVisible(true)}
-            className="flex items-center gap-1 text-[11px] text-accent-blue font-medium hover:underline cursor-pointer"
+            className="flex items-center gap-1 text-[11px] text-accent-blue dark:text-blue-400 font-medium hover:underline cursor-pointer focus-visible:ring-2 focus-visible:ring-accent-blue rounded p-1"
           >
-            <RotateCcw className="w-3 h-3" /> {tText('Восстановить')}
+            <RotateCcw className="w-3 h-3" /> {t('preview.tag.restore')}
           </motion.button>
         )}
       </AnimatePresence>
