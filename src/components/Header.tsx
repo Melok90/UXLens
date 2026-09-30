@@ -120,7 +120,7 @@ export default function Header() {
             type="button"
             onClick={handleShare}
             aria-label={t('nav.share')}
-            className="text-xs font-medium min-w-[96px] justify-center text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 px-3 py-1.5 rounded-lg transition-colors hidden sm:flex items-center gap-1.5 cursor-pointer"
+            className="text-xs font-medium w-[118px] min-w-[118px] justify-center text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800/70 px-3 py-1.5 rounded-lg transition-colors hidden sm:flex items-center gap-1.5 cursor-pointer"
           >
             {isShared ? (
               <>
@@ -134,7 +134,7 @@ export default function Header() {
           </button>
           <button
             type="button"
-            className="hidden sm:flex items-center text-xs font-semibold min-w-[72px] justify-center bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 px-3.5 py-1.5 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-xs cursor-pointer"
+            className="hidden sm:flex items-center text-xs font-semibold w-[76px] min-w-[76px] justify-center bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 px-3 py-1.5 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-xs cursor-pointer"
           >
             {t('nav.login')}
           </button>

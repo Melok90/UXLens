@@ -301,7 +301,7 @@ export default function Filters() {
             <h2 className="text-xl font-bold text-zinc-950 dark:text-white tracking-tight">
               {t('filters.title')}
             </h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed min-h-[40px] flex items-center sm:min-h-0 sm:block">
               {t('filters.subtitle')}
             </p>
           </div>
