@@ -22,7 +22,7 @@ function LoadingPlaceholder() {
 export default function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#fbfbfb] dark:bg-[#08090a] text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
+      <div className="flex flex-col min-h-screen overflow-x-hidden bg-[#fbfbfb] dark:bg-[#08090a] text-zinc-900 dark:text-zinc-100 transition-colors duration-200">
         <Header />
         
         <main className="flex-1 w-full max-w-[1280px] mx-auto px-4 md:px-10 py-10 flex flex-col gap-10">

@@ -54,7 +54,7 @@ export default function Header() {
   return (
     <header className="bg-white/80 dark:bg-[#08090a]/85 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 sticky top-0 z-40 transition-colors">
       <div className="flex justify-between items-center w-full px-4 md:px-10 max-w-[1280px] mx-auto h-[60px] relative">
-        <div className="flex items-center gap-8 flex-1">
+        <div className="flex items-center gap-8 md:flex-1">
           <Link className="flex items-center gap-2 group min-h-[44px]" to="/" aria-label="UXLens Home">
             <div className="w-7 h-7 rounded-lg bg-zinc-900 dark:bg-white flex items-center justify-center text-white dark:text-black font-bold text-xs shadow-xs group-hover:scale-105 transition-transform">
               UX
@@ -99,7 +99,7 @@ export default function Header() {
           <NavLink to="/systems" label={t('nav.systems')} active={location.pathname === '/systems'} />
         </nav>
 
-        <div className="flex items-center justify-end gap-2 flex-1">
+        <div className="flex items-center justify-end gap-1.5 sm:gap-2 md:flex-1 shrink-0">
           <LanguageToggle />
           <ThemeToggle />
 
