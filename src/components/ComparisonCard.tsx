@@ -163,6 +163,27 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
         </div>
       </div>
 
+      {/* Sub-header for Code view */}
+      {view === 'code' && (
+        <div className="bg-[#0c0d0e] px-3 py-1.5 border-b border-zinc-800/80 flex items-center justify-between">
+          <span className="text-[10px] uppercase tracking-wider text-zinc-400 font-mono font-medium">JSX / TSX</span>
+          <button
+            type="button"
+            onClick={handleCopyCode}
+            aria-label={t('grid.copyCode')}
+            className="flex items-center gap-1 text-[11px] text-zinc-300 hover:text-white transition-colors p-1 cursor-pointer"
+            title={t('grid.copyCode')}
+          >
+            {copied ? (
+              <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+            ) : (
+              <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+            )}
+            <span className="hidden sm:inline font-mono text-[10px]">{t('grid.copyCode')}</span>
+          </button>
+        </div>
+      )}
+
       {/* Sub-header for Token format switcher */}
       {view === 'tokens' && (
         <div className="bg-[#0c0d0e] px-3 py-1.5 border-b border-zinc-800/80 flex items-center justify-between">
@@ -213,21 +234,7 @@ const ComparisonCard: React.FC<ComparisonCardProps> = ({
             {previewContent}
           </div>
         ) : view === 'code' ? (
-          <div className="p-4 w-full h-full bg-[#0c0d0e] text-zinc-300 font-mono text-[12px] overflow-auto relative">
-            <button
-              type="button"
-              onClick={handleCopyCode}
-              aria-label={t('grid.copyCode')}
-              className="absolute top-3 right-3 p-1.5 bg-white/10 hover:bg-white/20 text-white rounded transition-colors flex items-center gap-1.5 z-10 cursor-pointer"
-              title={t('grid.copyCode')}
-            >
-              {copied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
-              ) : (
-                <Copy className="w-3.5 h-3.5" aria-hidden="true" />
-              )}
-              <span className="text-[10px] hidden sm:inline font-mono">{t('grid.copyCode')}</span>
-            </button>
+          <div className="p-4 w-full h-full bg-[#0c0d0e] text-zinc-300 font-mono text-[12px] overflow-auto">
             <pre className="!m-0 p-0 !bg-transparent text-[#9cdcfe] leading-relaxed">
               <code>{codeContent}</code>
             </pre>
